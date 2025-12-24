@@ -1,0 +1,135 @@
+[
+  {
+    "ID": "warhero",
+    "Name": "War Hero",
+    "Description": "Decorated military service",
+    "StatModifiers": {
+      "patriotism": 40,
+      "defense": 30,
+      "publicTrust": 20,
+      "nameRecognition": 15
+    }
+  },
+  {
+    "ID": "knowndrunk",
+    "Name": "Known Drunk",
+    "Description": "Public struggles with alcohol",
+    "StatModifiers": {
+      "professionalism": -40,
+      "relatability": 20,
+      "publicTrust": -30,
+      "mediaAppeal": 10
+    }
+  },
+  {
+    "ID": "conspiracytheorist",
+    "Name": "Conspiracy Theorist",
+    "Description": "Believes in various conspiracies",
+    "StatModifiers": {
+      "mainstream": -50,
+      "fringe": 40,
+      "credibility": -40,
+      "mediaAppeal": 20
+    }
+  },
+  {
+    "ID": "cryptidenthusiast",
+    "Name": "Local Cryptid Enthusiast",
+    "Description": "Famous for Bigfoot hunting",
+    "StatModifiers": {
+      "serious": -20,
+      "meme": 40,
+      "credibility": -30,
+      "mediaAppeal": 25
+    }
+  },
+  {
+    "ID": "whistleblower",
+    "Name": "Whistleblower",
+    "Description": "Exposed corruption",
+    "StatModifiers": {
+      "integrity": 30,
+      "party": -20,
+      "publicTrust": 25,
+      "establishment": -15
+    }
+  },
+  {
+    "ID": "philanthropist",
+    "Name": "Philanthropist",
+    "Description": "Known for charity work",
+    "StatModifiers": {
+      "publicTrust": 30,
+      "charisma": 20,
+      "nameRecognition": 15,
+      "funds": -10
+    }
+  },
+  {
+    "ID": "techmogul",
+    "Name": "Tech Mogul",
+    "Description": "Billionaire from tech industry",
+    "StatModifiers": {
+      "funds": 50,
+      "innovation": 40,
+      "publicTrust": -10,
+      "sophistication": 30
+    }
+  },
+  {
+    "ID": "realitystar",
+    "Name": "Reality TV Star",
+    "Description": "Famous for being on TV",
+    "StatModifiers": {
+      "nameRecognition": 60,
+      "mediaAppeal": 40,
+      "credibility": -25,
+      "sophistication": -20
+    }
+  },
+  {
+    "ID": "localcelebrity",
+    "Name": "Local Celebrity",
+    "Description": "Well-known in hometown",
+    "StatModifiers": {
+      "nameRecognition": 30,
+      "charisma": 25,
+      "publicTrust": 15,
+      "networking": 20
+    }
+  },
+  {
+    "ID": "scandalprone",
+    "Name": "Scandal Prone",
+    "Description": "History of controversies",
+    "StatModifiers": {
+      "publicTrust": -40,
+      "mediaAppeal": 30,
+      "resilience": 20,
+      "credibility": -30
+    }
+  },
+  {
+    "ID": "underdog",
+    "Name": "Underdog",
+    "Description": "Always counted out",
+    "StatModifiers": {
+      "relatability": 30,
+      "publicTrust": 15,
+      "resilience": 25,
+      "funds": -15
+    }
+  },
+  {
+    "ID": "establishment",
+    "Name": "Establishment Insider",
+    "Description": "Part of the political machine",
+    "StatModifiers": {
+      "party": 30,
+      "networking": 25,
+      "publicTrust": -10,
+      "antiEstablishment": -20
+    }
+  }
+]
+

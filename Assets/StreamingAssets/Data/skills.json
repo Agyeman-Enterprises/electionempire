@@ -1,0 +1,289 @@
+[
+  {
+    "ID": "smoothtalker",
+    "Name": "Smooth Talker",
+    "Category": "political",
+    "Description": "Master of persuasion and negotiation",
+    "Effects": {
+      "charisma": 25,
+      "debateEffectiveness": 20,
+      "persuasion": 30
+    }
+  },
+  {
+    "ID": "policywonk",
+    "Name": "Policy Wonk",
+    "Category": "political",
+    "Description": "Deep understanding of policy details",
+    "Effects": {
+      "intelligence": 30,
+      "policyEffectiveness": 25,
+      "credibility": 15
+    }
+  },
+  {
+    "ID": "coalitionbuilder",
+    "Name": "Coalition Builder",
+    "Category": "political",
+    "Description": "Expert at forming alliances",
+    "Effects": {
+      "networking": 30,
+      "allianceFormation": 35,
+      "diplomacy": 25
+    }
+  },
+  {
+    "ID": "debater",
+    "Name": "Master Debater",
+    "Category": "combat",
+    "Description": "Dominates in debates",
+    "Effects": {
+      "debateEffectiveness": 40,
+      "charisma": 20,
+      "intimidation": 15
+    }
+  },
+  {
+    "ID": "attackdog",
+    "Name": "Attack Dog",
+    "Category": "combat",
+    "Description": "Ruthless in attacking opponents",
+    "Effects": {
+      "attackEffectiveness": 35,
+      "intimidation": 25,
+      "publicTrust": -10
+    }
+  },
+  {
+    "ID": "crisismanager",
+    "Name": "Crisis Manager",
+    "Category": "combat",
+    "Description": "Handles emergencies expertly",
+    "Effects": {
+      "crisisManagement": 40,
+      "resilience": 25,
+      "publicTrust": 20
+    }
+  },
+  {
+    "ID": "cameraready",
+    "Name": "Camera Ready",
+    "Category": "media",
+    "Description": "Natural on camera",
+    "Effects": {
+      "mediaAppeal": 35,
+      "nameRecognition": 20,
+      "charisma": 15
+    }
+  },
+  {
+    "ID": "socialmediasavvy",
+    "Name": "Social Media Savvy",
+    "Category": "media",
+    "Description": "Expert at viral content",
+    "Effects": {
+      "socialMediaReach": 40,
+      "mediaAppeal": 25,
+      "nameRecognition": 30
+    }
+  },
+  {
+    "ID": "memegenerator",
+    "Name": "Meme Generator",
+    "Category": "media",
+    "Description": "Creates viral memes",
+    "Effects": {
+      "viralPotential": 50,
+      "mediaAppeal": 30,
+      "credibility": -10
+    }
+  },
+  {
+    "ID": "dirtcollector",
+    "Name": "Dirt Collector",
+    "Category": "shady",
+    "Description": "Finds opponent secrets",
+    "Effects": {
+      "oppositionResearch": 40,
+      "blackmailCollection": 35,
+      "cunning": 25
+    }
+  },
+  {
+    "ID": "blackmailartist",
+    "Name": "Blackmail Artist",
+    "Category": "shady",
+    "Description": "Expert at using leverage",
+    "Effects": {
+      "blackmailEffectiveness": 45,
+      "cunning": 30,
+      "publicTrust": -15
+    }
+  },
+  {
+    "ID": "coverupspecialist",
+    "Name": "Cover-Up Specialist",
+    "Category": "shady",
+    "Description": "Hides scandals effectively",
+    "Effects": {
+      "scandalConcealment": 40,
+      "cunning": 35,
+      "credibility": -20
+    }
+  },
+  {
+    "ID": "wrestlingheel",
+    "Name": "Wrestling Heel",
+    "Category": "absurd",
+    "Description": "Turns boos into votes",
+    "Effects": {
+      "intimidation": 30,
+      "mediaAppeal": 25,
+      "sophistication": -20
+    }
+  },
+  {
+    "ID": "standuptiming",
+    "Name": "Stand-up Timing",
+    "Category": "absurd",
+    "Description": "Perfect comedic timing",
+    "Effects": {
+      "charisma": 20,
+      "mediaAppeal": 30,
+      "gaffeRecovery": 35
+    }
+  },
+  {
+    "ID": "methodacting",
+    "Name": "Method Acting",
+    "Category": "absurd",
+    "Description": "Becomes the character",
+    "Effects": {
+      "charisma": 30,
+      "persuasion": 25,
+      "credibility": -10
+    }
+  },
+  {
+    "ID": "fundraisinggenius",
+    "Name": "Fundraising Genius",
+    "Category": "political",
+    "Description": "Raises money effortlessly",
+    "Effects": {
+      "fundraising": 50,
+      "networking": 25,
+      "charisma": 20
+    }
+  },
+  {
+    "ID": "silvertongue",
+    "Name": "Silver Tongue",
+    "Category": "political",
+    "Description": "Never says the wrong thing",
+    "Effects": {
+      "charisma": 35,
+      "gaffePrevention": 40,
+      "persuasion": 30
+    }
+  },
+  {
+    "ID": "bornleader",
+    "Name": "Born Leader",
+    "Category": "political",
+    "Description": "Natural leadership ability",
+    "Effects": {
+      "charisma": 30,
+      "staffLoyalty": 25,
+      "publicTrust": 20
+    }
+  },
+  {
+    "ID": "mediadarling",
+    "Name": "Media Darling",
+    "Category": "media",
+    "Description": "Press loves you",
+    "Effects": {
+      "mediaAppeal": 40,
+      "positiveCoverage": 35,
+      "nameRecognition": 25
+    }
+  },
+  {
+    "ID": "grassrootsorganizer",
+    "Name": "Grassroots Organizer",
+    "Category": "political",
+    "Description": "Builds volunteer networks",
+    "Effects": {
+      "volunteerRecruitment": 40,
+      "networking": 30,
+      "publicTrust": 25
+    }
+  },
+  {
+    "ID": "ruleslawyer",
+    "Name": "Rules Lawyer",
+    "Category": "combat",
+    "Description": "Uses rules to advantage",
+    "Effects": {
+      "intelligence": 25,
+      "debateEffectiveness": 30,
+      "cunning": 20
+    }
+  },
+  {
+    "ID": "scandalresilience",
+    "Name": "Scandal Resilience",
+    "Category": "combat",
+    "Description": "Bounces back from scandals",
+    "Effects": {
+      "resilience": 35,
+      "scandalRecovery": 40,
+      "publicTrust": 15
+    }
+  },
+  {
+    "ID": "insidescoop",
+    "Name": "Inside Scoop",
+    "Category": "shady",
+    "Description": "Has sources everywhere",
+    "Effects": {
+      "intelligence": 30,
+      "oppositionResearch": 35,
+      "networking": 25
+    }
+  },
+  {
+    "ID": "plausibledeniability",
+    "Name": "Plausible Deniability",
+    "Category": "shady",
+    "Description": "Never directly responsible",
+    "Effects": {
+      "cunning": 35,
+      "scandalConcealment": 30,
+      "credibility": -15
+    }
+  },
+  {
+    "ID": "viralcontent",
+    "Name": "Viral Content Creator",
+    "Category": "media",
+    "Description": "Everything goes viral",
+    "Effects": {
+      "viralPotential": 60,
+      "mediaAppeal": 35,
+      "nameRecognition": 40
+    }
+  },
+  {
+    "ID": "photographicmemory",
+    "Name": "Photographic Memory",
+    "Category": "political",
+    "Description": "Remembers everything",
+    "Effects": {
+      "intelligence": 40,
+      "debateEffectiveness": 30,
+      "policyEffectiveness": 25
+    }
+  }
+]
+

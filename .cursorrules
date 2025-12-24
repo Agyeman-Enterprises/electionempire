@@ -1,0 +1,246 @@
+# Election Empire - Cursor Rules
+
+## Project Overview
+Election Empire is a darkly satirical political strategy game built in Unity 2023.2+. The game features procedural generation, real-world news integration, AI opponents, scandal systems, and a complete political ladder progression system.
+
+## Code Style & Standards
+
+### C# Conventions
+- Use PascalCase for classes, methods, properties, and public fields
+- Use camelCase for private fields and local variables
+- Use descriptive names - avoid abbreviations
+- Always use explicit access modifiers (public, private, protected)
+- Use `this.` prefix for instance fields when there's ambiguity
+- Prefer `var` for local variables when type is obvious
+- Use `System.Collections.Generic` namespaces explicitly
+- Use `UnityEngine` namespace explicitly for Unity types
+
+### Unity-Specific
+- All MonoBehaviour scripts should be in appropriate namespaces
+- Use `[SerializeField]` for private fields that need Unity serialization
+- Use `[Header]` attributes for organization in Inspector
+- Use `[Range]` for numeric fields that should be sliders
+- Always check for null before accessing Unity objects
+- Use `FindObjectOfType` sparingly - prefer references or singletons
+- Use `DontDestroyOnLoad` for managers that persist across scenes
+
+### Namespace Structure
+```
+ElectionEmpire.Core          - Core systems (GameManager, TimeManager, SaveManager)
+ElectionEmpire.Character      - Character system
+ElectionEmpire.World          - World generation and data
+ElectionEmpire.AI             - AI opponent system
+ElectionEmpire.Gameplay       - Core gameplay (elections, resources, offices)
+ElectionEmpire.Scandal        - Scandal engine
+ElectionEmpire.News           - News integration (old format)
+ElectionEmpire.News.Translation - News translation system (new format)
+ElectionEmpire.News.Templates - Event templates
+ElectionEmpire.UI             - User interface
+ElectionEmpire.Chaos          - Chaos mode features
+```
+
+### File Organization
+- One class per file (except nested classes)
+- File name must match class name exactly
+- Group related classes in folders by namespace
+- Use `#region` for large files to organize sections
+
+### Data Structures
+- Use `Dictionary<string, float>` for resources
+- Use `List<T>` for collections
+- Use enums for fixed sets of values
+- Use `[Serializable]` for data classes that need Unity serialization
+- Use JSON for external data files (StreamingAssets/Data/)
+
+### Error Handling
+- Use `Debug.Log` for informational messages
+- Use `Debug.LogWarning` for recoverable issues
+- Use `Debug.LogError` for critical failures
+- Always check for null before accessing objects
+- Use try-catch for external API calls
+- Provide fallback behavior when APIs fail
+
+### Performance
+- Cache frequently accessed objects
+- Avoid allocations in Update() loops
+- Use object pooling for frequently created/destroyed objects
+- Profile before optimizing
+- Use `System.Linq` sparingly in hot paths
+
+### Documentation
+- Use XML comments for public APIs
+- Document complex algorithms
+- Explain "why" not just "what" for non-obvious code
+- Include examples for complex methods
+
+## Architecture Patterns
+
+### Manager Pattern
+- Managers are singletons or MonoBehaviour components
+- Managers coordinate between systems
+- Managers handle initialization and cleanup
+- Example: `GameManager`, `AIManager`, `ScandalManager`
+
+### State Pattern
+- Use `GameState` for overall game state
+- Use `PlayerState` for player-specific state
+- State should be serializable for save/load
+- State changes should be explicit and logged
+
+### Factory Pattern
+- Use factories for complex object creation
+- Examples: `EventFactory`, `AIOpponentGenerator`, `CharacterGenerator`
+
+### Template Pattern
+- Use templates for procedural generation
+- Templates define structure, generators fill in details
+- Examples: `EventTemplate`, `ScandalTemplate`, `Character` components
+
+## News System Integration
+
+### Data Flow
+1. **Ingestion**: `NewsAPIConnector` → `NewsArticle`
+2. **Processing**: `NewsProcessor` → `ProcessedNews`
+3. **Translation**: `NewsAdapter` → `ProcessedNewsItem` → `AdvancedTemplateMatcher` → `MatchedTemplate` → `NewsEventFactory` → `NewsGameEvent`
+4. **Player Response**: `PlayerResponseSystem` → Effects applied
+5. **Consequences**: `ResourceManager` + `PlayerState` updated
+
+### Key Classes
+- `ProcessedNewsItem` - New format for processed news
+- `ProcessedNews` - Legacy format (use adapter to convert)
+- `NewsGameEvent` - Final game event (Translation namespace)
+- `AdvancedTemplateMatcher` - Template matching with scoring
+- `NewsTranslationPipeline` - Full pipeline orchestration
+- `GameStateProvider` - Implements IGameStateProvider interface
+
+### Integration Points
+- `GameManager` - Central coordination
+- `GameLoop` - Updates news system each turn
+- `ResourceManager` - Applies news event effects
+- `PlayerState` - Tracks stance history and reputation
+
+## Testing Guidelines
+
+### Unit Testing
+- Test data structures independently
+- Test generators with fixed seeds
+- Test edge cases (null, empty, extreme values)
+
+### Integration Testing
+- Test system interactions
+- Test save/load cycles
+- Test error recovery
+
+### Manual Testing Checklist
+- [ ] Character creation (random + manual)
+- [ ] World generation
+- [ ] AI opponent generation
+- [ ] Election system
+- [ ] Scandal system
+- [ ] News integration
+- [ ] Save/load
+- [ ] Resource management
+
+## Common Patterns
+
+### Resource Management
+```csharp
+// Always check if resource exists
+if (player.Resources.ContainsKey("PublicTrust"))
+{
+    player.Resources["PublicTrust"] += amount;
+    player.Resources["PublicTrust"] = Mathf.Clamp(player.Resources["PublicTrust"], 0f, 100f);
+}
+```
+
+### Entity Extraction
+```csharp
+// Use LINQ for filtering
+var people = entities.Where(e => e.Type == EntityType.Person).ToList();
+```
+
+### Template Variable Filling
+```csharp
+// Replace variables in templates
+string result = template.Replace("{VARIABLE}", value);
+```
+
+### Random Generation
+```csharp
+// Use UnityEngine.Random for game randomness
+int value = Random.Range(min, max);
+```
+
+## Prohibited Patterns
+
+### DON'T
+- Don't use `GameObject.Find()` in Update()
+- Don't create objects in Update() without pooling
+- Don't use `System.Random` - use `UnityEngine.Random`
+- Don't hardcode API keys - use settings/PlayerPrefs
+- Don't ignore null checks
+- Don't use magic numbers - use constants or config
+- Don't create circular dependencies between managers
+- Don't use `SendMessage` or `BroadcastMessage`
+
+### DO
+- Do use dependency injection where possible
+- Do cache references to frequently accessed objects
+- Do use events/delegates for decoupled communication
+- Do validate input parameters
+- Do provide fallback behavior
+- Do log important state changes
+- Do use enums instead of string constants
+- Do use `[SerializeField]` for Inspector-exposed fields
+
+## File Naming
+- Scripts: `PascalCase.cs` matching class name
+- Data files: `snake_case.json`
+- Scenes: `PascalCase.unity`
+- Prefabs: `PascalCase.prefab`
+
+## Git Workflow
+- Commit related changes together
+- Use descriptive commit messages
+- Don't commit generated files (Library/, Temp/, etc.)
+- Don't commit API keys or secrets
+
+## Dependencies
+- Unity 2023.2 or later
+- .NET Standard 2.1
+- System.Text.Json (for JSON parsing)
+- UnityWebRequest (for API calls)
+
+## Special Considerations
+
+### News API Integration
+- Always handle API failures gracefully
+- Use fallback system when APIs unavailable
+- Cache news for offline play
+- Respect rate limits
+- Don't expose API keys in code
+
+### Performance
+- News processing should be async
+- Template matching should cache results
+- Don't process news every frame
+- Batch operations when possible
+
+### Save/Load
+- All game state must be serializable
+- Use JSON for human-readable saves
+- Version save format for compatibility
+- Handle missing fields gracefully
+
+## Code Review Checklist
+- [ ] Follows naming conventions
+- [ ] Has appropriate error handling
+- [ ] No magic numbers
+- [ ] Proper null checks
+- [ ] Appropriate use of LINQ
+- [ ] Performance considerations
+- [ ] Documentation for public APIs
+- [ ] No hardcoded values that should be configurable
+- [ ] Proper use of Unity lifecycle methods
+- [ ] No memory leaks (unsubscribed events, etc.)
+

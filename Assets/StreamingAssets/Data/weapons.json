@@ -1,0 +1,135 @@
+[
+  {
+    "ID": "billionaire",
+    "Name": "Billionaire",
+    "Category": "legitimate",
+    "Description": "Vast personal wealth",
+    "Effects": {
+      "funds": 100,
+      "networking": 40,
+      "publicTrust": -10
+    }
+  },
+  {
+    "ID": "mediadynasty",
+    "Name": "Media Dynasty",
+    "Category": "legitimate",
+    "Description": "Owns media empire",
+    "Effects": {
+      "mediaAppeal": 50,
+      "nameRecognition": 60,
+      "narrativeControl": 45
+    }
+  },
+  {
+    "ID": "unionboss",
+    "Name": "Union Boss",
+    "Category": "legitimate",
+    "Description": "Controls major unions",
+    "Effects": {
+      "networking": 50,
+      "funds": 30,
+      "voterBlocSupport": 40
+    }
+  },
+  {
+    "ID": "techmogul",
+    "Name": "Tech Mogul",
+    "Category": "legitimate",
+    "Description": "Silicon Valley connections",
+    "Effects": {
+      "funds": 80,
+      "innovation": 50,
+      "networking": 35
+    }
+  },
+  {
+    "ID": "mobconnections",
+    "Name": "Mob Connections",
+    "Category": "questionable",
+    "Description": "Organized crime ties",
+    "Effects": {
+      "intimidation": 50,
+      "funds": 40,
+      "publicTrust": -40
+    }
+  },
+  {
+    "ID": "cultfollowing",
+    "Name": "Cult Following",
+    "Category": "questionable",
+    "Description": "Dedicated fanatical supporters",
+    "Effects": {
+      "voterBlocSupport": 60,
+      "resilience": 30,
+      "publicTrust": -20
+    }
+  },
+  {
+    "ID": "blackmailnetwork",
+    "Name": "Blackmail Network",
+    "Category": "questionable",
+    "Description": "Dirt on everyone",
+    "Effects": {
+      "intimidation": 45,
+      "oppositionControl": 50,
+      "publicTrust": -30
+    }
+  },
+  {
+    "ID": "actuallypsychic",
+    "Name": "Actually Psychic",
+    "Category": "absurd",
+    "Description": "Real psychic powers",
+    "Effects": {
+      "intelligence": 40,
+      "crisisPrediction": 50,
+      "credibility": -30
+    }
+  },
+  {
+    "ID": "immortalvampire",
+    "Name": "Immortal Vampire",
+    "Category": "absurd",
+    "Description": "Actually a vampire",
+    "Effects": {
+      "resilience": 100,
+      "intimidation": 60,
+      "publicTrust": -50
+    }
+  },
+  {
+    "ID": "realitytvediting",
+    "Name": "Reality TV Editing Magic",
+    "Category": "absurd",
+    "Description": "Can edit reality like TV",
+    "Effects": {
+      "narrativeControl": 60,
+      "mediaAppeal": 50,
+      "credibility": -25
+    }
+  },
+  {
+    "ID": "time-traveler",
+    "Name": "Time Traveler",
+    "Category": "absurd",
+    "Description": "From the future",
+    "Effects": {
+      "intelligence": 50,
+      "crisisPrediction": 60,
+      "credibility": -40
+    }
+  },
+  {
+    "ID": "alientechnology",
+    "Name": "Alien Technology",
+    "Category": "absurd",
+    "Description": "Has alien tech",
+    "Effects": {
+      "innovation": 70,
+      "intelligence": 45,
+      "credibility": -35
+    }
+  }
+]
+

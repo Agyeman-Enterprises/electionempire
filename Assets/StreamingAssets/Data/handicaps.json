@@ -1,0 +1,183 @@
+[
+  {
+    "ID": "onprobation",
+    "Name": "On Probation",
+    "Category": "legal",
+    "Description": "Currently on probation",
+    "Penalties": {
+      "publicTrust": -30,
+      "credibility": -25,
+      "campaignOptions": -20
+    },
+    "LegacyPointBonus": 50
+  },
+  {
+    "ID": "pendinglawsuit",
+    "Name": "Pending Lawsuit",
+    "Category": "legal",
+    "Description": "Facing legal action",
+    "Penalties": {
+      "publicTrust": -25,
+      "funds": -15,
+      "credibility": -20
+    },
+    "LegacyPointBonus": 40
+  },
+  {
+    "ID": "anklemonitor",
+    "Name": "Ankle Monitor",
+    "Category": "legal",
+    "Description": "Wearing tracking device",
+    "Penalties": {
+      "publicTrust": -40,
+      "mobility": -30,
+      "mediaAppeal": -10
+    },
+    "LegacyPointBonus": 60
+  },
+  {
+    "ID": "massivedebt",
+    "Name": "Massive Debt",
+    "Category": "financial",
+    "Description": "Drowning in debt",
+    "Penalties": {
+      "funds": -40,
+      "publicTrust": -15,
+      "campaignOptions": -25
+    },
+    "LegacyPointBonus": 45
+  },
+  {
+    "ID": "irsaudit",
+    "Name": "IRS Audit",
+    "Category": "financial",
+    "Description": "Under tax investigation",
+    "Penalties": {
+      "funds": -20,
+      "credibility": -30,
+      "publicTrust": -20
+    },
+    "LegacyPointBonus": 50
+  },
+  {
+    "ID": "bankruptcy",
+    "Name": "Bankruptcy",
+    "Category": "financial",
+    "Description": "Recently declared bankruptcy",
+    "Penalties": {
+      "funds": -50,
+      "publicTrust": -25,
+      "credibility": -20
+    },
+    "LegacyPointBonus": 55
+  },
+  {
+    "ID": "legallyrequiredclownnose",
+    "Name": "Legally Required Clown Nose",
+    "Category": "absurd",
+    "Description": "Court order to wear clown nose",
+    "Penalties": {
+      "professionalism": -50,
+      "sophistication": -40,
+      "mediaAppeal": 30
+    },
+    "LegacyPointBonus": 75
+  },
+  {
+    "ID": "curseofpharaoh",
+    "Name": "Curse of Pharaoh",
+    "Category": "absurd",
+    "Description": "Cursed by ancient Egyptian tomb",
+    "Penalties": {
+      "luck": -30,
+      "resilience": -20,
+      "credibility": -25
+    },
+    "LegacyPointBonus": 70
+  },
+  {
+    "ID": "bannedfromwendys",
+    "Name": "Banned from Wendy's",
+    "Category": "absurd",
+    "Description": "Permanently banned from all Wendy's",
+    "Penalties": {
+      "publicTrust": -10,
+      "mediaAppeal": 20,
+      "credibility": -15
+    },
+    "LegacyPointBonus": 40
+  },
+  {
+    "ID": "allergictosunlight",
+    "Name": "Allergic to Sunlight",
+    "Category": "absurd",
+    "Description": "Can't go outside during day",
+    "Penalties": {
+      "campaignOptions": -30,
+      "publicTrust": -15,
+      "mediaAppeal": -10
+    },
+    "LegacyPointBonus": 60
+  },
+  {
+    "ID": "legallyblind",
+    "Name": "Legally Blind",
+    "Category": "legal",
+    "Description": "Vision impairment",
+    "Penalties": {
+      "campaignOptions": -20,
+      "publicTrust": -10,
+      "mobility": -15
+    },
+    "LegacyPointBonus": 35
+  },
+  {
+    "ID": "restrainingorder",
+    "Name": "Restraining Order",
+    "Category": "legal",
+    "Description": "Multiple restraining orders",
+    "Penalties": {
+      "publicTrust": -35,
+      "campaignOptions": -25,
+      "credibility": -30
+    },
+    "LegacyPointBonus": 55
+  },
+  {
+    "ID": "housearrest",
+    "Name": "House Arrest",
+    "Category": "legal",
+    "Description": "Confined to home",
+    "Penalties": {
+      "mobility": -50,
+      "campaignOptions": -40,
+      "publicTrust": -25
+    },
+    "LegacyPointBonus": 70
+  },
+  {
+    "ID": "creditruined",
+    "Name": "Credit Ruined",
+    "Category": "financial",
+    "Description": "Terrible credit score",
+    "Penalties": {
+      "funds": -30,
+      "campaignOptions": -20,
+      "publicTrust": -10
+    },
+    "LegacyPointBonus": 40
+  },
+  {
+    "ID": "cursedbywizard",
+    "Name": "Cursed by Wizard",
+    "Category": "absurd",
+    "Description": "Actual wizard put a curse on you",
+    "Penalties": {
+      "luck": -40,
+      "resilience": -25,
+      "credibility": -30
+    },
+    "LegacyPointBonus": 80
+  }
+]
+

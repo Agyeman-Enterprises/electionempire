@@ -1,0 +1,313 @@
+[
+  {
+    "ID": "silvertongue",
+    "Name": "Silver Tongue",
+    "IsPositive": true,
+    "Description": "Never says the wrong thing",
+    "Effects": {
+      "charisma": 20,
+      "gaffePrevention": 30
+    }
+  },
+  {
+    "ID": "photographicmemory",
+    "Name": "Photographic Memory",
+    "IsPositive": true,
+    "Description": "Remembers every detail",
+    "Effects": {
+      "intelligence": 25,
+      "debateEffectiveness": 20
+    }
+  },
+  {
+    "ID": "neversleeps",
+    "Name": "Never Sleeps",
+    "IsPositive": true,
+    "Description": "Works 24/7 without rest",
+    "Effects": {
+      "actionPoints": 50,
+      "resilience": 15
+    }
+  },
+  {
+    "ID": "infectiouslaugh",
+    "Name": "Infectious Laugh",
+    "IsPositive": true,
+    "Description": "Laughter is contagious",
+    "Effects": {
+      "charisma": 15,
+      "mediaAppeal": 20
+    }
+  },
+  {
+    "ID": "naturalcharisma",
+    "Name": "Natural Charisma",
+    "IsPositive": true,
+    "Description": "People are drawn to you",
+    "Effects": {
+      "charisma": 30,
+      "publicTrust": 15
+    }
+  },
+  {
+    "ID": "quicklearner",
+    "Name": "Quick Learner",
+    "IsPositive": true,
+    "Description": "Picks up skills fast",
+    "Effects": {
+      "intelligence": 20,
+      "skillGain": 25
+    }
+  },
+  {
+    "ID": "calmunderpressure",
+    "Name": "Calm Under Pressure",
+    "IsPositive": true,
+    "Description": "Never panics",
+    "Effects": {
+      "resilience": 30,
+      "crisisManagement": 25
+    }
+  },
+  {
+    "ID": "peopleperson",
+    "Name": "People Person",
+    "IsPositive": true,
+    "Description": "Connects with everyone",
+    "Effects": {
+      "networking": 25,
+      "charisma": 20
+    }
+  },
+  {
+    "ID": "strategicthinker",
+    "Name": "Strategic Thinker",
+    "IsPositive": true,
+    "Description": "Sees the big picture",
+    "Effects": {
+      "intelligence": 25,
+      "cunning": 20
+    }
+  },
+  {
+    "ID": "unshakeableconfidence",
+    "Name": "Unshakeable Confidence",
+    "IsPositive": true,
+    "Description": "Never doubts yourself",
+    "Effects": {
+      "resilience": 25,
+      "charisma": 15
+    }
+  },
+  {
+    "ID": "empath",
+    "Name": "Empath",
+    "IsPositive": true,
+    "Description": "Understands people's feelings",
+    "Effects": {
+      "charisma": 20,
+      "publicTrust": 20
+    }
+  },
+  {
+    "ID": "workaholic",
+    "Name": "Workaholic",
+    "IsPositive": true,
+    "Description": "Works harder than anyone",
+    "Effects": {
+      "actionPoints": 30,
+      "policyEffectiveness": 20
+    }
+  },
+  {
+    "ID": "luckycharm",
+    "Name": "Lucky Charm",
+    "IsPositive": true,
+    "Description": "Things go your way",
+    "Effects": {
+      "luck": 25,
+      "crisisRecovery": 20
+    }
+  },
+  {
+    "ID": "photogenic",
+    "Name": "Photogenic",
+    "IsPositive": true,
+    "Description": "Always looks good in photos",
+    "Effects": {
+      "mediaAppeal": 25,
+      "nameRecognition": 15
+    }
+  },
+  {
+    "ID": "giftedspeaker",
+    "Name": "Gifted Speaker",
+    "IsPositive": true,
+    "Description": "Natural orator",
+    "Effects": {
+      "charisma": 25,
+      "debateEffectiveness": 30
+    }
+  },
+  {
+    "ID": "footinmouth",
+    "Name": "Foot in Mouth Disease",
+    "IsPositive": false,
+    "Description": "Always says the wrong thing",
+    "Effects": {
+      "gaffeChance": 30,
+      "credibility": -20
+    }
+  },
+  {
+    "ID": "angerissues",
+    "Name": "Anger Issues",
+    "IsPositive": false,
+    "Description": "Loses temper easily",
+    "Effects": {
+      "resilience": -20,
+      "publicTrust": -15
+    }
+  },
+  {
+    "ID": "pathologicalliar",
+    "Name": "Pathological Liar",
+    "IsPositive": false,
+    "Description": "Can't tell the truth",
+    "Effects": {
+      "credibility": -30,
+      "publicTrust": -25
+    }
+  },
+  {
+    "ID": "gamblingaddiction",
+    "Name": "Gambling Addiction",
+    "IsPositive": false,
+    "Description": "Can't stop gambling",
+    "Effects": {
+      "funds": -20,
+      "resilience": -15
+    }
+  },
+  {
+    "ID": "egomaniac",
+    "Name": "Ego Maniac",
+    "IsPositive": false,
+    "Description": "Massive ego",
+    "Effects": {
+      "staffLoyalty": -20,
+      "allianceFormation": -15
+    }
+  },
+  {
+    "ID": "conspiracybrain",
+    "Name": "Conspiracy Brain",
+    "IsPositive": false,
+    "Description": "Believes in conspiracies",
+    "Effects": {
+      "credibility": -35,
+      "mainstream": -25
+    }
+  },
+  {
+    "ID": "paranoid",
+    "Name": "Paranoid",
+    "IsPositive": false,
+    "Description": "Thinks everyone is out to get you",
+    "Effects": {
+      "resilience": -25,
+      "networking": -20
+    }
+  },
+  {
+    "ID": "procrastinator",
+    "Name": "Procrastinator",
+    "IsPositive": false,
+    "Description": "Always puts things off",
+    "Effects": {
+      "actionPoints": -20,
+      "policyEffectiveness": -15
+    }
+  },
+  {
+    "ID": "thin-skinned",
+    "Name": "Thin Skinned",
+    "IsPositive": false,
+    "Description": "Can't take criticism",
+    "Effects": {
+      "resilience": -30,
+      "debateEffectiveness": -20
+    }
+  },
+  {
+    "ID": "technophobe",
+    "Name": "Technophobe",
+    "IsPositive": false,
+    "Description": "Hates technology",
+    "Effects": {
+      "socialMediaReach": -40,
+      "innovation": -30
+    }
+  },
+  {
+    "ID": "controversialpast",
+    "Name": "Controversial Past",
+    "IsPositive": false,
+    "Description": "History of scandals",
+    "Effects": {
+      "publicTrust": -20,
+      "credibility": -25
+    }
+  },
+  {
+    "ID": "skeletonsincloset",
+    "Name": "Skeletons in Closet",
+    "IsPositive": false,
+    "Description": "Dark secrets waiting to be exposed",
+    "Effects": {
+      "scandalRisk": 30,
+      "publicTrust": -15
+    }
+  },
+  {
+    "ID": "alcoholproblem",
+    "Name": "Alcohol Problem",
+    "IsPositive": false,
+    "Description": "Struggles with drinking",
+    "Effects": {
+      "resilience": -25,
+      "professionalism": -30
+    }
+  },
+  {
+    "ID": "speakstodeadpresidents",
+    "Name": "Speaks to Dead Presidents",
+    "IsPositive": false,
+    "Description": "Claims to communicate with ghosts",
+    "Effects": {
+      "credibility": -50,
+      "mediaAppeal": 20
+    }
+  },
+  {
+    "ID": "onlywearspurple",
+    "Name": "Only Wears Purple",
+    "IsPositive": false,
+    "Description": "Obsessed with purple clothing",
+    "Effects": {
+      "sophistication": -15,
+      "mediaAppeal": 10
+    }
+  },
+  {
+    "ID": "emotionalsupportpeacock",
+    "Name": "Emotional Support Peacock",
+    "IsPositive": false,
+    "Description": "Brings a peacock everywhere",
+    "Effects": {
+      "professionalism": -25,
+      "mediaAppeal": 30
+    }
+  }
+]
+

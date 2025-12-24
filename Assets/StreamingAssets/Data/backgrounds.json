@@ -1,0 +1,399 @@
+[
+  {
+    "ID": "businessman",
+    "Name": "Businessman",
+    "Tier": "respectable",
+    "Description": "Successful entrepreneur turned politician",
+    "Stats": {
+      "networking": 40,
+      "charisma": 30,
+      "sophistication": 25,
+      "publicTrust": -10
+    },
+    "SpecialAbility": "Golden Rolodex - Call in one major financial favor per election",
+    "StartingResources": {
+      "funds": 30,
+      "publicTrust": -10,
+      "nameRecognition": 20
+    }
+  },
+  {
+    "ID": "doctor",
+    "Name": "Doctor",
+    "Tier": "respectable",
+    "Description": "Medical professional with healthcare expertise",
+    "Stats": {
+      "intelligence": 40,
+      "resilience": 30,
+      "publicTrust": 25,
+      "sophistication": 20
+    },
+    "SpecialAbility": "Bedside Manner - +15% crisis management during health emergencies",
+    "StartingResources": {
+      "funds": -10,
+      "publicTrust": 25,
+      "nameRecognition": 15
+    }
+  },
+  {
+    "ID": "teacher",
+    "Name": "Teacher",
+    "Tier": "respectable",
+    "Description": "Educator with grassroots connections",
+    "Stats": {
+      "charisma": 35,
+      "intelligence": 30,
+      "publicTrust": 20,
+      "networking": -5
+    },
+    "SpecialAbility": "Inspirational Speaker - Convert 10% more undecided voters in debates",
+    "StartingResources": {
+      "funds": -20,
+      "publicTrust": 20,
+      "nameRecognition": 10
+    }
+  },
+  {
+    "ID": "lawyer",
+    "Name": "Lawyer",
+    "Tier": "respectable",
+    "Description": "Legal expert with courtroom experience",
+    "Stats": {
+      "intelligence": 35,
+      "cunning": 30,
+      "sophistication": 25,
+      "charisma": 20
+    },
+    "SpecialAbility": "Rules Lawyer - Nullify one opponent attack per debate",
+    "StartingResources": {
+      "funds": 10,
+      "publicTrust": 15,
+      "nameRecognition": 15
+    }
+  },
+  {
+    "ID": "scientist",
+    "Name": "Scientist",
+    "Tier": "respectable",
+    "Description": "Research background with evidence-based approach",
+    "Stats": {
+      "intelligence": 50,
+      "credibility": 30,
+      "sophistication": 20,
+      "charisma": -10
+    },
+    "SpecialAbility": "Evidence Based - Policy effectiveness +20%",
+    "StartingResources": {
+      "funds": -15,
+      "publicTrust": 30,
+      "nameRecognition": 5
+    }
+  },
+  {
+    "ID": "engineer",
+    "Name": "Engineer",
+    "Tier": "respectable",
+    "Description": "Technical expert with problem-solving skills",
+    "Stats": {
+      "intelligence": 40,
+      "resilience": 25,
+      "sophistication": 20,
+      "charisma": -5
+    },
+    "SpecialAbility": "Systematic Approach - Infrastructure projects +25% effectiveness",
+    "StartingResources": {
+      "funds": 5,
+      "publicTrust": 20,
+      "nameRecognition": 10
+    }
+  },
+  {
+    "ID": "realitytv",
+    "Name": "Reality TV Star",
+    "Tier": "questionable",
+    "Description": "Famous for being famous",
+    "Stats": {
+      "charisma": 40,
+      "mediaAppeal": 50,
+      "sophistication": -30,
+      "credibility": -20
+    },
+    "SpecialAbility": "Camera Ready - Media events +30% effectiveness",
+    "StartingResources": {
+      "funds": 20,
+      "publicTrust": -15,
+      "nameRecognition": 60
+    }
+  },
+  {
+    "ID": "influencer",
+    "Name": "Social Media Influencer",
+    "Tier": "questionable",
+    "Description": "Built following through viral content",
+    "Stats": {
+      "mediaAppeal": 45,
+      "charisma": 35,
+      "sophistication": -25,
+      "credibility": -15
+    },
+    "SpecialAbility": "Viral Potential - Social media posts have 2x reach",
+    "StartingResources": {
+      "funds": 15,
+      "publicTrust": -10,
+      "nameRecognition": 50
+    }
+  },
+  {
+    "ID": "usedcarsalesman",
+    "Name": "Used Car Salesman",
+    "Tier": "questionable",
+    "Description": "Master of persuasion and negotiation",
+    "Stats": {
+      "charisma": 40,
+      "cunning": 35,
+      "publicTrust": -30,
+      "credibility": -25
+    },
+    "SpecialAbility": "Smooth Talker - Persuasion attempts +25% success",
+    "StartingResources": {
+      "funds": 5,
+      "publicTrust": -30,
+      "nameRecognition": 10
+    }
+  },
+  {
+    "ID": "lifecoach",
+    "Name": "Life Coach",
+    "Tier": "questionable",
+    "Description": "Self-help guru with motivational skills",
+    "Stats": {
+      "charisma": 35,
+      "networking": 25,
+      "credibility": -20,
+      "sophistication": -15
+    },
+    "SpecialAbility": "Motivational Speaker - Rally effectiveness +20%",
+    "StartingResources": {
+      "funds": 10,
+      "publicTrust": -5,
+      "nameRecognition": 20
+    }
+  },
+  {
+    "ID": "wrestler",
+    "Name": "Professional Wrestler",
+    "Tier": "absurd",
+    "Description": "Former wrestling champion turned politician",
+    "Stats": {
+      "intimidation": 50,
+      "charisma": 30,
+      "sophistication": -20,
+      "mediaAppeal": 40
+    },
+    "SpecialAbility": "Wrestling Heel - Turn boos into votes",
+    "StartingResources": {
+      "funds": -10,
+      "publicTrust": -20,
+      "nameRecognition": 50
+    }
+  },
+  {
+    "ID": "failedcomedian",
+    "Name": "Failed Comedian",
+    "Tier": "absurd",
+    "Description": "Stand-up career never took off",
+    "Stats": {
+      "charisma": 30,
+      "mediaAppeal": 25,
+      "sophistication": -15,
+      "credibility": -20
+    },
+    "SpecialAbility": "Stand-up Timing - Gaffes sometimes become viral memes",
+    "StartingResources": {
+      "funds": -25,
+      "publicTrust": -10,
+      "nameRecognition": 15
+    }
+  },
+  {
+    "ID": "competitiveeater",
+    "Name": "Competitive Eater",
+    "Tier": "absurd",
+    "Description": "Champion of eating contests",
+    "Stats": {
+      "resilience": 40,
+      "charisma": 20,
+      "sophistication": -30,
+      "mediaAppeal": 30
+    },
+    "SpecialAbility": "Stomach of Steel - Can survive any food-related scandal",
+    "StartingResources": {
+      "funds": -15,
+      "publicTrust": -15,
+      "nameRecognition": 25
+    }
+  },
+  {
+    "ID": "psychichotline",
+    "Name": "Psychic Hotline Operator",
+    "Tier": "absurd",
+    "Description": "Former fortune teller with mysterious powers",
+    "Stats": {
+      "charisma": 35,
+      "cunning": 30,
+      "credibility": -40,
+      "mediaAppeal": 20
+    },
+    "SpecialAbility": "Actually Psychic - 10% chance to predict opponent moves",
+    "StartingResources": {
+      "funds": -20,
+      "publicTrust": -30,
+      "nameRecognition": 20
+    }
+  },
+  {
+    "ID": "formerchildstar",
+    "Name": "Former Child Star",
+    "Tier": "absurd",
+    "Description": "Famous as a kid, trying to reinvent",
+    "Stats": {
+      "nameRecognition": 60,
+      "charisma": 30,
+      "resilience": -20,
+      "sophistication": -10
+    },
+    "SpecialAbility": "Nostalgia Factor - Older voters remember you fondly",
+    "StartingResources": {
+      "funds": 10,
+      "publicTrust": -5,
+      "nameRecognition": 60
+    }
+  },
+  {
+    "ID": "cryptidhunter",
+    "Name": "Cryptid Hunter",
+    "Tier": "absurd",
+    "Description": "Dedicated to finding Bigfoot and other mysteries",
+    "Stats": {
+      "resilience": 35,
+      "intelligence": 20,
+      "credibility": -50,
+      "mediaAppeal": 25
+    },
+    "SpecialAbility": "Meme Potential - Absurd claims become viral content",
+    "StartingResources": {
+      "funds": -30,
+      "publicTrust": -40,
+      "nameRecognition": 15
+    }
+  },
+  {
+    "ID": "reformedconartist",
+    "Name": "Reformed Con Artist",
+    "Tier": "criminal",
+    "Description": "Served time, now seeking redemption",
+    "Stats": {
+      "cunning": 50,
+      "charisma": 35,
+      "publicTrust": -40,
+      "credibility": -30
+    },
+    "SpecialAbility": "Redemption Arc - Negative traits become positive with time",
+    "StartingResources": {
+      "funds": -35,
+      "publicTrust": -40,
+      "nameRecognition": 10
+    }
+  },
+  {
+    "ID": "pardonedembezzler",
+    "Name": "Pardoned Embezzler",
+    "Tier": "criminal",
+    "Description": "White-collar criminal with connections",
+    "Stats": {
+      "networking": 40,
+      "cunning": 45,
+      "publicTrust": -35,
+      "credibility": -25
+    },
+    "SpecialAbility": "White Collar Connections - Access to hidden funds",
+    "StartingResources": {
+      "funds": 50,
+      "publicTrust": -35,
+      "nameRecognition": 20
+    }
+  },
+  {
+    "ID": "exmobassociate",
+    "Name": "Ex-Mob Associate",
+    "Tier": "criminal",
+    "Description": "Left organized crime behind",
+    "Stats": {
+      "intimidation": 45,
+      "cunning": 40,
+      "publicTrust": -45,
+      "credibility": -35
+    },
+    "SpecialAbility": "Intimidation Network - Can silence opponents",
+    "StartingResources": {
+      "funds": 30,
+      "publicTrust": -45,
+      "nameRecognition": 15
+    }
+  },
+  {
+    "ID": "blistactor",
+    "Name": "B-List Actor",
+    "Tier": "celebrity",
+    "Description": "Recognizable face from TV and movies",
+    "Stats": {
+      "mediaAppeal": 45,
+      "charisma": 40,
+      "nameRecognition": 50,
+      "credibility": -10
+    },
+    "SpecialAbility": "Method Acting - Can convincingly play any role",
+    "StartingResources": {
+      "funds": 25,
+      "publicTrust": 5,
+      "nameRecognition": 50
+    }
+  },
+  {
+    "ID": "instagrammodel",
+    "Name": "Instagram Model",
+    "Tier": "celebrity",
+    "Description": "Famous for looks and lifestyle",
+    "Stats": {
+      "mediaAppeal": 50,
+      "charisma": 35,
+      "nameRecognition": 55,
+      "credibility": -20
+    },
+    "SpecialAbility": "Influencer Network - Access to millions of followers",
+    "StartingResources": {
+      "funds": 20,
+      "publicTrust": -10,
+      "nameRecognition": 55
+    }
+  },
+  {
+    "ID": "youtubestreamer",
+    "Name": "YouTube Streamer",
+    "Tier": "celebrity",
+    "Description": "Built audience through online content",
+    "Stats": {
+      "mediaAppeal": 45,
+      "charisma": 40,
+      "nameRecognition": 45,
+      "sophistication": -15
+    },
+    "SpecialAbility": "Viral Content - Social media reach 3x normal",
+    "StartingResources": {
+      "funds": 15,
+      "publicTrust": -5,
+      "nameRecognition": 45
+    }
+  }
+]
+

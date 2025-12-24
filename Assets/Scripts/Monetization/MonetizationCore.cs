@@ -345,6 +345,19 @@ namespace ElectionEmpire.Monetization
             return false;
         }
         
+        /// <summary>
+        /// Set balance directly (for loading from save data).
+        /// </summary>
+        public void SetBalance(CurrencyType type, long amount)
+        {
+            long oldBalance = wallet.GetBalance(type);
+            long maxBalance = type == CurrencyType.CloutBux ? MAX_CLOUTBUX : MAX_PURRKOIN;
+            long newBalance = Math.Clamp(amount, 0, maxBalance);
+            
+            ApplyBalanceChange(type, newBalance);
+            OnBalanceChanged?.Invoke(type, oldBalance, newBalance);
+        }
+        
         private void ApplyBalanceChange(CurrencyType type, long newBalance)
         {
             switch (type)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ElectionEmpire.Character;
+using ElectionEmpire.Scandal;
 
 namespace ElectionEmpire.World
 {
@@ -10,9 +11,9 @@ namespace ElectionEmpire.World
     /// </summary>
     public class VoterSimulation
     {
-        private World world;
+        private ElectionEmpire.World.World world;
         
-        public VoterSimulation(World world)
+        public VoterSimulation(ElectionEmpire.World.World world)
         {
             this.world = world;
         }

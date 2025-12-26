@@ -276,7 +276,7 @@ namespace ElectionEmpire.Gameplay
         public string TargetID;
         public string Description;     // "Tax evasion evidence"
         public int Severity;           // 1-10
-        public ScandalCategory Category;
+        public ElectionEmpire.Scandal.ScandalCategory Category;
         public DateTime AcquiredDate;
         public float ExpirationChance; // 10% per turn
         

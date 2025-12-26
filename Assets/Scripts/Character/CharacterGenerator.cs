@@ -265,7 +265,7 @@ namespace ElectionEmpire.Character
             return candidates[UnityEngine.Random.Range(0, candidates.Count)];
         }
         
-        private string GenerateCharacterName(Character character)
+        public string GenerateCharacterName(Character character)
         {
             // Simple name generation - can be expanded
             string[] firstNames = { "Alex", "Jordan", "Morgan", "Casey", "Taylor", "Riley", "Avery", "Quinn" };
@@ -274,7 +274,7 @@ namespace ElectionEmpire.Character
             return $"{firstNames[UnityEngine.Random.Range(0, firstNames.Length)]} {lastNames[UnityEngine.Random.Range(0, lastNames.Length)]}";
         }
         
-        private string GenerateNickname(Character character)
+        public string GenerateNickname(Character character)
         {
             if (character.Background == null)
                 return character.Name;
@@ -341,7 +341,7 @@ namespace ElectionEmpire.Character
             return 5;
         }
         
-        private float CalculateDifficultyMultiplier(Character character)
+        public float CalculateDifficultyMultiplier(Character character)
         {
             float baseDifficulty = 1.0f;
             
@@ -357,7 +357,7 @@ namespace ElectionEmpire.Character
             return baseDifficulty;
         }
         
-        private float CalculateLegacyBonus(Character character)
+        public float CalculateLegacyBonus(Character character)
         {
             float bonus = 1.0f;
             

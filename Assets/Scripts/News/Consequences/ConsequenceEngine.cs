@@ -780,7 +780,7 @@ namespace ElectionEmpire.News.Consequences
             }
             
             // Failed responses may trigger follow-up crisis
-            if (!result.IsSuccess && gameEvent.EventType == Translation.GameEventType.Crisis)
+            if (!result.IsSuccess && gameEvent.Type == Templates.TemplateEventType.Crisis)
             {
                 if (UnityEngine.Random.value < 0.4f) // 40% chance
                 {
@@ -789,7 +789,7 @@ namespace ElectionEmpire.News.Consequences
             }
             
             // Successful crisis handling may unlock opportunities
-            if (result.IsSuccess && gameEvent.EventType == Translation.GameEventType.Crisis)
+            if (result.IsSuccess && gameEvent.Type == Templates.TemplateEventType.Crisis)
             {
                 if (UnityEngine.Random.value < 0.25f) // 25% chance
                 {
@@ -798,7 +798,7 @@ namespace ElectionEmpire.News.Consequences
             }
             
             // Scandal responses may block or trigger related events
-            if (gameEvent.EventType == Translation.GameEventType.Scandal)
+            if (gameEvent.Type == Templates.TemplateEventType.ScandalTrigger)
             {
                 if (response.Label.Contains("Deny") && !result.IsSuccess)
                 {

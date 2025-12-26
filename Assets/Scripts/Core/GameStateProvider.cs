@@ -13,16 +13,16 @@ namespace ElectionEmpire.Core
     /// </summary>
     public class GameStateProvider : MonoBehaviour, IGameStateProvider
     {
-        private GameState gameState;
+        private ElectionEmpire.Gameplay.GameState gameState;
         private PlayerState player;
         private GameLoop gameLoop;
         private bool chaosModeEnabled = false;
         
-        public void Initialize(GameState gameState, PlayerState player)
+        public void Initialize(ElectionEmpire.Gameplay.GameState gameState, PlayerState player)
         {
             this.gameState = gameState;
             this.player = player;
-            gameLoop = FindObjectOfType<GameLoop>();
+            gameLoop = FindFirstObjectByType<GameLoop>();
         }
         
         public int GetPlayerOfficeTier()
@@ -50,10 +50,13 @@ namespace ElectionEmpire.Core
             // Get state from world if available
             if (gameState?.World != null && gameState.World.Nation != null)
             {
-                if (gameState.World.Nation.Regions.Count > 0)
+                if (gameState.World.Nation.Regions != null && gameState.World.Nation.Regions.Count > 0)
                 {
-                    var firstState = gameState.World.Nation.Regions[0].States?[0];
-                    return firstState?.Name ?? "Unknown State";
+                    var firstRegion = gameState.World.Nation.Regions[0];
+                    if (firstRegion.States != null && firstRegion.States.Count > 0)
+                    {
+                        return firstRegion.States[0].Name ?? "Unknown State";
+                    }
                 }
             }
             return "Unknown State";

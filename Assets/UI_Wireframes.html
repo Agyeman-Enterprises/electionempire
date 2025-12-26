@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Empire - UI Wireframes & Mockups</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors */
+            --deep-navy: #1a1a2e;
+            --crimson: #c41e3a;
+            --gold: #d4af37;
+            
+            /* Secondary Colors */
+            --slate: #4a5568;
+            --cream: #f5f5dc;
+            --forest: #2d5a27;
+            
+            /* Accent Colors */
+            --electric-purple: #8b5cf6;
+            --warning-orange: #f59e0b;
+            --teal: #14b8a6;
+            
+            /* UI Colors */
+            --panel-bg: #16213e;
+            --panel-border: #2d3a5c;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --text-muted: #718096;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--crimson), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--panel-border);
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+        }
+
+        /* Wireframe Container */
+        .wireframe {
+            background: var(--deep-navy);
+            border: 2px solid var(--panel-border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .wireframe-header {
+            background: var(--panel-bg);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wireframe-header h3 {
+            color: var(--cream);
+        }
+
+        .wireframe-header .badge {
+            background: var(--slate);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .wireframe-body {
+            padding: 1.5rem;
+        }
+
+        /* ============================================
+           SCREEN 1: MAIN MENU
+           ============================================ */
+        .main-menu-mockup {
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #0f1419 0%, #1a1a2e 50%, #16213e 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .main-menu-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(26, 26, 46, 0.9), transparent);
+        }
+
+        .main-menu-capitol {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 30%;
+            background: linear-gradient(to top, var(--deep-navy), transparent);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            opacity: 0.3;
+        }
+
+        .main-menu-title {
+            text-align: center;
+            z-index: 10;
+            margin-bottom: 3rem;
+        }
+
+        .main-menu-title h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--crimson), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(196, 30, 58, 0.5);
+            letter-spacing: 4px;
+        }
+
+        .main-menu-title .tagline {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .main-menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 10;
+        }
+
+        .menu-btn {
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .menu-btn-primary {
+            background: linear-gradient(135deg, var(--crimson), #a01830);
+            color: white;
+            font-weight: bold;
+        }
+
+        .menu-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(196, 30, 58, 0.4);
+        }
+
+        .menu-btn-secondary {
+            background: transparent;
+            color: var(--cream);
+            border: 2px solid var(--slate);
+        }
+
+        .menu-btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .main-menu-footer {
+            position: absolute;
+            bottom: 1rem;
+            display: flex;
+            gap: 2rem;
+            z-index: 10;
+        }
+
+        .main-menu-footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================
+           SCREEN 2: CHARACTER CREATION
+           ============================================ */
+        .char-create-mockup {
+            aspect-ratio: 16/9;
+            background: var(--deep-navy);
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .char-main-panel {
+            background: var(--panel-bg);
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .char-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--panel-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .char-tab {
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.2s;
+        }
+
+        .char-tab.active {
+            background: var(--crimson);
+            color: white;
+        }
+
+        .char-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .background-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .background-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+        }
+
+        .background-card.selected {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .background-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--slate);
+            border-radius: 50%;
+            margin: 0 auto 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .background-card h4 {
+            color: var(--cream);
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .background-card p {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .char-preview-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .portrait-preview {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .portrait-placeholder {
+            width: 150px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--slate), var(--panel-border));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .char-stats-preview {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1rem;
+            flex: 1;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .stat-bar {
+            width: 100px;
+            height: 8px;
+            background: var(--slate);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 4px;
+        }
+
+        .char-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .char-actions button {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ============================================
+           SCREEN 3: CAMPAIGN HQ (Main Gameplay)
+           ============================================ */
+        .campaign-hq-mockup {
+            aspect-ratio: 16/9;
+            background: var(--deep-navy);
+            display: grid;
+            grid-template-columns: 250px 1fr 280px;
+            grid-template-rows: auto 1fr auto;
+            gap: 0;
+        }
+
+        .top-bar {
+            grid-column: 1 / -1;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .office-badge {
+            background: var(--crimson);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .turn-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .top-bar-center {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .resource-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .resource-icon.trust { background: var(--teal); }
+        .resource-icon.capital { background: var(--electric-purple); }
+        .resource-icon.funds { background: var(--forest); }
+        .resource-icon.influence { background: var(--warning-orange); }
+
+        .resource-value {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .resource-label {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .left-sidebar {
+            background: var(--panel-bg);
+            border-right: 1px solid var(--panel-border);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .player-card {
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .player-portrait {
+            width: 80px;
+            height: 96px;
+            background: var(--slate);
+            border-radius: 8px;
+            margin: 0 auto 0.5rem;
+        }
+
+        .player-name {
+            font-weight: bold;
+            color: var(--cream);
+        }
+
+        .player-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .approval-meter {
+            margin-top: 0.5rem;
+        }
+
+        .approval-bar {
+            height: 8px;
+            background: var(--slate);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .approval-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--crimson), var(--gold));
+            width: 67%;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--cream);
+        }
+
+        .nav-item.active {
+            background: var(--crimson);
+            color: white;
+        }
+
+        .main-content {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%231a1a2e" width="100" height="100"/><rect fill="%2316213e" x="10" y="10" width="80" height="80" rx="5"/></svg>');
+            background-size: cover;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .action-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+        }
+
+        .action-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .action-card h4 {
+            color: var(--cream);
+            font-size: 1rem;
+        }
+
+        .action-cost {
+            background: var(--crimson);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        .action-card p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .action-effects {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .effect-tag {
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+        }
+
+        .effect-tag.positive { background: rgba(45, 90, 39, 0.5); color: #6ee7b7; }
+        .effect-tag.negative { background: rgba(196, 30, 58, 0.3); color: #fca5a5; }
+
+        .right-sidebar {
+            background: var(--panel-bg);
+            border-left: 1px solid var(--panel-border);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+        }
+
+        .sidebar-section h5 {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--warning-orange);
+            padding: 0.75rem;
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-card.crisis {
+            border-left-color: var(--crimson);
+        }
+
+        .event-card h6 {
+            color: var(--cream);
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .event-card p {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .poll-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            padding: 0.75rem;
+        }
+
+        .poll-bar {
+            display: flex;
+            height: 24px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .poll-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .poll-segment.player { background: var(--teal); width: 52%; }
+        .poll-segment.opponent { background: var(--crimson); width: 38%; }
+        .poll-segment.undecided { background: var(--slate); width: 10%; }
+
+        .bottom-bar {
+            grid-column: 1 / -1;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-top: 1px solid var(--panel-border);
+        }
+
+        .action-points {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .ap-pip {
+            width: 40px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 6px;
+        }
+
+        .ap-pip.spent {
+            background: var(--slate);
+        }
+
+        .end-turn-btn {
+            background: linear-gradient(135deg, var(--gold), #b8962e);
+            color: var(--deep-navy);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ============================================
+           SCREEN 4: SCANDAL ALERT
+           ============================================ */
+        .scandal-mockup {
+            aspect-ratio: 16/9;
+            background: var(--deep-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .scandal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(196, 30, 58, 0.2);
+        }
+
+        .scandal-modal {
+            background: var(--panel-bg);
+            border: 2px solid var(--crimson);
+            border-radius: 12px;
+            width: 600px;
+            max-width: 90%;
+            z-index: 10;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(196, 30, 58, 0.5);
+        }
+
+        .scandal-header {
+            background: var(--crimson);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .scandal-header h3 {
+            font-size: 1.25rem;
+        }
+
+        .scandal-severity {
+            margin-left: auto;
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .severity-pip {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .severity-pip.active {
+            background: white;
+        }
+
+        .scandal-body {
+            padding: 1.5rem;
+        }
+
+        .scandal-headline {
+            font-size: 1.5rem;
+            color: var(--cream);
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .scandal-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .scandal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .scandal-stat {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .scandal-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--crimson);
+        }
+
+        .scandal-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .scandal-responses {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .response-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .response-btn:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .response-text {
+            text-align: left;
+        }
+
+        .response-text h5 {
+            color: var(--cream);
+            margin-bottom: 0.25rem;
+        }
+
+        .response-text p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .response-chance {
+            text-align: right;
+        }
+
+        .response-chance .percent {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .response-chance .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           SCREEN 5: ELECTION NIGHT
+           ============================================ */
+        .election-mockup {
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #0f1419, var(--deep-navy));
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            padding: 1.5rem;
+            gap: 1.5rem;
+        }
+
+        .election-main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .election-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .election-header h2 {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .election-header p {
+            color: var(--text-secondary);
+        }
+
+        .candidates-display {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        .candidate {
+            text-align: center;
+        }
+
+        .candidate-portrait {
+            width: 120px;
+            height: 144px;
+            background: var(--slate);
+            border-radius: 8px;
+            margin: 0 auto 1rem;
+            border: 3px solid;
+        }
+
+        .candidate-portrait.player { border-color: var(--teal); }
+        .candidate-portrait.opponent { border-color: var(--crimson); }
+
+        .candidate-name {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .candidate.player .candidate-name { color: var(--teal); }
+        .candidate.opponent .candidate-name { color: var(--crimson); }
+
+        .candidate-party {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .vote-display {
+            text-align: center;
+        }
+
+        .vote-count {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .candidate.player .vote-count { color: var(--teal); }
+        .candidate.opponent .vote-count { color: var(--crimson); }
+
+        .vote-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .results-map {
+            flex: 1;
+            background: var(--panel-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border: 1px solid var(--panel-border);
+        }
+
+        .reporting-bar {
+            margin-top: 1rem;
+        }
+
+        .reporting-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .reporting-progress {
+            height: 8px;
+            background: var(--slate);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .reporting-fill {
+            height: 100%;
+            background: var(--gold);
+            width: 73%;
+            transition: width 0.5s;
+        }
+
+        .election-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .live-updates {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .live-updates h4 {
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .update-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--panel-border);
+            font-size: 0.85rem;
+        }
+
+        .update-time {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .key-races {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .key-races h4 {
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .race-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--panel-border);
+            font-size: 0.85rem;
+        }
+
+        .race-item:last-child {
+            border-bottom: none;
+        }
+
+        .race-status {
+            font-weight: bold;
+        }
+
+        .race-status.leading { color: var(--teal); }
+        .race-status.trailing { color: var(--crimson); }
+        .race-status.tossup { color: var(--warning-orange); }
+
+        /* ============================================
+           SCREEN 6: VICTORY/DEFEAT
+           ============================================ */
+        .victory-mockup {
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #0a1a0a, #1a2e1a);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .victory-confetti {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.1) 0%, transparent 50%);
+        }
+
+        .victory-content {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .victory-banner {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 60px rgba(212, 175, 55, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .victory-office {
+            font-size: 1.5rem;
+            color: var(--cream);
+            margin-bottom: 2rem;
+        }
+
+        .victory-portrait {
+            width: 150px;
+            height: 180px;
+            background: var(--slate);
+            border-radius: 8px;
+            margin: 0 auto 2rem;
+            border: 4px solid var(--gold);
+        }
+
+        .victory-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .victory-stat {
+            text-align: center;
+        }
+
+        .victory-stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .victory-stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .victory-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* ============================================
+           UI COMPONENTS SHOWCASE
+           ============================================ */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .component-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .component-card h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .button-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .btn-demo {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-demo { background: linear-gradient(135deg, var(--crimson), #a01830); color: white; }
+        .btn-secondary-demo { background: var(--slate); color: var(--cream); }
+        .btn-success-demo { background: var(--forest); color: white; }
+        .btn-warning-demo { background: var(--warning-orange); color: var(--deep-navy); }
+        .btn-outline-demo { background: transparent; border: 2px solid var(--gold); color: var(--gold); }
+
+        .resource-bar-demo {
+            margin-bottom: 1rem;
+        }
+
+        .resource-bar-demo label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .bar-track {
+            height: 12px;
+            background: var(--slate);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill-demo {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.3s;
+        }
+
+        .bar-fill-demo.trust { background: var(--teal); width: 72%; }
+        .bar-fill-demo.capital { background: var(--electric-purple); width: 45%; }
+        .bar-fill-demo.funds { background: var(--forest); width: 88%; }
+        .bar-fill-demo.influence { background: var(--warning-orange); width: 33%; }
+
+        .notification-demo {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .notification-demo.info { background: rgba(20, 184, 166, 0.2); border-left: 3px solid var(--teal); }
+        .notification-demo.warning { background: rgba(245, 158, 11, 0.2); border-left: 3px solid var(--warning-orange); }
+        .notification-demo.error { background: rgba(196, 30, 58, 0.2); border-left: 3px solid var(--crimson); }
+        .notification-demo.success { background: rgba(45, 90, 39, 0.2); border-left: 3px solid var(--forest); }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.75rem;
+        }
+
+        .icon-demo {
+            aspect-ratio: 1;
+            background: var(--slate);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        /* Notes Section */
+        .notes {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid var(--electric-purple);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .notes h4 {
+            color: var(--electric-purple);
+            margin-bottom: 1rem;
+        }
+
+        .notes ul {
+            margin-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .notes li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--panel-border);
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <h1>Election Empire UI Wireframes</h1>
+            <div class="nav-links">
+                <a href="#main-menu">Main Menu</a>
+                <a href="#character">Character</a>
+                <a href="#gameplay">Gameplay</a>
+                <a href="#scandal">Scandal</a>
+                <a href="#election">Election</a>
+                <a href="#components">Components</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Introduction -->
+        <section class="section">
+            <div class="section-header">
+                <h2>UI/UX Design Specification</h2>
+                <p>Interactive wireframes and mockups for Election Empire. These represent the target visual design and layout structure for development.</p>
+            </div>
+        </section>
+
+        <!-- Screen 1: Main Menu -->
+        <section class="section" id="main-menu">
+            <div class="section-header">
+                <h2>1. Main Menu</h2>
+                <p>The first impression - dramatic, inviting, sets the tone for political intrigue.</p>
+            </div>
+
+            <div class="wireframe">
+                <div class="wireframe-header">
+                    <h3>Main Menu Screen</h3>
+                    <span class="badge">1920×1080</span>
+                </div>
+                <div class="wireframe-body">
+                    <div class="main-menu-mockup">
+                        <div class="main-menu-bg"></div>
+                        <div class="main-menu-capitol"></div>
+                        
+                        <div class="main-menu-title">
+                            <h1>ELECTION EMPIRE</h1>
+                            <p class="tagline">"Politics is a dirty game. Time to get your hands filthy."</p>
+                        </div>
+                        
+                        <div class="main-menu-buttons">
+                            <button class="menu-btn menu-btn-primary">NEW CAMPAIGN</button>
+                            <button class="menu-btn menu-btn-secondary">Continue</button>
+                            <button class="menu-btn menu-btn-secondary">Load Game</button>
+                            <button class="menu-btn menu-btn-secondary">Settings</button>
+                            <button class="menu-btn menu-btn-secondary">Quit</button>
+                        </div>
+                        
+                        <div class="main-menu-footer">
+                            <a href="#">Credits</a>
+                            <a href="#">Discord</a>
+                            <a href="#">v1.0.0</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes">
+                <h4>📝 Design Notes</h4>
+                <ul>
+                    <li>Capitol silhouette should be subtle, atmospheric - not competing with text</li>
+                    <li>Gradient background slowly animates/shifts for visual interest</li>
+                    <li>Title uses gradient text effect matching brand colors</li>
+                    <li>"Continue" button only appears if save exists</li>
+                    <li>Consider ambient political audio (distant crowd, typewriters)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Screen 2: Character Creation -->
+        <section class="section" id="character">
+            <div class="section-header">
+                <h2>2. Character Creation</h2>
+                <p>Where players define their political identity. Should feel like building a real career.</p>
+            </div>
+
+            <div class="wireframe">
+                <div class="wireframe-header">
+                    <h3>Character Creation - Background Selection</h3>
+                    <span class="badge">Step 1 of 4</span>
+                </div>
+                <div class="wireframe-body">
+                    <div class="char-create-mockup">
+                        <div class="char-main-panel">
+                            <div class="char-tabs">
+                                <button class="char-tab active">Background</button>
+                                <button class="char-tab">Attributes</button>
+                                <button class="char-tab">Traits</button>
+                                <button class="char-tab">Appearance</button>
+                            </div>
+                            
+                            <div class="char-content">
+                                <div class="background-card selected">
+                                    <div class="background-icon">💼</div>
+                                    <h4>Businessman</h4>
+                                    <p>+30% Funds, -10% Trust</p>
+                                </div>
+                                <div class="background-card">
+                                    <div class="background-icon">🏛️</div>
+                                    <h4>Local Politician</h4>
+                                    <p>+15% Party, -5% Fresh</p>
+                                </div>
+                                <div class="background-card">
+                                    <div class="background-icon">📚</div>
+                                    <h4>Teacher</h4>
+                                    <p>+20% Education, -10% Funds</p>
+                                </div>
+                                <div class="background-card">
+                                    <div class="background-icon">⚕️</div>
+                                    <h4>Doctor</h4>
+                                    <p>+25% Health Cred, -10% Econ</p>
+                                </div>
+                                <div class="background-card">
+                                    <div class="background-icon">🚔</div>
+                                    <h4>Police Officer</h4>
+                                    <p>+20% Law & Order, -10% Min</p>
+                                </div>
+                                <div class="background-card">
+                                    <div class="background-icon">📰</div>
+                                    <h4>Journalist</h4>
+                                    <p>+25% Media, -15% Party</p>
+                                </div>
+                                <div class="background-card">
+                                    <div class="background-icon">✊</div>
+                                    <h4>Activist</h4>
+                                    <p>+30% Grassroots, -25% Corp</p>
+                                </div>
+                                <div class="background-card">
+                                    <div class="background-icon">⛪</div>
+                                    <h4>Religious Leader</h4>
+                                    <p>+30% Faith, -20% Secular</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="char-preview-panel">
+                            <div class="portrait-preview">
+                                <div class="portrait-placeholder">Portrait Preview</div>
+                            </div>
+                            
+                            <div class="char-stats-preview">
+                                <h5 style="color: var(--gold); margin-bottom: 0.75rem; font-size: 0.8rem;">STARTING STATS</h5>
+                                <div class="stat-row">
+                                    <span>Charisma</span>
+                                    <div class="stat-bar"><div class="stat-fill" style="width: 50%"></div></div>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Intelligence</span>
+                                    <div class="stat-bar"><div class="stat-fill" style="width: 60%"></div></div>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Cunning</span>
+                                    <div class="stat-bar"><div class="stat-fill" style="width: 70%"></div></div>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Resilience</span>
+                                    <div class="stat-bar"><div class="stat-fill" style="width: 40%"></div></div>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Networking</span>
+                                    <div class="stat-bar"><div class="stat-fill" style="width: 80%"></div></div>
+                                </div>
+                            </div>
+                            
+                            <div class="char-actions">
+                                <button class="menu-btn menu-btn-secondary" style="padding: 0.75rem;">Back</button>
+                                <button class="menu-btn menu-btn-primary" style="padding: 0.75rem;">Next →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes">
+                <h4>📝 Design Notes</h4>
+                <ul>
+                    <li>Tabs show progress through creation steps</li>
+                    <li>Selected background card has gold border + subtle glow</li>
+                    <li>Portrait preview updates as player makes choices</li>
+                    <li>Hover on background card shows full description tooltip</li>
+                    <li>Stats bars animate when background changes</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Screen 3: Campaign HQ (Main Gameplay) -->
+        <section class="section" id="gameplay">
+            <div class="section-header">
+                <h2>3. Campaign HQ (Main Gameplay)</h2>
+                <p>The primary gameplay screen. Information-dense but organized. War room meets strategy game.</p>
+            </div>
+
+            <div class="wireframe">
+                <div class="wireframe-header">
+                    <h3>Campaign HQ - Active Gameplay</h3>
+                    <span class="badge">Core Loop</span>
+                </div>
+                <div class="wireframe-body">
+                    <div class="campaign-hq-mockup">
+                        <!-- Top Bar -->
+                        <div class="top-bar">
+                            <div class="top-bar-left">
+                                <span class="office-badge">CITY COUNCIL</span>
+                                <span class="turn-info">Turn 7 • March 2024</span>
+                            </div>
+                            
+                            <div class="top-bar-center">
+                                <div class="resource-display">
+                                    <div class="resource-icon trust">❤</div>
+                                    <div>
+                                        <div class="resource-value">67%</div>
+                                        <div class="resource-label">TRUST</div>
+                                    </div>
+                                </div>
+                                <div class="resource-display">
+                                    <div class="resource-icon capital">★</div>
+                                    <div>
+                                        <div class="resource-value">23</div>
+                                        <div class="resource-label">CAPITAL</div>
+                                    </div>
+                                </div>
+                                <div class="resource-display">
+                                    <div class="resource-icon funds">$</div>
+                                    <div>
+                                        <div class="resource-value">$12.4K</div>
+                                        <div class="resource-label">FUNDS</div>
+                                    </div>
+                                </div>
+                                <div class="resource-display">
+                                    <div class="resource-icon influence">📢</div>
+                                    <div>
+                                        <div class="resource-value">45</div>
+                                        <div class="resource-label">MEDIA</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="top-bar-right">
+                                <div class="icon-btn">⚙</div>
+                                <div class="icon-btn">📊</div>
+                                <div class="icon-btn">💾</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Left Sidebar -->
+                        <div class="left-sidebar">
+                            <div class="player-card">
+                                <div class="player-portrait"></div>
+                                <div class="player-name">Alex Morgan</div>
+                                <div class="player-title">Businessman • Tier 1</div>
+                                <div class="approval-meter">
+                                    <div class="approval-bar">
+                                        <div class="approval-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="nav-menu">
+                                <div class="nav-item active">
+                                    <span>🎯</span> Actions
+                                </div>
+                                <div class="nav-item">
+                                    <span>📋</span> Policies
+                                </div>
+                                <div class="nav-item">
+                                    <span>👥</span> Staff
+                                </div>
+                                <div class="nav-item">
+                                    <span>🤝</span> Alliances
+                                </div>
+                                <div class="nav-item">
+                                    <span>🗳️</span> Voters
+                                </div>
+                                <div class="nav-item">
+                                    <span>📁</span> Dirt
+                                </div>
+                                <div class="nav-item">
+                                    <span>🏆</span> Legacy
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Main Content -->
+                        <div class="main-content">
+                            <div class="action-cards">
+                                <div class="action-card">
+                                    <div class="action-card-header">
+                                        <h4>📣 Hold Rally</h4>
+                                        <span class="action-cost">1 AP</span>
+                                    </div>
+                                    <p>Energize your base with a public event</p>
+                                    <div class="action-effects">
+                                        <span class="effect-tag positive">+5% Trust</span>
+                                        <span class="effect-tag negative">-$2,000</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-card">
+                                    <div class="action-card-header">
+                                        <h4>💰 Fundraiser</h4>
+                                        <span class="action-cost">1 AP</span>
+                                    </div>
+                                    <p>Host donors to fill campaign coffers</p>
+                                    <div class="action-effects">
+                                        <span class="effect-tag positive">+$5,000</span>
+                                        <span class="effect-tag negative">-3% Trust</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-card">
+                                    <div class="action-card-header">
+                                        <h4>📺 Ad Campaign</h4>
+                                        <span class="action-cost">1 AP</span>
+                                    </div>
+                                    <p>Broadcast your message to voters</p>
+                                    <div class="action-effects">
+                                        <span class="effect-tag positive">+8% Polls</span>
+                                        <span class="effect-tag negative">-$3,500</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-card">
+                                    <div class="action-card-header">
+                                        <h4>🔍 Oppo Research</h4>
+                                        <span class="action-cost">1 AP</span>
+                                    </div>
+                                    <p>Dig up dirt on your opponent</p>
+                                    <div class="action-effects">
+                                        <span class="effect-tag positive">+1 Dirt</span>
+                                        <span class="effect-tag negative">Risk: Backfire</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-card">
+                                    <div class="action-card-header">
+                                        <h4>🎤 Press Conference</h4>
+                                        <span class="action-cost">1 AP</span>
+                                    </div>
+                                    <p>Address the media directly</p>
+                                    <div class="action-effects">
+                                        <span class="effect-tag positive">+15 Media</span>
+                                        <span class="effect-tag negative">Gaffe Risk</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-card">
+                                    <div class="action-card-header">
+                                        <h4>🤫 Dirty Trick</h4>
+                                        <span class="action-cost">2 AP</span>
+                                    </div>
+                                    <p>Underhanded tactics against rival</p>
+                                    <div class="action-effects">
+                                        <span class="effect-tag positive">-12% Opp Polls</span>
+                                        <span class="effect-tag negative">High Scandal Risk</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Sidebar -->
+                        <div class="right-sidebar">
+                            <div class="sidebar-section">
+                                <h5>Current Events</h5>
+                                <div class="event-card">
+                                    <h6>Local Business Closing</h6>
+                                    <p>Factory layoffs anger workers</p>
+                                </div>
+                                <div class="event-card crisis">
+                                    <h6>⚠️ Budget Crisis</h6>
+                                    <p>Respond within 2 turns</p>
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <h5>Election Polls</h5>
+                                <div class="poll-display">
+                                    <div class="poll-bar">
+                                        <div class="poll-segment player">52%</div>
+                                        <div class="poll-segment opponent">38%</div>
+                                        <div class="poll-segment undecided">10%</div>
+                                    </div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">
+                                        Election in 5 turns
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <h5>Opponent</h5>
+                                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                                    <div style="width: 50px; height: 60px; background: var(--slate); border-radius: 4px;"></div>
+                                    <div>
+                                        <div style="font-weight: bold; color: var(--crimson);">Pat Williams</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">Local Politician</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bottom Bar -->
+                        <div class="bottom-bar">
+                            <div>
+                                <span style="color: var(--text-muted); margin-right: 0.5rem;">Actions:</span>
+                                <div class="action-points" style="display: inline-flex;">
+                                    <div class="ap-pip"></div>
+                                    <div class="ap-pip"></div>
+                                    <div class="ap-pip spent"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="color: var(--text-secondary);">
+                                Phase: <strong style="color: var(--gold);">Campaign</strong>
+                            </div>
+                            
+                            <button class="end-turn-btn">END TURN →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes">
+                <h4>📝 Design Notes</h4>
+                <ul>
+                    <li>Three-column layout: navigation, content, context</li>
+                    <li>Resource bar always visible for at-a-glance status</li>
+                    <li>Action cards are the primary interaction - should feel clickable</li>
+                    <li>Crisis events have urgent visual treatment (red border, warning icon)</li>
+                    <li>Action Points visualized as pips that deplete</li>
+                    <li>End Turn button is prominent - the core rhythm action</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Screen 4: Scandal Alert -->
+        <section class="section" id="scandal">
+            <div class="section-header">
+                <h2>4. Scandal Alert Modal</h2>
+                <p>The moment everything goes wrong. Should feel urgent, dramatic, but with clear options.</p>
+            </div>
+
+            <div class="wireframe">
+                <div class="wireframe-header">
+                    <h3>Scandal Revealed - Crisis Decision</h3>
+                    <span class="badge">Modal Overlay</span>
+                </div>
+                <div class="wireframe-body">
+                    <div class="scandal-mockup">
+                        <div class="scandal-overlay"></div>
+                        
+                        <div class="scandal-modal">
+                            <div class="scandal-header">
+                                <span style="font-size: 1.5rem;">🚨</span>
+                                <h3>SCANDAL BREAKS</h3>
+                                <div class="scandal-severity">
+                                    <div class="severity-pip active"></div>
+                                    <div class="severity-pip active"></div>
+                                    <div class="severity-pip active"></div>
+                                    <div class="severity-pip"></div>
+                                    <div class="severity-pip"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="scandal-body">
+                                <div class="scandal-headline">"TAX RECORDS REVEAL OFFSHORE ACCOUNTS"</div>
+                                <p class="scandal-description">
+                                    Leaked documents show you maintained undisclosed accounts in the Cayman Islands 
+                                    during your business years. The story is gaining traction on social media and 
+                                    local news outlets are requesting comment.
+                                </p>
+                                
+                                <div class="scandal-stats">
+                                    <div class="scandal-stat">
+                                        <div class="scandal-stat-value">-15%</div>
+                                        <div class="scandal-stat-label">Trust Impact</div>
+                                    </div>
+                                    <div class="scandal-stat">
+                                        <div class="scandal-stat-value">3</div>
+                                        <div class="scandal-stat-label">Turns to Resolve</div>
+                                    </div>
+                                    <div class="scandal-stat">
+                                        <div class="scandal-stat-value">HIGH</div>
+                                        <div class="scandal-stat-label">Media Interest</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="scandal-responses">
+                                    <div class="response-btn">
+                                        <div class="response-text">
+                                            <h5>🙅 Deny Everything</h5>
+                                            <p>Claim the documents are fabricated</p>
+                                        </div>
+                                        <div class="response-chance">
+                                            <div class="percent">35%</div>
+                                            <div class="label">Success</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="response-btn">
+                                        <div class="response-text">
+                                            <h5>😔 Apologize</h5>
+                                            <p>Admit mistakes, promise transparency</p>
+                                        </div>
+                                        <div class="response-chance">
+                                            <div class="percent">65%</div>
+                                            <div class="label">Success</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="response-btn">
+                                        <div class="response-text">
+                                            <h5>⚔️ Counter-Attack</h5>
+                                            <p>Accuse opponent of orchestrating leak</p>
+                                        </div>
+                                        <div class="response-chance">
+                                            <div class="percent">45%</div>
+                                            <div class="label">Success</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="response-btn">
+                                        <div class="response-text">
+                                            <h5>🎭 Distract</h5>
+                                            <p>Change the subject with major announcement</p>
+                                        </div>
+                                        <div class="response-chance">
+                                            <div class="percent">50%</div>
+                                            <div class="label">Success</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes">
+                <h4>📝 Design Notes</h4>
+                <ul>
+                    <li>Screen darkens and tints red for urgency</li>
+                    <li>Modal has dramatic entrance animation (slam in from top)</li>
+                    <li>Severity pips give immediate sense of how bad it is</li>
+                    <li>Headline styled like newspaper for immersion</li>
+                    <li>Success percentages help player make informed choice</li>
+                    <li>Hover on response shows detailed outcome possibilities</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Screen 5: Election Night -->
+        <section class="section" id="election">
+            <div class="section-header">
+                <h2>5. Election Night</h2>
+                <p>The climax of each arc. Real-time vote counting creates tension and drama.</p>
+            </div>
+
+            <div class="wireframe">
+                <div class="wireframe-header">
+                    <h3>Election Night - Results Coming In</h3>
+                    <span class="badge">Live Updates</span>
+                </div>
+                <div class="wireframe-body">
+                    <div class="election-mockup">
+                        <div class="election-main">
+                            <div class="election-header">
+                                <h2>🗳️ ELECTION NIGHT</h2>
+                                <p>City Council Race • November 2024</p>
+                            </div>
+                            
+                            <div class="candidates-display">
+                                <div class="candidate player">
+                                    <div class="candidate-portrait player"></div>
+                                    <div class="candidate-name">Alex Morgan</div>
+                                    <div class="candidate-party">Independent</div>
+                                    <div class="vote-display">
+                                        <div class="vote-count">12,847</div>
+                                        <div class="vote-label">52.3%</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="font-size: 2rem; color: var(--text-muted); align-self: center;">VS</div>
+                                
+                                <div class="candidate opponent">
+                                    <div class="candidate-portrait opponent"></div>
+                                    <div class="candidate-name">Pat Williams</div>
+                                    <div class="candidate-party">Democrat</div>
+                                    <div class="vote-display">
+                                        <div class="vote-count">11,721</div>
+                                        <div class="vote-label">47.7%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="results-map">
+                                [District Map Visualization]
+                            </div>
+                            
+                            <div class="reporting-bar">
+                                <div class="reporting-text">
+                                    <span>Precincts Reporting</span>
+                                    <span>73 of 100</span>
+                                </div>
+                                <div class="reporting-progress">
+                                    <div class="reporting-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="election-sidebar">
+                            <div class="live-updates">
+                                <h4>📰 LIVE UPDATES</h4>
+                                <div class="update-item">
+                                    <div>Morgan takes early lead in downtown precincts</div>
+                                    <div class="update-time">2 minutes ago</div>
+                                </div>
+                                <div class="update-item">
+                                    <div>Williams stronghold in northern district reporting</div>
+                                    <div class="update-time">5 minutes ago</div>
+                                </div>
+                                <div class="update-item">
+                                    <div>Turnout exceeds expectations at 67%</div>
+                                    <div class="update-time">12 minutes ago</div>
+                                </div>
+                                <div class="update-item">
+                                    <div>Polls close, counting begins</div>
+                                    <div class="update-time">45 minutes ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="key-races">
+                                <h4>📊 KEY DISTRICTS</h4>
+                                <div class="race-item">
+                                    <span>Downtown</span>
+                                    <span class="race-status leading">+12%</span>
+                                </div>
+                                <div class="race-item">
+                                    <span>Suburbs</span>
+                                    <span class="race-status tossup">Tied</span>
+                                </div>
+                                <div class="race-item">
+                                    <span>North Side</span>
+                                    <span class="race-status trailing">-8%</span>
+                                </div>
+                                <div class="race-item">
+                                    <span>Industrial</span>
+                                    <span class="race-status leading">+5%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes">
+                <h4>📝 Design Notes</h4>
+                <ul>
+                    <li>Numbers should animate/tick up as votes come in</li>
+                    <li>Progress bar fills over time - creates tension</li>
+                    <li>Live updates scroll in like news ticker</li>
+                    <li>District map colors in as results finalize</li>
+                    <li>Audio: ambient crowd noise, occasional cheers/groans</li>
+                    <li>When winner called: dramatic reveal animation</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Victory Screen -->
+        <section class="section">
+            <div class="section-header">
+                <h2>6. Victory/Defeat Screen</h2>
+                <p>Emotional payoff. Celebrate wins dramatically, make losses feel meaningful.</p>
+            </div>
+
+            <div class="wireframe">
+                <div class="wireframe-header">
+                    <h3>Victory Screen</h3>
+                    <span class="badge">End State</span>
+                </div>
+                <div class="wireframe-body">
+                    <div class="victory-mockup">
+                        <div class="victory-confetti"></div>
+                        
+                        <div class="victory-content">
+                            <div class="victory-banner">🎉 VICTORY! 🎉</div>
+                            <div class="victory-office">Elected to City Council</div>
+                            
+                            <div class="victory-portrait"></div>
+                            
+                            <div class="victory-stats">
+                                <div class="victory-stat">
+                                    <div class="victory-stat-value">52.3%</div>
+                                    <div class="victory-stat-label">Final Vote</div>
+                                </div>
+                                <div class="victory-stat">
+                                    <div class="victory-stat-value">+150</div>
+                                    <div class="victory-stat-label">CloutBux Earned</div>
+                                </div>
+                                <div class="victory-stat">
+                                    <div class="victory-stat-value">+25</div>
+                                    <div class="victory-stat-label">Legacy Points</div>
+                                </div>
+                            </div>
+                            
+                            <div class="victory-buttons">
+                                <button class="menu-btn menu-btn-primary">Continue to Term →</button>
+                                <button class="menu-btn menu-btn-secondary">View Statistics</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes">
+                <h4>📝 Design Notes</h4>
+                <ul>
+                    <li>Confetti particle effect on victory</li>
+                    <li>Defeat version: somber colors, "DEFEATED" banner, rain effect</li>
+                    <li>Portrait expression matches outcome (triumphant vs devastated)</li>
+                    <li>Stats summarize the campaign journey</li>
+                    <li>Continue button leads to governance phase or next campaign</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- UI Components -->
+        <section class="section" id="components">
+            <div class="section-header">
+                <h2>7. UI Component Library</h2>
+                <p>Reusable elements that maintain consistency across all screens.</p>
+            </div>
+
+            <div class="components-grid">
+                <!-- Buttons -->
+                <div class="component-card">
+                    <h4>Buttons</h4>
+                    <div class="button-showcase">
+                        <button class="btn-demo btn-primary-demo">Primary Action</button>
+                        <button class="btn-demo btn-secondary-demo">Secondary</button>
+                        <button class="btn-demo btn-success-demo">Success/Confirm</button>
+                        <button class="btn-demo btn-warning-demo">Warning</button>
+                        <button class="btn-demo btn-outline-demo">Outline/Ghost</button>
+                    </div>
+                </div>
+
+                <!-- Resource Bars -->
+                <div class="component-card">
+                    <h4>Resource Bars</h4>
+                    <div class="resource-bar-demo">
+                        <label><span>Public Trust</span><span>72%</span></label>
+                        <div class="bar-track"><div class="bar-fill-demo trust"></div></div>
+                    </div>
+                    <div class="resource-bar-demo">
+                        <label><span>Political Capital</span><span>45/100</span></label>
+                        <div class="bar-track"><div class="bar-fill-demo capital"></div></div>
+                    </div>
+                    <div class="resource-bar-demo">
+                        <label><span>Campaign Funds</span><span>$88,000</span></label>
+                        <div class="bar-track"><div class="bar-fill-demo funds"></div></div>
+                    </div>
+                    <div class="resource-bar-demo">
+                        <label><span>Media Influence</span><span>33/100</span></label>
+                        <div class="bar-track"><div class="bar-fill-demo influence"></div></div>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="component-card">
+                    <h4>Notifications</h4>
+                    <div class="notification-demo info">
+                        <span>ℹ️</span> New event available in your district
+                    </div>
+                    <div class="notification-demo warning">
+                        <span>⚠️</span> Scandal threat level rising
+                    </div>
+                    <div class="notification-demo error">
+                        <span>🚨</span> Crisis requires immediate attention
+                    </div>
+                    <div class="notification-demo success">
+                        <span>✓</span> Policy successfully implemented
+                    </div>
+                </div>
+
+                <!-- Icons -->
+                <div class="component-card">
+                    <h4>Icon Placeholders (200+ needed)</h4>
+                    <div class="icon-grid">
+                        <div class="icon-demo">❤</div>
+                        <div class="icon-demo">★</div>
+                        <div class="icon-demo">$</div>
+                        <div class="icon-demo">📢</div>
+                        <div class="icon-demo">🗳</div>
+                        <div class="icon-demo">📰</div>
+                        <div class="icon-demo">⚖</div>
+                        <div class="icon-demo">🏛</div>
+                        <div class="icon-demo">👥</div>
+                        <div class="icon-demo">🎯</div>
+                        <div class="icon-demo">⚙</div>
+                        <div class="icon-demo">🔍</div>
+                    </div>
+                </div>
+
+                <!-- Typography -->
+                <div class="component-card">
+                    <h4>Typography</h4>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--cream);">Headline Text</div>
+                        <div style="color: var(--text-muted); font-size: 0.8rem;">Playfair Display or similar serif</div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 1.25rem; color: var(--gold);">Subheadline</div>
+                        <div style="color: var(--text-muted); font-size: 0.8rem;">Inter or similar clean sans</div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="color: var(--text-secondary);">Body text for descriptions, dialogue, and general content. Should be highly readable at various sizes.</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Caption text, timestamps, minor labels</div>
+                    </div>
+                </div>
+
+                <!-- Color Swatches -->
+                <div class="component-card">
+                    <h4>Color Palette</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                        <div style="background: var(--deep-navy); padding: 1rem; border-radius: 4px; text-align: center; font-size: 0.7rem;">Navy</div>
+                        <div style="background: var(--crimson); padding: 1rem; border-radius: 4px; text-align: center; font-size: 0.7rem;">Crimson</div>
+                        <div style="background: var(--gold); padding: 1rem; border-radius: 4px; text-align: center; font-size: 0.7rem; color: #1a1a2e;">Gold</div>
+                        <div style="background: var(--teal); padding: 1rem; border-radius: 4px; text-align: center; font-size: 0.7rem;">Teal</div>
+                        <div style="background: var(--electric-purple); padding: 1rem; border-radius: 4px; text-align: center; font-size: 0.7rem;">Purple</div>
+                        <div style="background: var(--forest); padding: 1rem; border-radius: 4px; text-align: center; font-size: 0.7rem;">Green</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Implementation Notes</h2>
+                <p>Key technical considerations for development.</p>
+            </div>
+
+            <div class="components-grid">
+                <div class="component-card">
+                    <h4>Screen Resolution</h4>
+                    <ul style="margin-left: 1rem; color: var(--text-secondary);">
+                        <li>Primary target: 1920×1080 (16:9)</li>
+                        <li>Support down to 1280×720</li>
+                        <li>Consider ultrawide (21:9) with pillarboxing</li>
+                        <li>All UI should scale proportionally</li>
+                    </ul>
+                </div>
+
+                <div class="component-card">
+                    <h4>Animation Guidelines</h4>
+                    <ul style="margin-left: 1rem; color: var(--text-secondary);">
+                        <li>Transitions: 200-300ms ease-out</li>
+                        <li>Hovers: 150ms</li>
+                        <li>Modal entrances: 400ms with bounce</li>
+                        <li>Number ticking: 50ms per digit</li>
+                    </ul>
+                </div>
+
+                <div class="component-card">
+                    <h4>Accessibility</h4>
+                    <ul style="margin-left: 1rem; color: var(--text-secondary);">
+                        <li>Minimum contrast ratio: 4.5:1</li>
+                        <li>Colorblind-safe mode option</li>
+                        <li>Screen reader labels for all buttons</li>
+                        <li>Keyboard navigation support</li>
+                    </ul>
+                </div>
+
+                <div class="component-card">
+                    <h4>Asset Formats</h4>
+                    <ul style="margin-left: 1rem; color: var(--text-secondary);">
+                        <li>UI elements: PNG with transparency</li>
+                        <li>Icons: SVG preferred, PNG fallback</li>
+                        <li>Backgrounds: JPG for photos, PNG for graphics</li>
+                        <li>All at 2x for retina displays</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p><strong>Election Empire</strong> - UI Wireframes v1.0</p>
+        <p>Agyeman Enterprises LLC • December 2024</p>
+        <p style="margin-top: 1rem;">"Politics is a dirty game. Time to get your hands filthy."</p>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effects to interactive elements
+        document.querySelectorAll('.action-card, .background-card, .response-btn').forEach(el => {
+            el.style.cursor = 'pointer';
+        });
+
+        // Simulate vote counting animation on election screen
+        let voteCount = 12847;
+        const voteDisplay = document.querySelector('.candidate.player .vote-count');
+        if (voteDisplay) {
+            setInterval(() => {
+                voteCount += Math.floor(Math.random() * 50);
+                // voteDisplay.textContent = voteCount.toLocaleString();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

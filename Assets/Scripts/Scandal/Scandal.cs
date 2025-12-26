@@ -24,6 +24,7 @@ namespace ElectionEmpire.Scandal
         // Severity & Evidence
         public int BaseSeverity;          // 1-10 (from template)
         public int CurrentSeverity;       // Can increase with evolution
+        public float Severity => CurrentSeverity * 10f; // 0-100 scale for compatibility
         public float EvidenceStrength;    // 0-100%
         public List<EvidenceItem> Evidence;
         

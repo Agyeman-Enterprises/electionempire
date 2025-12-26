@@ -909,7 +909,7 @@ namespace ElectionEmpire.News.Temporal
         public int GetCurrentTurn()
         {
             // Get from GameManager or GameLoop if available
-            var gameLoop = UnityEngine.Object.FindObjectOfType<Gameplay.GameLoop>();
+            var gameLoop = UnityEngine.Object.FindFirstObjectByType<Gameplay.GameLoop>();
             if (gameLoop != null)
             {
                 var gameState = gameLoop.GetGameState();

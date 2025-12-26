@@ -80,7 +80,6 @@ namespace ElectionEmpire.News
         private readonly Consequences.IGameStateModifier _gameStateModifier;
         
         // Core pipeline components
-        private readonly EventTemplateLibrary _templateLibrary;
         private readonly AdvancedTemplateMatcher _templateMatcher;
         private readonly VariableInjector _variableInjector;
         private readonly NewsEventFactory _eventFactory;
@@ -138,26 +137,12 @@ namespace ElectionEmpire.News
             _pendingNews = new Dictionary<string, ProcessedNewsItem>();
             _eventQueue = new Queue<string>();
             
-            // Initialize components
-            InitializeComponents();
-            
-            // Wire up internal events
-            WireInternalEvents();
-            
-            _isInitialized = true;
-            _lastNewsCheck = DateTime.UtcNow;
-            _lastTemporalUpdate = DateTime.UtcNow;
-            
-            Log("NewsSystemOrchestrator initialized");
-        }
-        
-        private void InitializeComponents()
-        {
+            // Initialize components (must be in constructor for readonly fields)
             // Template system
-            _templateLibrary = new EventTemplateLibrary();
+            Templates.EventTemplateLibrary.Initialize(); // Initialize static library
             
             var matcherConfig = new TemplateMatcherConfig();
-            _templateMatcher = new AdvancedTemplateMatcher(_templateLibrary, matcherConfig);
+            _templateMatcher = new AdvancedTemplateMatcher(_gameStateProvider, matcherConfig);
             _variableInjector = new VariableInjector(_gameStateProvider);
             _eventFactory = new NewsEventFactory(_gameStateProvider);
             
@@ -181,6 +166,15 @@ namespace ElectionEmpire.News
             var fallbackGameState = new FallbackGameStateAdapter(_gameStateProvider);
             _proceduralGenerator = new Fallback.ProceduralNewsGenerator(fallbackGameState, fallbackConfig);
             _fallbackOrchestrator = new Fallback.FallbackOrchestrator(_cacheManager, _proceduralGenerator, fallbackConfig);
+            
+            // Wire up internal events
+            WireInternalEvents();
+            
+            _isInitialized = true;
+            _lastNewsCheck = DateTime.UtcNow;
+            _lastTemporalUpdate = DateTime.UtcNow;
+            
+            Log("NewsSystemOrchestrator initialized");
         }
         
         private void WireInternalEvents()

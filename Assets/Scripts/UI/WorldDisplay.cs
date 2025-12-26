@@ -31,7 +31,7 @@ namespace ElectionEmpire.UI
         public Transform StateListContainer;
         public GameObject ListItemPrefab;
         
-        private World currentWorld;
+        private ElectionEmpire.World.World currentWorld;
         
         private void Start()
         {
@@ -45,7 +45,7 @@ namespace ElectionEmpire.UI
                 DetailsPanel.SetActive(false);
         }
         
-        public void DisplayWorld(World world)
+        public void DisplayWorld(ElectionEmpire.World.World world)
         {
             currentWorld = world;
             
@@ -138,7 +138,7 @@ namespace ElectionEmpire.UI
             }
         }
         
-        public void PopulateRegionList(World world)
+        public void PopulateRegionList(ElectionEmpire.World.World world)
         {
             if (RegionListContainer == null || world == null) return;
             

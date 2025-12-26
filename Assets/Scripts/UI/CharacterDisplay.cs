@@ -29,7 +29,7 @@ namespace ElectionEmpire.UI
         [Header("Prefabs")]
         public GameObject ListItemPrefab;
         
-        public void DisplayCharacter(Character character)
+        public void DisplayCharacter(ElectionEmpire.Character.Character character)
         {
             if (character == null)
                 return;

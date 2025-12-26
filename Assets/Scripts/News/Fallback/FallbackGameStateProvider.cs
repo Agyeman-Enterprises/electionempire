@@ -1,11 +1,12 @@
 using ElectionEmpire.Core;
+using ElectionEmpire.News.Fallback;
 
 namespace ElectionEmpire.News
 {
     /// <summary>
     /// Adapter to provide game state to fallback system
     /// </summary>
-    public class FallbackGameStateProvider : Fallback.FallbackSystem.IGameStateProvider
+    public class FallbackGameStateProvider : IGameStateProvider
     {
         private Core.GameManager gameManager;
         

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
 
@@ -101,50 +102,50 @@ namespace ElectionEmpire.UI
             // Resources
             if (PublicTrustText != null)
             {
-                float trust = player.Resources.GetValueOrDefault("PublicTrust", 50f);
+                float trust = player.Resources.TryGetValue("PublicTrust", out float trustValue) ? trustValue : 50f;
                 PublicTrustText.text = $"Public Trust: {trust:F1}%";
             }
             
             if (PublicTrustBar != null)
             {
-                float trust = player.Resources.GetValueOrDefault("PublicTrust", 50f);
+                float trust = player.Resources.TryGetValue("PublicTrust", out float trustValue) ? trustValue : 50f;
                 PublicTrustBar.value = trust / 100f;
             }
             
             if (PoliticalCapitalText != null)
             {
-                int capital = (int)player.Resources.GetValueOrDefault("PoliticalCapital", 0f);
+                int capital = (int)(player.Resources.TryGetValue("PoliticalCapital", out float capitalValue) ? capitalValue : 0f);
                 int maxCapital = player.CurrentOffice != null ? player.CurrentOffice.Tier * 30 : 30;
                 PoliticalCapitalText.text = $"Political Capital: {capital} / {maxCapital}";
             }
             
             if (CampaignFundsText != null)
             {
-                float funds = player.Resources.GetValueOrDefault("CampaignFunds", 0f);
+                float funds = player.Resources.TryGetValue("CampaignFunds", out float fundsValue) ? fundsValue : 0f;
                 CampaignFundsText.text = $"Campaign Funds: ${funds:N0}";
             }
             
             if (MediaInfluenceText != null)
             {
-                int media = (int)player.Resources.GetValueOrDefault("MediaInfluence", 0f);
+                int media = (int)(player.Resources.TryGetValue("MediaInfluence", out float mediaValue) ? mediaValue : 0f);
                 MediaInfluenceText.text = $"Media Influence: {media} / 100";
             }
             
             if (MediaInfluenceBar != null)
             {
-                int media = (int)player.Resources.GetValueOrDefault("MediaInfluence", 0f);
+                int media = (int)(player.Resources.TryGetValue("MediaInfluence", out float mediaValue) ? mediaValue : 0f);
                 MediaInfluenceBar.value = media / 100f;
             }
             
             if (PartyLoyaltyText != null)
             {
-                float loyalty = player.Resources.GetValueOrDefault("PartyLoyalty", 50f);
+                float loyalty = player.Resources.TryGetValue("PartyLoyalty", out float loyaltyValue) ? loyaltyValue : 50f;
                 PartyLoyaltyText.text = $"Party Loyalty: {loyalty:F1}%";
             }
             
             if (PartyLoyaltyBar != null)
             {
-                float loyalty = player.Resources.GetValueOrDefault("PartyLoyalty", 50f);
+                float loyalty = player.Resources.TryGetValue("PartyLoyalty", out float loyaltyValue) ? loyaltyValue : 50f;
                 PartyLoyaltyBar.value = loyalty / 100f;
             }
             

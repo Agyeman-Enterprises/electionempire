@@ -19,7 +19,7 @@ namespace ElectionEmpire.News
         public void Initialize()
         {
             // Initialize new template library (static)
-            EventTemplateLibrary.Initialize();
+            Templates.EventTemplateLibrary.Initialize();
             
             variableMapper = new VariableMapper();
             impactCalculator = new ImpactCalculator();
@@ -31,7 +31,7 @@ namespace ElectionEmpire.News
         public NewsGameEvent CreateEvent(ProcessedNews news, PlayerState player)
         {
             // Find matching templates using new library
-            var templates = EventTemplateLibrary.FindMatchingTemplates(news);
+            var templates = Templates.EventTemplateLibrary.FindMatchingTemplates(news);
             
             if (templates.Count == 0)
             {

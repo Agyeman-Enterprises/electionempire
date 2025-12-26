@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using ElectionEmpire.World;
 
 namespace ElectionEmpire.Core
@@ -16,8 +15,8 @@ namespace ElectionEmpire.Core
         public string SaveName;
         public DateTime SaveDate;
         public DateTime GameTime;
-        public Character.Character Character;
-        public World World; // Save world data
+        public ElectionEmpire.Character.Character Character;
+        public ElectionEmpire.World.World World; // Save world data
         public string WorldSeed; // Also save seed for regeneration
         public Dictionary<string, object> GameState;
         
@@ -81,7 +80,7 @@ namespace ElectionEmpire.Core
                 WorldSeed = GameManager.Instance.CurrentWorld?.Seed
             };
             
-            string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+            string json = JsonUtility.ToJson(saveData, true);
             string filePath = isAutoSave 
                 ? AutoSavePath 
                 : Path.Combine(SaveDirectory, $"{saveName}.json");
@@ -116,7 +115,7 @@ namespace ElectionEmpire.Core
             try
             {
                 string json = File.ReadAllText(filePath);
-                GameSaveData saveData = JsonConvert.DeserializeObject<GameSaveData>(json);
+                GameSaveData saveData = JsonUtility.FromJson<GameSaveData>(json);
                 
                 // If world is null but seed exists, regenerate world
                 if (saveData.World == null && !string.IsNullOrEmpty(saveData.WorldSeed))

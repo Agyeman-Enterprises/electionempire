@@ -18,7 +18,7 @@ namespace ElectionEmpire.AI
         public string Name;
         public string GeneratedNickname;      // "The Silver-Tongued Lawyer"
         public Archetype Archetype;
-        public Character Character;            // Uses same Character class as player
+        public ElectionEmpire.Character.Character Character;            // Uses same Character class as player
         
         // Personality (drives behavior)
         public PersonalityMatrix Personality;

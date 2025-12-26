@@ -46,8 +46,9 @@ namespace ElectionEmpire.Core
     
     /// <summary>
     /// Game phase within a political term.
+    /// Note: This conflicts with ElectionEmpire.Core.GamePhase - consider removing or renaming.
     /// </summary>
-    public enum GamePhase
+    public enum PoliticalTermPhase
     {
         Exploratory,        // Testing the waters
         Primary,            // Party nomination
@@ -223,8 +224,8 @@ namespace ElectionEmpire.Core
             CosmeticsShop = new CosmeticsShop(PlayerInventory, CurrencyManager);
             
             // Find component-based managers
-            AudioManager = FindObjectOfType<AudioManager>();
-            EffectsManager = FindObjectOfType<PolishEffectsManager>();
+            AudioManager = FindFirstObjectByType<AudioManager>();
+            EffectsManager = FindFirstObjectByType<PolishEffectsManager>();
             
             // Apply configuration
             ApplyConfiguration();
@@ -427,7 +428,7 @@ namespace ElectionEmpire.Core
             currentSession = new GameSession
             {
                 IsChaosMode = chaosMode,
-                CurrentPhase = GamePhase.Exploratory,
+                CurrentPhase = PoliticalTermPhase.Exploratory,
                 CurrentTier = 1,
                 ElectionYear = 2024
             };
@@ -886,9 +887,10 @@ namespace ElectionEmpire.Core
     
     /// <summary>
     /// Game event data.
+    /// Note: This conflicts with ElectionEmpire.Core.GameEvent - renamed to GameEventData.
     /// </summary>
     [Serializable]
-    public class GameEvent
+    public class GameEventData
     {
         public GameEventType Type;
         public DateTime Timestamp;
@@ -896,7 +898,7 @@ namespace ElectionEmpire.Core
         public int Priority;
         public bool Handled;
         
-        public GameEvent(GameEventType type, Dictionary<string, object> data = null, int priority = 0)
+        public GameEventData(GameEventType type, Dictionary<string, object> data = null, int priority = 0)
         {
             Type = type;
             Timestamp = DateTime.UtcNow;
@@ -922,26 +924,26 @@ namespace ElectionEmpire.Core
         private static GameEventBus instance;
         public static GameEventBus Instance => instance ??= new GameEventBus();
         
-        private Dictionary<GameEventType, List<Action<GameEvent>>> listeners;
-        private Queue<GameEvent> eventQueue;
+        private Dictionary<GameEventType, List<Action<GameEventData>>> listeners;
+        private Queue<GameEventData> eventQueue;
         private bool isProcessing;
         
         private GameEventBus()
         {
-            listeners = new Dictionary<GameEventType, List<Action<GameEvent>>>();
-            eventQueue = new Queue<GameEvent>();
+            listeners = new Dictionary<GameEventType, List<Action<GameEventData>>>();
+            eventQueue = new Queue<GameEventData>();
         }
         
-        public void Subscribe(GameEventType type, Action<GameEvent> handler)
+        public void Subscribe(GameEventType type, Action<GameEventData> handler)
         {
             if (!listeners.ContainsKey(type))
             {
-                listeners[type] = new List<Action<GameEvent>>();
+                listeners[type] = new List<Action<GameEventData>>();
             }
             listeners[type].Add(handler);
         }
         
-        public void Unsubscribe(GameEventType type, Action<GameEvent> handler)
+        public void Unsubscribe(GameEventType type, Action<GameEventData> handler)
         {
             if (listeners.TryGetValue(type, out var handlers))
             {
@@ -949,7 +951,7 @@ namespace ElectionEmpire.Core
             }
         }
         
-        public void Publish(GameEvent evt)
+        public void Publish(GameEventData evt)
         {
             eventQueue.Enqueue(evt);
             
@@ -961,7 +963,7 @@ namespace ElectionEmpire.Core
         
         public void Publish(GameEventType type, Dictionary<string, object> data = null, int priority = 0)
         {
-            Publish(new GameEvent(type, data, priority));
+            Publish(new GameEventData(type, data, priority));
         }
         
         private void ProcessQueue()

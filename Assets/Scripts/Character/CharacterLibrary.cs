@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using Newtonsoft.Json;
 using System.Text;
 
 namespace ElectionEmpire.Character
@@ -17,6 +16,17 @@ namespace ElectionEmpire.Character
         public DateTime CreatedDate;
         public int TimesUsed;
         public string BestResult; // e.g., "Mayor", "President", etc.
+    }
+    
+    [Serializable]
+    public class SavedCharacterList
+    {
+        public List<SavedCharacter> Characters;
+        
+        public SavedCharacterList()
+        {
+            Characters = new List<SavedCharacter>();
+        }
     }
     
     /// <summary>
@@ -100,7 +110,7 @@ namespace ElectionEmpire.Character
             
             try
             {
-                var json = JsonConvert.SerializeObject(character.Character);
+                var json = JsonUtility.ToJson(character.Character);
                 var bytes = Encoding.UTF8.GetBytes(json);
                 var compressed = CompressString(json);
                 var encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(compressed));
@@ -123,7 +133,7 @@ namespace ElectionEmpire.Character
                 var encoded = shareCode.Replace("CHAR-", "");
                 var compressed = Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
                 var json = DecompressString(compressed);
-                var character = JsonConvert.DeserializeObject<Character>(json);
+                var character = JsonUtility.FromJson<ElectionEmpire.Character.Character>(json);
                 
                 if (character != null)
                 {
@@ -149,7 +159,8 @@ namespace ElectionEmpire.Character
         {
             try
             {
-                var json = JsonConvert.SerializeObject(_savedCharacters, Formatting.Indented);
+                var wrapper = new SavedCharacterList { Characters = _savedCharacters };
+                var json = JsonUtility.ToJson(wrapper, true);
                 File.WriteAllText(LibraryPath, json);
             }
             catch (Exception e)
@@ -169,7 +180,8 @@ namespace ElectionEmpire.Character
             try
             {
                 var json = File.ReadAllText(LibraryPath);
-                _savedCharacters = JsonConvert.DeserializeObject<List<SavedCharacter>>(json) ?? new List<SavedCharacter>();
+                var wrapper = JsonUtility.FromJson<SavedCharacterList>(json);
+                _savedCharacters = wrapper?.Characters ?? new List<SavedCharacter>();
             }
             catch (Exception e)
             {

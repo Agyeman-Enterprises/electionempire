@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.News.Fallback;
 using ElectionEmpire.News.Translation;
+using IGameStateProvider = ElectionEmpire.News.Fallback.IGameStateProvider;
 
 namespace ElectionEmpire.News
 {
@@ -28,7 +29,7 @@ namespace ElectionEmpire.News
             processor.Initialize();
             
             // Initialize advanced fallback system if game state available
-            var gameManager = UnityEngine.Object.FindObjectOfType<Core.GameManager>();
+            var gameManager = UnityEngine.Object.FindFirstObjectByType<Core.GameManager>();
             if (gameManager != null && gameManager.CurrentPlayer != null)
             {
                 // Create game state provider adapter

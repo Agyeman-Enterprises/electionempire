@@ -315,7 +315,7 @@ namespace ElectionEmpire.UI.Screens
         
         private SaveGameData GetLastSave()
         {
-            var saveManager = FindObjectOfType<Core.SaveManager>();
+            var saveManager = FindFirstObjectByType<Core.SaveManager>();
             if (saveManager == null)
             {
                 return null;

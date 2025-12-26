@@ -97,7 +97,7 @@ namespace ElectionEmpire.AI
                 return rare[UnityEngine.Random.Range(0, rare.Length)];
         }
         
-        private Character GenerateCharacterForArchetype(Archetype archetype)
+        private ElectionEmpire.Character.Character GenerateCharacterForArchetype(Archetype archetype)
         {
             // Use CharacterGenerator but bias toward archetype-appropriate choices
             RandomMode mode = RandomMode.Balanced;
@@ -552,7 +552,7 @@ namespace ElectionEmpire.AI
             return new List<string> { "Standard Campaign", "Policy Proposal", "Public Appearance" };
         }
         
-        private Dictionary<string, float> InitializeResources(int playerTier, Character character)
+        private Dictionary<string, float> InitializeResources(int playerTier, ElectionEmpire.Character.Character character)
         {
             // AI starts with similar resources to player, modified by character
             var resources = new Dictionary<string, float>

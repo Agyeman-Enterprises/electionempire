@@ -9,7 +9,7 @@ namespace ElectionEmpire.World
     public class WorldMap : MonoBehaviour
     {
         [Header("World Reference")]
-        public World World;
+        public ElectionEmpire.World.World World;
         
         [Header("Camera")]
         public Camera MapCamera;

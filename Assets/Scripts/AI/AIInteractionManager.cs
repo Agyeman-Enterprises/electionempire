@@ -286,7 +286,7 @@ namespace ElectionEmpire.AI
     
     public class DialogueContext
     {
-        public DialogueType Type;
+        public AIInteractionManager.DialogueType Type;
         public string Target;
         public string Issue;
         public float PollingNumber;

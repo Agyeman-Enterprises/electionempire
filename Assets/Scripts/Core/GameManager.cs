@@ -14,13 +14,13 @@ namespace ElectionEmpire.Core
         public static GameManager Instance { get; private set; }
         
         [Header("Managers")]
-        public TimeManager TimeManager;
+        public ElectionEmpire.Core.TimeManager TimeManager;
         public SaveManager SaveManager;
-        public AIManager AIManager;
+        public ElectionEmpire.AI.AIManager AIManager;
         
         [Header("Current Game State")]
-        public Character.Character CurrentCharacter;
-        public World CurrentWorld;
+        public ElectionEmpire.Character.Character CurrentCharacter;
+        public ElectionEmpire.World.World CurrentWorld;
         public PlayerState CurrentPlayer;
         public VoterSimulation VoterSimulation;
         public bool IsGameActive = false;
@@ -56,7 +56,7 @@ namespace ElectionEmpire.Core
                 SaveManager = gameObject.AddComponent<SaveManager>();
             
             if (AIManager == null)
-                AIManager = FindObjectOfType<AIManager>();
+                AIManager = FindFirstObjectByType<ElectionEmpire.AI.AIManager>();
             if (AIManager == null)
             {
                 GameObject aiManagerObj = new GameObject("AIManager");
@@ -64,7 +64,7 @@ namespace ElectionEmpire.Core
             }
         }
         
-        public void StartNewCampaign(Character.Character character, string worldSeed = null, int aiCount = 3, AIDifficulty aiDifficulty = AIDifficulty.Normal)
+        public void StartNewCampaign(ElectionEmpire.Character.Character character, string worldSeed = null, int aiCount = 3, AIDifficulty aiDifficulty = AIDifficulty.Normal)
         {
             CurrentCharacter = character;
             NumberOfAIOpponents = aiCount;
@@ -89,7 +89,7 @@ namespace ElectionEmpire.Core
             }
             
             // Start game loop
-            var gameLoop = FindObjectOfType<GameLoop>();
+            var gameLoop = FindFirstObjectByType<GameLoop>();
             if (gameLoop == null)
             {
                 GameObject loopObj = new GameObject("GameLoop");

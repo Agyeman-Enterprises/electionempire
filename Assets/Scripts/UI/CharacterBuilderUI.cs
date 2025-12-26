@@ -59,15 +59,15 @@ namespace ElectionEmpire.UI
         public Button StartButton;
         
         private int _currentStep = 0;
-        private Character _buildingCharacter;
+        private ElectionEmpire.Character.Character _buildingCharacter;
         private CharacterDataLoader _dataLoader;
         
-        public System.Action<Character> OnCharacterBuilt;
+        public System.Action<ElectionEmpire.Character.Character> OnCharacterBuilt;
         
         private void Start()
         {
             _dataLoader = CharacterDataLoader.Instance;
-            _buildingCharacter = new Character();
+            _buildingCharacter = new ElectionEmpire.Character.Character();
             
             if (NextButton != null)
                 NextButton.onClick.AddListener(OnNext);
@@ -88,7 +88,7 @@ namespace ElectionEmpire.UI
         public void StartBuilder()
         {
             _currentStep = 0;
-            _buildingCharacter = new Character();
+            _buildingCharacter = new ElectionEmpire.Character.Character();
             ShowStep(0);
             SetupStep1();
         }
@@ -96,7 +96,7 @@ namespace ElectionEmpire.UI
         /// <summary>
         /// Load a character for editing
         /// </summary>
-        public void LoadCharacterForEditing(Character character)
+        public void LoadCharacterForEditing(ElectionEmpire.Character.Character character)
         {
             if (character == null) return;
             

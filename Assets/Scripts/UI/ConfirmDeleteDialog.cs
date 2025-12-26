@@ -7,7 +7,7 @@ namespace ElectionEmpire.UI
     /// </summary>
     public static class ConfirmDeleteDialog
     {
-        public static bool ConfirmDeleteDialog(string itemName)
+        public static bool Show(string itemName)
         {
             // In full implementation, this would show a Unity UI dialog
             // For now, use Unity's built-in dialog in editor, or return true in play mode

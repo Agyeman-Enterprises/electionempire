@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+#if UNITY_PURCHASING
 using UnityEngine.Purchasing;
+#endif
 
 namespace ElectionEmpire.Monetization
 {
@@ -249,6 +251,11 @@ namespace ElectionEmpire.Monetization
         private List<CurrencyTransaction> pendingSync;
         private bool isDirty;
         
+        /// <summary>
+        /// Whether the wallet has unsaved changes.
+        /// </summary>
+        public bool IsDirty => isDirty;
+        
         // Events
         public event Action<CurrencyType, long, long> OnBalanceChanged; // type, oldBalance, newBalance
         public event Action<CurrencyTransaction> OnTransactionProcessed;
@@ -466,6 +473,18 @@ namespace ElectionEmpire.Monetization
                 "viral_scandal" => 100,
                 "drunk_speech_success" => 75,
                 
+                // Tournament Rewards
+                "tournament_win_community" => 200,
+                "tournament_win_weekly" => 500,
+                "tournament_win_monthly" => 1000,
+                "tournament_win_seasonal" => 2500,
+                "tournament_win_championship" => 5000,
+                "tournament_win_official" => 10000,
+                "tournament_placement_2nd" => 100,
+                "tournament_placement_3rd" => 50,
+                "tournament_placement_top8" => 25,
+                "tournament_participation" => 10,
+                
                 _ => 0
             };
         }
@@ -484,6 +503,14 @@ namespace ElectionEmpire.Monetization
                 "complete_all_alignments" => 200,
                 "dynasty_established" => 150,
                 "legendary_achievement" => 50,
+                
+                // Tournament Purrkoin Rewards
+                "tournament_champion_weekly" => 10,
+                "tournament_champion_monthly" => 25,
+                "tournament_champion_seasonal" => 50,
+                "tournament_champion_championship" => 100,
+                "tournament_champion_official" => 200,
+                
                 _ => 0
             };
         }
@@ -537,10 +564,18 @@ namespace ElectionEmpire.Monetization
     /// <summary>
     /// Handles in-app purchases and platform store integration.
     /// </summary>
+#if UNITY_PURCHASING
     public class IAPManager : IStoreListener
     {
         private IStoreController storeController;
         private IExtensionProvider storeExtensions;
+#else
+    public class IAPManager
+    {
+        // Unity IAP package not installed - stub implementation
+        private object storeController;
+        private object storeExtensions;
+#endif
         private CurrencyManager currencyManager;
         private PlayerInventory inventory;
         
@@ -556,7 +591,7 @@ namespace ElectionEmpire.Monetization
         public event Action OnStoreInitialized;
         public event Action<string> OnStoreInitializeFailed;
         public event Action<string, PurchasableItem> OnPurchaseSuccess;
-        public event Action<string, string> OnPurchaseFailed;
+        public event Action<string, string> OnPurchaseFailedEvent;
         public event Action<string> OnPurchaseRestored;
         
         // Product IDs
@@ -735,6 +770,7 @@ namespace ElectionEmpire.Monetization
         {
             if (isInitialized) return;
             
+#if UNITY_PURCHASING
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
             
             // Add all products
@@ -751,12 +787,17 @@ namespace ElectionEmpire.Monetization
             }
             
             UnityPurchasing.Initialize(this, builder);
+#else
+            Debug.LogWarning("Unity IAP package not installed - IAP functionality disabled");
+            isInitialized = false;
+#endif
         }
         
         #endregion
         
         #region IStoreListener Implementation
         
+#if UNITY_PURCHASING
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
             storeController = controller;
@@ -801,9 +842,42 @@ namespace ElectionEmpire.Monetization
         public void OnPurchaseFailed(Product product, PurchaseFailureReason reason)
         {
             Debug.LogError($"Purchase failed for {product.definition.id}: {reason}");
-            OnPurchaseFailed?.Invoke(product.definition.id, reason.ToString());
+            OnPurchaseFailedEvent?.Invoke(product.definition.id, reason.ToString());
             isProcessingPurchase = false;
         }
+#else
+        // Stub implementations when Unity IAP is not available
+        public void OnInitialized(object controller, object extensions)
+        {
+            Debug.LogWarning("Unity IAP package not installed - initialization disabled");
+            isInitialized = false;
+        }
+        
+        public void OnInitializeFailed(object error)
+        {
+            Debug.LogWarning("Unity IAP package not installed - initialization disabled");
+            OnStoreInitializeFailed?.Invoke("IAP not available");
+        }
+        
+        public void OnInitializeFailed(object error, string message)
+        {
+            Debug.LogWarning("Unity IAP package not installed - initialization disabled");
+            OnStoreInitializeFailed?.Invoke("IAP not available");
+        }
+        
+        public object ProcessPurchase(object args)
+        {
+            Debug.LogWarning("Unity IAP package not installed - purchase processing disabled");
+            return null;
+        }
+        
+        public void OnPurchaseFailed(object product, object reason)
+        {
+            Debug.LogWarning("Unity IAP package not installed - purchase functionality disabled");
+            OnPurchaseFailedEvent?.Invoke("unknown", "IAP not available");
+            isProcessingPurchase = false;
+        }
+#endif
         
         #endregion
         
@@ -816,19 +890,19 @@ namespace ElectionEmpire.Monetization
         {
             if (!isInitialized)
             {
-                OnPurchaseFailed?.Invoke(productId, "Store not initialized");
+                OnPurchaseFailedEvent?.Invoke(productId, "Store not initialized");
                 return false;
             }
             
             if (isProcessingPurchase)
             {
-                OnPurchaseFailed?.Invoke(productId, "Purchase already in progress");
+                OnPurchaseFailedEvent?.Invoke(productId, "Purchase already in progress");
                 return false;
             }
             
             if (!productCatalog.TryGetValue(productId, out var item))
             {
-                OnPurchaseFailed?.Invoke(productId, "Product not found");
+                OnPurchaseFailedEvent?.Invoke(productId, "Product not found");
                 return false;
             }
             
@@ -838,7 +912,7 @@ namespace ElectionEmpire.Monetization
                 int currentCount = inventory.GetPurchaseCount(productId);
                 if (currentCount >= item.PurchaseLimit.Value)
                 {
-                    OnPurchaseFailed?.Invoke(productId, "Purchase limit reached");
+                    OnPurchaseFailedEvent?.Invoke(productId, "Purchase limit reached");
                     return false;
                 }
             }
@@ -846,26 +920,32 @@ namespace ElectionEmpire.Monetization
             // Check availability
             if (!item.IsAvailable)
             {
-                OnPurchaseFailed?.Invoke(productId, "Product not available");
+                OnPurchaseFailedEvent?.Invoke(productId, "Product not available");
                 return false;
             }
             
             if (item.AvailableFrom.HasValue && DateTime.UtcNow < item.AvailableFrom.Value)
             {
-                OnPurchaseFailed?.Invoke(productId, "Product not yet available");
+                OnPurchaseFailedEvent?.Invoke(productId, "Product not yet available");
                 return false;
             }
             
             if (item.AvailableUntil.HasValue && DateTime.UtcNow > item.AvailableUntil.Value)
             {
-                OnPurchaseFailed?.Invoke(productId, "Product no longer available");
+                OnPurchaseFailedEvent?.Invoke(productId, "Product no longer available");
                 return false;
             }
             
             isProcessingPurchase = true;
             currentPurchaseId = productId;
             
+#if UNITY_PURCHASING
             storeController.InitiatePurchase(productId);
+#else
+            Debug.LogWarning("Unity IAP package not installed - purchase disabled");
+            OnPurchaseFailedEvent?.Invoke(productId, "IAP not available");
+            isProcessingPurchase = false;
+#endif
             return true;
         }
         
@@ -876,19 +956,19 @@ namespace ElectionEmpire.Monetization
         {
             if (!productCatalog.TryGetValue(itemId, out var item))
             {
-                OnPurchaseFailed?.Invoke(itemId, "Item not found");
+                OnPurchaseFailedEvent?.Invoke(itemId, "Item not found");
                 return false;
             }
             
             if (item.RealMoneyPrice > 0 && item.Price <= 0)
             {
-                OnPurchaseFailed?.Invoke(itemId, "Item requires real money purchase");
+                OnPurchaseFailedEvent?.Invoke(itemId, "Item requires real money purchase");
                 return false;
             }
             
             if (!currencyManager.CanAfford(item.CurrencyType, item.Price))
             {
-                OnPurchaseFailed?.Invoke(itemId, "Insufficient currency");
+                OnPurchaseFailedEvent?.Invoke(itemId, "Insufficient currency");
                 return false;
             }
             
@@ -1001,6 +1081,7 @@ namespace ElectionEmpire.Monetization
         {
             if (!isInitialized) return;
             
+#if UNITY_PURCHASING
 #if UNITY_IOS
             var apple = storeExtensions.GetExtension<IAppleExtensions>();
             apple.RestoreTransactions((success) =>
@@ -1013,6 +1094,9 @@ namespace ElectionEmpire.Monetization
             {
                 Debug.Log($"Restore purchases: {(success ? "Success" : "Failed")}");
             });
+#endif
+#else
+            Debug.LogWarning("Unity IAP package not installed - restore disabled");
 #endif
         }
         
@@ -1049,8 +1133,12 @@ namespace ElectionEmpire.Monetization
         {
             if (!isInitialized || storeController == null) return "---";
             
+#if UNITY_PURCHASING
             var product = storeController.products.WithID(productId);
             return product?.metadata.localizedPriceString ?? "---";
+#else
+            return "---";
+#endif
         }
         
         #endregion

@@ -15,7 +15,7 @@ namespace ElectionEmpire.Gameplay
         private Office targetOffice;
         private List<PlayerState> candidates;
         private VoterSimulation voterSim;
-        private World world;
+        private ElectionEmpire.World.World world;
         
         // Election phases
         public enum ElectionPhase
@@ -38,7 +38,7 @@ namespace ElectionEmpire.Gameplay
         private Dictionary<PlayerState, int> electionResults;
         private PlayerState electionWinner;
         
-        public ElectionManager(World world, VoterSimulation voterSim)
+        public ElectionManager(ElectionEmpire.World.World world, VoterSimulation voterSim)
         {
             this.world = world;
             this.voterSim = voterSim;

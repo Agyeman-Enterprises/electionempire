@@ -16,7 +16,7 @@ namespace ElectionEmpire.Gameplay
         public List<AIOpponent> AIOpponents;
         
         // World
-        public World World;
+        public ElectionEmpire.World.World World;
         public VoterSimulation VoterSim;
         
         // Campaign settings
@@ -57,8 +57,8 @@ namespace ElectionEmpire.Gameplay
     [Serializable]
     public class CampaignSetup
     {
-        public Character.Character PlayerCharacter;
-        public World World;
+        public ElectionEmpire.Character.Character PlayerCharacter;
+        public ElectionEmpire.World.World World;
         public List<AIOpponent> AIOpponents;
         public VictoryConditionManager.VictoryType VictoryCondition;
         public AIDifficulty Difficulty;

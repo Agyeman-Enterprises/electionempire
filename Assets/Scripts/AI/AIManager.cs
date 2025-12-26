@@ -17,7 +17,7 @@ namespace ElectionEmpire.AI
         public AIDifficulty DefaultDifficulty = AIDifficulty.Normal;
         
         [Header("References")]
-        public World CurrentWorld;
+        public ElectionEmpire.World.World CurrentWorld;
         public VoterSimulation VoterSimulation;
         
         private List<AIOpponent> aiOpponents = new List<AIOpponent>();

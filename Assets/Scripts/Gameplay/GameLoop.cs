@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using ElectionEmpire.World;
 using ElectionEmpire.AI;
 using ElectionEmpire.Core;
@@ -14,7 +16,7 @@ namespace ElectionEmpire.Gameplay
     public class GameLoop : MonoBehaviour
     {
         // Managers
-        private TimeManager timeManager;
+        private ElectionEmpire.Core.TimeManager timeManager;
         private ResourceManager resourceManager;
         private ElectionManager electionManager;
         private AIManager aiManager;
@@ -53,7 +55,15 @@ namespace ElectionEmpire.Gameplay
             {
                 if (aiManager != null && gameState != null)
                 {
-                    aiManager.ProcessAITurns(gameState);
+                    // Convert Gameplay.GameState to AI.GameState
+                    var aiGameState = new ElectionEmpire.AI.GameState
+                    {
+                        Opponents = gameState.AIOpponents ?? new List<AIOpponent>(),
+                        PlayerApproval = gameState.Player?.Resources?.GetValueOrDefault("PublicTrust", 50f) ?? 50f,
+                        DaysUntilElection = 0, // TODO: Calculate from election schedule
+                        ActiveCrises = gameState.ActiveCrises ?? new List<string>()
+                    };
+                    aiManager.ProcessAITurns(aiGameState);
                     aiManager.UpdateAIApprovalRatings();
                 }
                 lastTurnProcessTime = Time.time;
@@ -115,7 +125,7 @@ namespace ElectionEmpire.Gameplay
             }
             
             // Initialize managers
-            timeManager = GameManager.Instance != null ? GameManager.Instance.TimeManager : null;
+            timeManager = GameManager.Instance != null ? GameManager.Instance.TimeManager : FindFirstObjectByType<ElectionEmpire.Core.TimeManager>();
             
             if (gameState.Player != null)
             {

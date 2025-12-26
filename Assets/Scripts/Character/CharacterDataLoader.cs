@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 
 namespace ElectionEmpire.Character
 {
@@ -81,7 +80,7 @@ namespace ElectionEmpire.Character
             try
             {
                 string json = File.ReadAllText(filePath);
-                T data = JsonConvert.DeserializeObject<T>(json);
+                T data = JsonUtility.FromJson<T>(json);
                 return data;
             }
             catch (System.Exception e)

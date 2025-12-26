@@ -11,7 +11,7 @@ namespace ElectionEmpire.World
     /// </summary>
     public class PlayerState
     {
-        public Character Character;
+        public ElectionEmpire.Character.Character Character;
         public Dictionary<Issue, float> PolicyStances; // 0-100 scale
         public Dictionary<VoterBloc, float> VoterBlocSupport; // 0-100 scale
         public List<Scandal.Scandal> ActiveScandals;
@@ -33,7 +33,7 @@ namespace ElectionEmpire.World
         public List<StaffMember> Staff;
         
         // Office and progression
-        public Office CurrentOffice;
+        public ElectionEmpire.Gameplay.Office CurrentOffice;
         public int HighestTierHeld;
         public System.DateTime TermStartDate;
         public System.DateTime TermEndDate;
@@ -63,11 +63,15 @@ namespace ElectionEmpire.World
         public int CampaignDifficulty;
         public int VictoriesAchieved;
         
+        // Policy Tracking
+        public List<string> PoliciesImplemented; // Policies signed/enacted during current term
+        public Dictionary<string, float> PolicyImpacts; // Policy name -> impact value
+        
         // For AI
         public bool IsPlayer;
         public PersonalityMatrix Personality; // For AI opponents
         
-        public PlayerState(Character character)
+        public PlayerState(ElectionEmpire.Character.Character character)
         {
             Character = character;
             PolicyStances = new Dictionary<Issue, float>();
@@ -82,6 +86,8 @@ namespace ElectionEmpire.World
             ToxicPolicyAreas = new List<string>();
             DemographicPenalties = new Dictionary<VoterBloc, float>();
             Staff = new List<StaffMember>();
+            PoliciesImplemented = new List<string>();
+            PolicyImpacts = new Dictionary<string, float>();
             IsPlayer = true;
             
             // Initialize default support (neutral)

@@ -34,22 +34,22 @@ namespace ElectionEmpire.Scandal
             if (template == null) return;
             
             // 1. Calculate resource impacts
-            CalculateResourceImpacts(scandal, template);
+            CalculateResourceImpacts(scandal, template, deltaTime);
             
             // 2. Calculate voter bloc impacts
-            CalculateVoterBlocImpacts(scandal, template);
+            CalculateVoterBlocImpacts(scandal, template, deltaTime);
             
             // 3. Calculate relationship impacts
-            CalculateRelationshipImpacts(scandal);
+            CalculateRelationshipImpacts(scandal, deltaTime);
             
             // 4. Apply long-term effects
-            ApplyLongTermEffects(scandal);
+            ApplyLongTermEffects(scandal, deltaTime);
             
             // 5. Check for strategic limitations
             ApplyStrategicLimitations(scandal);
         }
         
-        private void CalculateResourceImpacts(Scandal scandal, ScandalTemplate template)
+        private void CalculateResourceImpacts(Scandal scandal, ScandalTemplate template, float deltaTime)
         {
             // Trust impact
             float trustImpact = template.ImpactFormula.TrustImpactBase + 
@@ -121,7 +121,7 @@ namespace ElectionEmpire.Scandal
             }
         }
         
-        private void CalculateVoterBlocImpacts(Scandal scandal, ScandalTemplate template)
+        private void CalculateVoterBlocImpacts(Scandal scandal, ScandalTemplate template, float deltaTime)
         {
             if (scandal.BlocImpacts == null)
                 scandal.BlocImpacts = new Dictionary<VoterBloc, float>();
@@ -160,7 +160,7 @@ namespace ElectionEmpire.Scandal
             }
         }
         
-        private void CalculateRelationshipImpacts(Scandal scandal)
+        private void CalculateRelationshipImpacts(Scandal scandal, float deltaTime)
         {
             // Impact on allies
             if (player.PoliticalAllies != null)
@@ -200,7 +200,7 @@ namespace ElectionEmpire.Scandal
             }
         }
         
-        private void ApplyLongTermEffects(Scandal scandal)
+        private void ApplyLongTermEffects(Scandal scandal, float deltaTime)
         {
             // Create reputation tags that persist
             if (scandal.CurrentSeverity >= 7 && !scandal.IsResolved)

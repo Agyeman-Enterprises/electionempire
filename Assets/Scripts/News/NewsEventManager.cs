@@ -23,7 +23,7 @@ namespace ElectionEmpire.News
         private NewsSettings settings;
         private GameStateProvider gameStateProvider;
         
-        private GameState gameState;
+        private ElectionEmpire.Gameplay.GameState gameState;
         private PlayerState player;
         private ResourceManager resourceManager;
         
@@ -33,7 +33,7 @@ namespace ElectionEmpire.News
         private DateTime lastFetchTime;
         private float fetchInterval = 3600f; // 1 hour in seconds
         
-        public void Initialize(GameState gameState, PlayerState player, ResourceManager resourceManager)
+        public void Initialize(ElectionEmpire.Gameplay.GameState gameState, PlayerState player, ResourceManager resourceManager)
         {
             this.gameState = gameState;
             this.player = player;
@@ -191,7 +191,7 @@ namespace ElectionEmpire.News
                 gameEvents.Add(gameEvent);
                 
                 // Notify UI if available
-                var newsUI = FindObjectOfType<UI.NewsUI>();
+                var newsUI = FindFirstObjectByType<UI.NewsUI>();
                 if (newsUI != null)
                 {
                     // UI will display the event
@@ -280,7 +280,7 @@ namespace ElectionEmpire.News
             }
         }
         
-        private VoterBloc GetVoterBlocForIssue(IssueCategory issue)
+        private ElectionEmpire.World.VoterBloc GetVoterBlocForIssue(IssueCategory issue)
         {
             // Map issues to voter blocs
             return issue switch
@@ -412,7 +412,7 @@ namespace ElectionEmpire.News
         
         // Game impacts
         public float TrustImpact;
-        public Dictionary<VoterBloc, float> VoterBlocImpacts;
+        public Dictionary<ElectionEmpire.World.VoterBloc, float> VoterBlocImpacts;
         public IssueCategory? PolicyOpportunity;
         
         public NewsEvent()

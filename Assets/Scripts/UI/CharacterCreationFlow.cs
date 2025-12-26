@@ -32,7 +32,7 @@ namespace ElectionEmpire.UI
         public GameObject LibraryPanel;
         public CharacterLibraryUI LibraryUI;
         
-        private Character _currentCharacter;
+        private ElectionEmpire.Character.Character _currentCharacter;
         private CharacterGenerator _generator;
         private RerollSystem _rerollSystem;
         
@@ -184,7 +184,7 @@ namespace ElectionEmpire.UI
                         text.text = $"Reroll ({_rerollSystem.PurrkoinCostPerReroll} PK)";
                     // Check if player has enough Purrkoin
                     int currentPurrkoin = PlayerPrefs.GetInt("Purrkoin", 0);
-                    bool hasEnough = currentPurrkoin >= cost;
+                    bool hasEnough = currentPurrkoin >= _rerollSystem.PurrkoinCostPerReroll;
                     RerollButton.interactable = true;
                 }
             }
@@ -198,19 +198,19 @@ namespace ElectionEmpire.UI
             }
         }
         
-        private void OnCharacterBuilt(Character character)
+        private void OnCharacterBuilt(ElectionEmpire.Character.Character character)
         {
             _currentCharacter = character;
             StartCampaign(character);
         }
         
-        private void OnLibraryCharacterSelected(Character character)
+        private void OnLibraryCharacterSelected(ElectionEmpire.Character.Character character)
         {
             _currentCharacter = character;
             StartCampaign(character);
         }
         
-        private void StartCampaign(Character character)
+        private void StartCampaign(ElectionEmpire.Character.Character character)
         {
             // Set character in GameManager
             if (Core.GameManager.Instance != null)

@@ -12,11 +12,11 @@ namespace ElectionEmpire.AI
     public class AIDecisionMaker
     {
         private AIOpponent opponent;
-        private World world;
+        private ElectionEmpire.World.World world;
         private VoterSimulation voterSim;
         private List<AIOpponent> allOpponents;
         
-        public AIDecisionMaker(AIOpponent opponent, World world, VoterSimulation voterSim, List<AIOpponent> allOpponents)
+        public AIDecisionMaker(AIOpponent opponent, ElectionEmpire.World.World world, VoterSimulation voterSim, List<AIOpponent> allOpponents)
         {
             this.opponent = opponent;
             this.world = world;

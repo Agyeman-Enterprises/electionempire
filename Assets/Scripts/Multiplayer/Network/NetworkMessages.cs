@@ -894,7 +894,7 @@ namespace ElectionEmpire.Multiplayer.Network
             using var output = new MemoryStream();
             output.WriteByte(1); // Compression flag
             
-            using (var gzip = new GZipStream(output, CompressionLevel.Fastest, leaveOpen: true))
+            using (var gzip = new GZipStream(output, System.IO.Compression.CompressionLevel.Fastest, leaveOpen: true))
             {
                 gzip.Write(data, 0, data.Length);
             }

@@ -212,7 +212,7 @@ namespace ElectionEmpire.Scandal
             
             // Add to player's active scandals
             if (player.ActiveScandals == null)
-                player.ActiveScandals = new List<Scandal.Scandal>();
+                player.ActiveScandals = new List<ElectionEmpire.Scandal.Scandal>();
             
             player.ActiveScandals.Add(scandal);
             activeTemplates.Add(template.ID);
@@ -220,9 +220,9 @@ namespace ElectionEmpire.Scandal
             Debug.Log($"Scandal triggered: {scandal.Title} (Severity: {scandal.BaseSeverity})");
         }
         
-        private Scandal.Scandal GenerateScandalFromTemplate(ScandalTemplate template)
+        private ElectionEmpire.Scandal.Scandal GenerateScandalFromTemplate(ScandalTemplate template)
         {
-            var scandal = new Scandal.Scandal
+            var scandal = new ElectionEmpire.Scandal.Scandal
             {
                 ID = System.Guid.NewGuid().ToString(),
                 TemplateID = template.ID,
@@ -286,7 +286,7 @@ namespace ElectionEmpire.Scandal
             return template;
         }
         
-        private string GenerateNarrative(ScandalTemplate template, Scandal.Scandal scandal)
+        private string GenerateNarrative(ScandalTemplate template, ElectionEmpire.Scandal.Scandal scandal)
         {
             string narrative = GenerateFromTemplate(template.DescriptionTemplates);
             
@@ -301,7 +301,7 @@ namespace ElectionEmpire.Scandal
             return narrative;
         }
         
-        private List<EvidenceItem> GenerateEvidence(Scandal.Scandal scandal)
+        private List<EvidenceItem> GenerateEvidence(ElectionEmpire.Scandal.Scandal scandal)
         {
             int evidenceCount = UnityEngine.Random.Range(1, 4);
             var evidence = new List<EvidenceItem>();
@@ -340,7 +340,7 @@ namespace ElectionEmpire.Scandal
                         "Text messages between parties",
                         "Eyewitness testimony",
                         "Social media posts"
-                    }[UnityEngine.Range(0, 4)];
+                    }[UnityEngine.Random.Range(0, 4)];
                 
                 case ScandalCategory.Policy:
                     return new[] {

@@ -786,7 +786,7 @@ namespace ElectionEmpire.Caricature
     {
         [Header("Components")]
         [SerializeField] private CaricatureGenerator generator;
-        [SerializeField] private PortraitRenderer renderer;
+        [SerializeField] private PortraitRenderer portraitRenderer;
         [SerializeField] private PortraitReactionSystem reactionSystem;
         [SerializeField] private AICaricatureGenerator aiGenerator;
         
@@ -903,9 +903,9 @@ namespace ElectionEmpire.Caricature
         {
             currentPortrait = portrait;
             
-            if (renderer != null)
+            if (GetComponent<Renderer>() != null)
             {
-                renderer.LoadPortrait(portrait);
+                portraitRenderer.LoadPortrait(portrait);
             }
             
             OnPortraitLoaded?.Invoke(portrait);
@@ -980,9 +980,9 @@ namespace ElectionEmpire.Caricature
         /// </summary>
         public void ApplyEffect(PortraitEffect effect)
         {
-            if (renderer != null)
+            if (GetComponent<Renderer>() != null)
             {
-                renderer.ApplyEffect(effect);
+                portraitRenderer.ApplyEffect(effect);
             }
         }
         
@@ -991,9 +991,9 @@ namespace ElectionEmpire.Caricature
         /// </summary>
         public void ClearEffects()
         {
-            if (renderer != null)
+            if (GetComponent<Renderer>() != null)
             {
-                renderer.ClearEffects();
+                portraitRenderer.ClearEffects();
             }
         }
         
@@ -1006,7 +1006,7 @@ namespace ElectionEmpire.Caricature
         /// </summary>
         public Texture2D ExportCurrentPortrait()
         {
-            return renderer?.ExportPortrait();
+            return GetComponent<Renderer>()?.ExportPortrait();
         }
         
         /// <summary>
@@ -1014,7 +1014,7 @@ namespace ElectionEmpire.Caricature
         /// </summary>
         public Texture2D ExportWithExpression(Expression expression)
         {
-            return renderer?.ExportPortraitWithExpression(expression);
+            return GetComponent<Renderer>()?.ExportPortraitWithExpression(expression);
         }
         
         /// <summary>
@@ -1022,7 +1022,7 @@ namespace ElectionEmpire.Caricature
         /// </summary>
         public void CacheAllExpressions()
         {
-            renderer?.CacheAllExpressions();
+            GetComponent<Renderer>()?.CacheAllExpressions();
         }
         
         #endregion

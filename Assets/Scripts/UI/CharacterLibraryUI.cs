@@ -26,7 +26,7 @@ namespace ElectionEmpire.UI
         public Button BackButton;
         public Button CreateNewButton;
         
-        public System.Action<Character> OnCharacterSelected;
+        public System.Action<ElectionEmpire.Character.Character> OnCharacterSelected;
         
         private List<SavedCharacter> _displayedCharacters = new List<SavedCharacter>();
         
@@ -166,8 +166,16 @@ namespace ElectionEmpire.UI
         
         private void OnEditCharacter(string characterID)
         {
+            // Load character first
+            var savedCharacter = CharacterLibrary.Instance.GetSavedCharacter(characterID);
+            if (savedCharacter == null)
+            {
+                Debug.LogWarning($"[CharacterLibraryUI] Character {characterID} not found.");
+                return;
+            }
+            
             // Open character builder with this character pre-filled
-            var builderUI = FindObjectOfType<CharacterBuilderUI>();
+            var builderUI = FindFirstObjectByType<CharacterBuilderUI>();
             if (builderUI != null)
             {
                 builderUI.LoadCharacterForEditing(savedCharacter.Character);
@@ -197,8 +205,16 @@ namespace ElectionEmpire.UI
         
         private void OnDeleteCharacter(string characterID)
         {
+            // Load character first
+            var savedCharacter = CharacterLibrary.Instance.GetSavedCharacter(characterID);
+            if (savedCharacter == null)
+            {
+                Debug.LogWarning($"[CharacterLibraryUI] Character {characterID} not found.");
+                return;
+            }
+            
             // Show confirmation dialog
-            bool confirmed = ConfirmDeleteDialog.ConfirmDeleteDialog(savedCharacter.CustomName);
+            bool confirmed = ConfirmDeleteDialog.Show(savedCharacter.CustomName);
             
             if (!confirmed) return;
             CharacterLibrary.Instance.DeleteCharacter(characterID);
@@ -213,10 +229,11 @@ namespace ElectionEmpire.UI
         private void OnCreateNew()
         {
             // Open character creation flow
-            var creationFlow = FindObjectOfType<CharacterCreationFlow>();
+            var creationFlow = FindFirstObjectByType<CharacterCreationFlow>();
             if (creationFlow != null)
             {
-                creationFlow.StartCharacterCreation();
+                // Show mode selection to start character creation
+                creationFlow.gameObject.SetActive(true);
             }
             gameObject.SetActive(false);
         }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
 
@@ -56,24 +57,24 @@ namespace ElectionEmpire.UI
                     break;
                 
                 case VictoryConditionManager.VictoryType.ApprovalThreshold:
-                    float days = victoryManager.ConditionProgress.GetValueOrDefault("DaysAbove70", 0f);
-                    float required = victoryManager.ConditionProgress.GetValueOrDefault("Required", 30f);
-                    progress = days / required;
-                    progressText = $"{days:F1} / {required} days above 70%";
+                    float days = victoryManager.ConditionProgress.TryGetValue("DaysAbove70", out float daysValue) ? daysValue : 0f;
+                    float requiredApproval = victoryManager.ConditionProgress.TryGetValue("Required", out float requiredApprovalValue) ? requiredApprovalValue : 30f;
+                    progress = days / requiredApproval;
+                    progressText = $"{days:F1} / {requiredApproval} days above 70%";
                     break;
                 
                 case VictoryConditionManager.VictoryType.TotalDomination:
-                    float regions = victoryManager.ConditionProgress.GetValueOrDefault("RegionsControlled", 0f);
-                    float totalRegions = victoryManager.ConditionProgress.GetValueOrDefault("Required", 10f);
+                    float regions = victoryManager.ConditionProgress.TryGetValue("RegionsControlled", out float regionsValue) ? regionsValue : 0f;
+                    float totalRegions = victoryManager.ConditionProgress.TryGetValue("Required", out float totalRegionsValue) ? totalRegionsValue : 10f;
                     progress = regions / totalRegions;
                     progressText = $"{regions} / {totalRegions} regions";
                     break;
                 
                 case VictoryConditionManager.VictoryType.ScandalSurvival:
-                    float scandals = victoryManager.ConditionProgress.GetValueOrDefault("ScandalsSurvived", 0f);
-                    float required = victoryManager.ConditionProgress.GetValueOrDefault("Required", 10f);
-                    progress = scandals / required;
-                    progressText = $"{scandals} / {required} scandals survived";
+                    float scandals = victoryManager.ConditionProgress.TryGetValue("ScandalsSurvived", out float scandalsValue) ? scandalsValue : 0f;
+                    float requiredScandals = victoryManager.ConditionProgress.TryGetValue("Required", out float requiredScandalsValue) ? requiredScandalsValue : 10f;
+                    progress = scandals / requiredScandals;
+                    progressText = $"{scandals} / {requiredScandals} scandals survived";
                     break;
             }
             

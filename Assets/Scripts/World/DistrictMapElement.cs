@@ -1,4 +1,5 @@
 using UnityEngine;
+using ElectionEmpire.UI;
 
 namespace ElectionEmpire.World
 {
@@ -12,7 +13,7 @@ namespace ElectionEmpire.World
         private void OnMouseEnter()
         {
             // Show tooltip
-            var uiManager = FindObjectOfType<WorldDisplay>();
+            var uiManager = FindFirstObjectByType<WorldDisplay>();
             if (uiManager != null && District != null)
             {
                 uiManager.ShowDistrictTooltip(District);
@@ -22,7 +23,7 @@ namespace ElectionEmpire.World
         private void OnMouseExit()
         {
             // Hide tooltip
-            var uiManager = FindObjectOfType<WorldDisplay>();
+            var uiManager = FindFirstObjectByType<WorldDisplay>();
             if (uiManager != null)
             {
                 uiManager.HideDistrictTooltip();
@@ -32,7 +33,7 @@ namespace ElectionEmpire.World
         private void OnMouseDown()
         {
             // Show detailed district info
-            var uiManager = FindObjectOfType<WorldDisplay>();
+            var uiManager = FindFirstObjectByType<WorldDisplay>();
             if (uiManager != null && District != null)
             {
                 uiManager.ShowDistrictDetails(District);

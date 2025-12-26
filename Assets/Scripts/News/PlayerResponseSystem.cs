@@ -5,6 +5,7 @@ using UnityEngine;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
 using ElectionEmpire.News.Translation;
+using ElectionEmpire.News.Templates;
 
 namespace ElectionEmpire.News
 {
@@ -116,7 +117,7 @@ namespace ElectionEmpire.News
         /// <summary>
         /// Player responds to a news event (legacy format for compatibility)
         /// </summary>
-        public ResponseResult RespondToEvent(LegacyNewsGameEvent newsEvent, string responseType)
+        public ResponseResult RespondToLegacyEvent(Translation.NewsGameEvent newsEvent, string responseType)
         {
             // Legacy support - convert to new format if needed
             return new ResponseResult
@@ -459,7 +460,7 @@ namespace ElectionEmpire.News
                 player.ReputationTags.Add(tag);
         }
         
-        private void RecordStanceFromCategory(Translation.PoliticalCategory category, string stance)
+        private void RecordStanceFromCategory(Templates.PoliticalCategory category, string stance)
         {
             // Map category to issue
             IssueCategory? issue = MapCategoryToIssue(category);
@@ -469,16 +470,16 @@ namespace ElectionEmpire.News
             }
         }
         
-        private IssueCategory? MapCategoryToIssue(Translation.PoliticalCategory category)
+        private IssueCategory? MapCategoryToIssue(Templates.PoliticalCategory category)
         {
             return category switch
             {
-                Translation.PoliticalCategory.HealthcarePolicy => IssueCategory.Healthcare,
-                Translation.PoliticalCategory.EconomicPolicy => IssueCategory.Economy,
-                Translation.PoliticalCategory.Education => IssueCategory.Education,
-                Translation.PoliticalCategory.Immigration => IssueCategory.Immigration,
-                Translation.PoliticalCategory.ClimateEnvironment => IssueCategory.Environment,
-                Translation.PoliticalCategory.CrimeJustice => IssueCategory.Crime,
+                Templates.PoliticalCategory.HealthcarePolicy => IssueCategory.Healthcare,
+                Templates.PoliticalCategory.EconomicPolicy => IssueCategory.Economy,
+                Templates.PoliticalCategory.Education => IssueCategory.Education,
+                Templates.PoliticalCategory.Immigration => IssueCategory.Immigration,
+                Templates.PoliticalCategory.ClimateEnvironment => IssueCategory.Environment,
+                Templates.PoliticalCategory.CrimeJustice => IssueCategory.Crime,
                 _ => null
             };
         }
@@ -486,7 +487,7 @@ namespace ElectionEmpire.News
         private int GetCurrentTurn()
         {
             // Get from game state if available
-            var gameLoop = UnityEngine.Object.FindObjectOfType<GameLoop>();
+            var gameLoop = UnityEngine.Object.FindFirstObjectByType<GameLoop>();
             if (gameLoop != null)
             {
                 var gameState = gameLoop.GetGameState();

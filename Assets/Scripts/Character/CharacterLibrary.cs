@@ -154,6 +154,11 @@ namespace ElectionEmpire.Character
         {
             return new List<SavedCharacter>(_savedCharacters);
         }
+
+        public SavedCharacter GetSavedCharacter(string characterID)
+        {
+            return _savedCharacters.FirstOrDefault(c => c.ID == characterID);
+        }
         
         private void SaveToFile()
         {

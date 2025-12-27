@@ -9,6 +9,9 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.Economy;
 
+// Alias for TransactionType to avoid conflicts
+using TransactionType = ElectionEmpire.Economy.EconomyTransactionType;
+
 namespace ElectionEmpire.Tournament
 {
     /// <summary>

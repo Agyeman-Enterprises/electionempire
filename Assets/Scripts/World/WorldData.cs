@@ -21,12 +21,16 @@ namespace ElectionEmpire.World
         public float NationalMorale;     // 0-100 scale
         public float DisasterRiskLevel;  // 0-100 scale
 
+        // Game progression
+        public int TurnNumber;           // Current turn number
+
         public World()
         {
             EconomyHealth = 70f;
             PoliticalPolarization = 50f;
             NationalMorale = 60f;
             DisasterRiskLevel = 20f;
+            TurnNumber = 0;
         }
     }
     

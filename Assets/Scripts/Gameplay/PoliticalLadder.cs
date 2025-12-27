@@ -316,7 +316,7 @@ namespace ElectionEmpire.Gameplay
                     CanVetoLegislation = true,
                     CanDeclareEmergency = true,
                     CanControlBudget = true,
-                    BudgetSize = 5000000000,
+                    BudgetSize = (int)5000000000,
                     CanHireStaff = true,
                     MaxStaffSize = 50,
                     CanAppointJudges = true,

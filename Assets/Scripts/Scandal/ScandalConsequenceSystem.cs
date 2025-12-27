@@ -190,8 +190,8 @@ namespace ElectionEmpire.Scandal
                 foreach (var staff in player.Staff.ToList())
                 {
                     if (staff.Loyalty != null)
-                        staff.Loyalty -= loyaltyImpact;
-                    
+                        staff.Loyalty -= (int)loyaltyImpact;
+
                     // Staff may resign if loyalty too low
                     if (staff.Loyalty != null && staff.Loyalty < 20f && UnityEngine.Random.value < 0.3f)
                     {

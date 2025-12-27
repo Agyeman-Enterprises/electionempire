@@ -512,7 +512,7 @@ namespace ElectionEmpire.News
         {
             RequiredIssues = new List<IssueCategory>();
             VariableSlots = new Dictionary<string, VariableType>();
-            Variables = new List<Translation.VariableMapping>();
+            Variables = new List<Templates.VariableMapping>();
             ResponseOptions = new List<ResponseOption>();
             ImpactFormula = new ImpactFormula();
             RequiredEntities = new List<Templates.TemplateEntityType>();

@@ -35,6 +35,8 @@ namespace ElectionEmpire.Character
 
         [Header("Political Info")]
         public string CurrentOffice;
+        public string CurrentOfficeId;
+        public int CurrentTier;
         public string Party;
 
         [Header("Resources")]
@@ -60,6 +62,8 @@ namespace ElectionEmpire.Character
             ActiveCrises = new List<string>();
             FullName = "";
             CurrentOffice = "";
+            CurrentOfficeId = "";
+            CurrentTier = 1;
             Party = "";
             TotalTurnsPlayed = 0;
         }

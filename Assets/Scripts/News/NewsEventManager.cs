@@ -31,7 +31,7 @@ namespace ElectionEmpire.News
         private List<ProcessedNews> currentNews;
         private List<NewsEvent> activeEvents;
         private List<NewsGameEvent> gameEvents;
-        private DateTime lastFetchTime;
+        private float lastFetchTime;
         private float fetchInterval = 3600f; // 1 hour in seconds
         
         public void Initialize(ElectionEmpire.Gameplay.GameState gameState, PlayerState player, ResourceManager resourceManager)

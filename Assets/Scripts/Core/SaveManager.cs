@@ -21,6 +21,10 @@ namespace ElectionEmpire.Core
         public string WorldSeed; // Also save seed for regeneration
         public Dictionary<string, object> GameState;
 
+        // Additional properties for compatibility with GameManagerIntegration
+        public ElectionEmpire.Balance.GameSettingsSaveData Settings;
+        public ElectionEmpire.Balance.ResourceSaveData Resources;
+
         public LegacyGameSaveData()
         {
             GameState = new Dictionary<string, object>();

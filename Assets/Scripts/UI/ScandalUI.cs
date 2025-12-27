@@ -160,7 +160,7 @@ namespace ElectionEmpire.UI
             }
         }
         
-        private void CreateResponseOption(ResponseOption option)
+        private void CreateResponseOption(Scandal.ResponseOption option)
         {
             GameObject item;
             

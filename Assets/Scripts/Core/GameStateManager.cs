@@ -408,10 +408,10 @@ namespace ElectionEmpire.Core
                 UndecidedVoters = 10f,
                 TurnsUntilElection = 12 // 12 months
             };
-            
+
             // Find or create opponent
             var opponent = _currentState.NPCPoliticians
-                .FirstOrDefault(n => n.Office == character.CurrentOffice && n.Party != character.Party);
+                .FirstOrDefault(n => n.Office.ToString() == character.CurrentOffice.ToString() && n.Party != character.Party);
             
             if (opponent != null)
             {
@@ -479,8 +479,11 @@ namespace ElectionEmpire.Core
             if (character == null) return;
             
             // Resource decay
-            character.Resources.ApplyChange(ResourceType.PoliticalCapital, -2); // -2 per turn
-            character.Resources.ApplyChange(ResourceType.MediaInfluence, -5); // -5 per turn
+            if (character.Resources != null)
+            {
+                character.Resources.ApplyChange(ResourceType.PoliticalCapital, -2); // -2 per turn
+                character.Resources.ApplyChange(ResourceType.MediaInfluence, -5); // -5 per turn
+            }
             
             // Campaign burn rate (if in campaign)
             if (_currentState.CurrentPhase == GamePhase.Campaign)
@@ -497,34 +500,40 @@ namespace ElectionEmpire.Core
             }
             
             // Process active scandals
-            foreach (var scandal in character.ActiveScandals.ToList())
+            if (character.ActiveScandals != null)
             {
-                scandal.TurnsActive++;
-                
-                // Scandals can fade
-                if (scandal.PublicAwareness < 10 && scandal.TurnsActive > 6)
+                foreach (var scandal in character.ActiveScandals.ToList())
                 {
-                    character.ActiveScandals.Remove(scandal);
+                    scandal.TurnsActive++;
+
+                    // Scandals can fade
+                    if (scandal.PublicAwareness < 10 && scandal.TurnsActive > 6)
+                    {
+                        character.ActiveScandals.Remove(scandal);
+                    }
                 }
             }
-            
+
             // Process active crises
-            foreach (var crisis in character.ActiveCrises.ToList())
+            if (character.ActiveCrises != null)
             {
-                crisis.TurnsRemaining--;
-                crisis.TurnsToRespond--;
-                
-                // Escalate if not addressed
-                if (crisis.TurnsToRespond <= 0 && crisis.IsEscalating)
+                foreach (var crisis in character.ActiveCrises.ToList())
                 {
-                    crisis.Severity = Mathf.Min(crisis.Severity + 1, 10);
-                    crisis.TurnsToRespond = 2;
-                }
-                
-                // Crisis ends
-                if (crisis.TurnsRemaining <= 0)
-                {
-                    character.ActiveCrises.Remove(crisis);
+                    crisis.TurnsRemaining--;
+                    crisis.TurnsToRespond--;
+
+                    // Escalate if not addressed
+                    if (crisis.TurnsToRespond <= 0 && crisis.IsEscalating)
+                    {
+                        crisis.Severity = Mathf.Min(crisis.Severity + 1, 10);
+                        crisis.TurnsToRespond = 2;
+                    }
+
+                    // Crisis ends
+                    if (crisis.TurnsRemaining <= 0)
+                    {
+                        character.ActiveCrises.Remove(crisis);
+                    }
                 }
             }
             

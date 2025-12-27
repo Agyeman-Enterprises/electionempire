@@ -817,23 +817,23 @@ namespace ElectionEmpire.News.Translation
             return new NewsGameEvent
             {
                 EventId = GenerateEventId(),
-                Type = type,
+                Type = ConvertTemplateEventTypeToEventType(type),
                 Urgency = matched.Template.DefaultUrgency,
                 SourceNewsId = matched.SourceNews.SourceId,
-                
+
                 Headline = matched.GeneratedHeadline,
                 Description = matched.GeneratedDescription,
                 ContextText = matched.GeneratedContext,
                 RealWorldNote = $"Based on real news from {matched.SourceNews.PublishedAt:MMM d, yyyy}",
-                
+
                 CreatedTurn = currentTurn,
                 ExpirationTurn = currentTurn + GetExpirationOffset(matched.Template.DefaultUrgency),
-                
+
                 ResponseOptions = new List<ResponseOption>(),
-                ResponseHistory = new List<PlayerResponse>(),
-                
-                Category = matched.Template.Category,
-                Tags = matched.Template.Tags,
+                ResponseHistory = new List<string>(),
+
+                Category = matched.Template.Category.ToString(),
+                Tags = matched.Template.Tags != null ? new List<string>(matched.Template.Tags) : new List<string>(),
                 IsChaosModeContent = matched.Template.ChaosModeOnly
             };
         }
@@ -917,6 +917,18 @@ namespace ElectionEmpire.News.Translation
         {
             _eventCounter++;
             return $"NEWS_EVT_{DateTime.UtcNow:yyyyMMdd}_{_eventCounter:D4}";
+        }
+
+        private EventType ConvertTemplateEventTypeToEventType(TemplateEventType templateType)
+        {
+            return templateType switch
+            {
+                TemplateEventType.Crisis => EventType.Crisis,
+                TemplateEventType.PolicyPressure => EventType.PolicyAnnouncement,
+                TemplateEventType.Opportunity => EventType.CampaignEvent,
+                TemplateEventType.ScandalTrigger => EventType.Scandal,
+                _ => EventType.PolicyAnnouncement
+            };
         }
         
         private int GetExpirationOffset(UrgencyLevel urgency)

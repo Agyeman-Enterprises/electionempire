@@ -303,7 +303,7 @@ namespace ElectionEmpire.UI.Screens
                     SaveName = autosave.SaveName,
                     SaveDate = autosave.SaveDate,
                     CharacterName = autosave.Character?.Name ?? "Unknown",
-                    CurrentOffice = autosave.Character?.CurrentOffice?.Name ?? "None",
+                    CurrentOffice = autosave.Character?.CurrentOffice?.ToString() ?? "None",
                     Year = autosave.GameTime.Year,
                     ApprovalRating = GetApprovalFromSave(autosave)
                 };
@@ -333,7 +333,7 @@ namespace ElectionEmpire.UI.Screens
                         SaveName = save.SaveName,
                         SaveDate = save.SaveDate,
                         CharacterName = save.Character?.Name ?? "Unknown",
-                        CurrentOffice = save.Character?.CurrentOffice?.Name ?? "None",
+                        CurrentOffice = save.Character?.CurrentOffice?.ToString() ?? "None",
                         Year = save.GameTime.Year,
                         ApprovalRating = GetApprovalFromSave(save)
                     };

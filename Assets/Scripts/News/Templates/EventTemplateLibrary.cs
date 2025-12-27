@@ -351,7 +351,7 @@ namespace ElectionEmpire.News.Templates
                 MinImpactScore = 5.0f,
                 MinControversy = 0.3f,
                 RequiredEntities = new List<TemplateEntityType> { TemplateEntityType.Legislation },
-                TriggerKeywords = new[] { "passes", "passed", "bill", "legislation", "law", "act", "vote" }.ToList(),
+                TriggerKeywords = new List<string> { "passes", "passed", "bill", "legislation", "law", "act", "vote" },
                 Scaling = new OfficeScaling { Tier1 = 0.2f, Tier2 = 0.4f, Tier3 = 0.7f, Tier4 = 1.0f, Tier5 = 1.5f },
                 Effects = new BaseEffects
                 {
@@ -381,7 +381,7 @@ namespace ElectionEmpire.News.Templates
                 MinImpactScore = 6.0f,
                 MinControversy = 0.5f,
                 RequiredEntities = new List<TemplateEntityType> { TemplateEntityType.Legislation },
-                TriggerKeywords = new[] { "controversial", "contentious", "divided", "partisan", "vote", "bill" }.ToList(),
+                TriggerKeywords = new List<string> { "controversial", "contentious", "divided", "partisan", "vote", "bill" },
                 Scaling = new OfficeScaling { Tier1 = 0.3f, Tier2 = 0.5f, Tier3 = 0.8f, Tier4 = 1.2f, Tier5 = 1.8f },
                 Effects = new BaseEffects
                 {
@@ -410,7 +410,7 @@ namespace ElectionEmpire.News.Templates
                 MinImpactScore = 8.0f,
                 MinControversy = 0.7f,
                 RequiredEntities = new List<TemplateEntityType> { TemplateEntityType.Organization },
-                TriggerKeywords = new[] { "shutdown", "budget", "deadline", "collapse", "stalemate", "impasse" }.ToList(),
+                TriggerKeywords = new List<string> { "shutdown", "budget", "deadline", "collapse", "stalemate", "impasse" },
                 Scaling = new OfficeScaling { Tier1 = 0.1f, Tier2 = 0.3f, Tier3 = 0.6f, Tier4 = 1.0f, Tier5 = 2.0f },
                 Effects = new BaseEffects
                 {
@@ -439,7 +439,7 @@ namespace ElectionEmpire.News.Templates
                 MinImpactScore = 5.0f,
                 MinControversy = 0.2f,
                 RequiredEntities = new List<TemplateEntityType> { TemplateEntityType.Person },
-                TriggerKeywords = new[] { "bipartisan", "coalition", "reform", "compromise", "agreement", "unity" }.ToList(),
+                TriggerKeywords = new List<string> { "bipartisan", "coalition", "reform", "compromise", "agreement", "unity" },
                 Scaling = new OfficeScaling { Tier1 = 0.4f, Tier2 = 0.6f, Tier3 = 0.9f, Tier4 = 1.1f, Tier5 = 1.3f },
                 Effects = new BaseEffects
                 {
@@ -472,7 +472,7 @@ namespace ElectionEmpire.News.Templates
                 MinImpactScore = 7.0f,
                 MinControversy = 0.6f,
                 RequiredEntities = new List<TemplateEntityType> { TemplateEntityType.Organization, TemplateEntityType.Legislation },
-                TriggerKeywords = new[] { "supreme court", "ruling", "struck down", "unconstitutional", "landmark", "overturn" }.ToList(),
+                TriggerKeywords = new List<string> { "supreme court", "ruling", "struck down", "unconstitutional", "landmark", "overturn" },
                 Scaling = new OfficeScaling { Tier1 = 0.2f, Tier2 = 0.4f, Tier3 = 0.7f, Tier4 = 1.0f, Tier5 = 1.5f },
                 Effects = new BaseEffects
                 {
@@ -661,7 +661,7 @@ namespace ElectionEmpire.News.Templates
                 MinImpactScore = 5.0f,
                 MinControversy = 0.4f,
                 RequiredEntities = new List<TemplateEntityType>(),
-                TriggerKeywords = headline.ToLower().Split(' ').ToList(),
+                TriggerKeywords = new List<string>(headline.ToLower().Split(' ')),
                 Scaling = new OfficeScaling(),
                 Effects = new BaseEffects
                 {

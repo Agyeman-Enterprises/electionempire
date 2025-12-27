@@ -312,7 +312,7 @@ namespace ElectionEmpire.Core
             EnhancedSaveManager.OnLoadCompleted += OnLoadCompleted;
             
             // IAP events
-            IAPManager.OnPurchaseCompleted += OnPurchaseCompleted;
+            IAPManager.OnPurchaseCompleted += (item, success) => OnPurchaseCompleted(item, success);
         }
         
         private string GetPlayerId()
@@ -572,13 +572,13 @@ namespace ElectionEmpire.Core
         public void QuickSave()
         {
             var saveData = CreateSaveData();
-            EnhancedSaveManager.Autosave(saveData);
+            EnhancedSaveManager.AutoSave(saveData); // Use AutoSave instead of Autosave
         }
-        
+
         public void SaveGame(int slot, string saveName = null)
         {
             var saveData = CreateSaveData();
-            EnhancedSaveManager.SaveGame(slot, saveData, saveName);
+            EnhancedSaveManager.SaveGame(saveData, slot); // Swap parameters: saveData, slot
         }
         
         private GameSaveData CreateSaveData()

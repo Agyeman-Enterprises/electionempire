@@ -3,6 +3,7 @@ using System;
 using ElectionEmpire.World;
 using ElectionEmpire.AI;
 using ElectionEmpire.Gameplay;
+using GameplayGameState = ElectionEmpire.Gameplay.GameState;
 
 namespace ElectionEmpire.Core
 {
@@ -132,7 +133,7 @@ namespace ElectionEmpire.Core
                 daysUntilElection = Mathf.Max(0, (int)(CurrentPlayer.TermEndDate - System.DateTime.Now).TotalDays);
             }
             
-            var gameState = new GameState
+            var gameState = new GameplayGameState
             {
                 Opponents = AIManager.GetAIOpponents(),
                 PlayerApproval = VoterSimulation.CalculateNationalApproval(CurrentPlayer),

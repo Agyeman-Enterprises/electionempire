@@ -11,20 +11,11 @@ namespace ElectionEmpire.News.Translation
     /// <summary>
     /// Interface for accessing game state from the news translation system.
     /// Implemented by GameStateProvider in Core.
+    /// Extends INewsTranslationCoreGameStateProvider for compatibility with all news subsystems.
     /// </summary>
-    public interface IGameStateProvider
+    public interface IGameStateProvider : INewsTranslationCoreGameStateProvider
     {
-        int GetPlayerOfficeTier();
-        string GetPlayerOfficeTitle();
-        string GetPlayerName();
-        string GetPlayerParty();
-        string GetPlayerState();
-        int GetCurrentTurn();
-        int GetTurnsUntilElection();
-        float GetPlayerApproval();
-        PlayerAlignment GetPlayerAlignment();
+        // Additional method not in base interface
         AlignmentState GetPlayerAlignmentState();
-        string GetPlayerPartyPosition(PoliticalCategory category);
-        bool IsChaosModeEnabled();
     }
 }

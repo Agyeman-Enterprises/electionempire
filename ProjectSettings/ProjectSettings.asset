@@ -660,7 +660,13 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -682,10 +688,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: f3f2b76a-1cb2-4e89-87c8-d93cf4be9228
+  cloudProjectId: 8bc84126-cfaa-45c6-94fc-e0330ea66c3b
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Election Empire_As
+  projectName: Election Empire_As (1)
   organizationId: imho-media
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

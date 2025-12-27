@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix compilation errors: comprehensive codebase audit and repair\n\nMajor fixes:\n- EconomyTypes.cs: Added missing CosmeticType values \\(Hat, Portrait_Background, etc.\\), \n  CosmeticItem properties, PlayerInventory fields, CurrencyWallet.SetBalance method\n- MonetizationCore.cs: Renamed StoreItem to MonetizationStoreItem, added CurrencyManager \n  methods \\(CanAfford, Debit, Credit, SetBalance\\), updated event signatures\n- BalanceTuningPolish.cs: Added GameSaveData class, EnhancedSaveManager fields and events\n- GameManagerIntegration.cs: Added GameEventData class for event bus system\n- SaveManager.cs: Renamed to LegacyGameSaveData, added save/load completion events\n- EconomyManager.cs: Added Transaction properties \\(BalanceBefore, Verified, etc.\\)\n- GameStateProvider.cs: Added ElectionEmpire.News.Translation using statement\n- ElectionManager.cs: Added parameterless constructor and Initialize method\n- GameSceneInitializer.cs: Fixed invalid MonoBehaviour lookups\n- FallbackSystem.cs: Renamed IGameStateProvider to IFallbackGameStateProvider\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git status:*)",
+      "Bash(git commit:*)",
+      "Bash(dotnet build:*)",
+      "Bash(git checkout:*)",
+      "Bash(msbuild:*)",
+      "Bash(dir:*)"
+    ]
+  }
+}

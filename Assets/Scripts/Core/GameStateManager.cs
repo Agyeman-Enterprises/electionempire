@@ -411,7 +411,7 @@ namespace ElectionEmpire.Core
 
             // Find or create opponent
             var opponent = _currentState.NPCPoliticians
-                .FirstOrDefault(n => n.Office.ToString() == character.CurrentOffice.ToString() && n.Party != character.Party);
+                .FirstOrDefault(n => n.Office.ToString() == character.CurrentOffice.ToString() && n.Party.ToString() != character.Party.ToString());
             
             if (opponent != null)
             {
@@ -481,16 +481,23 @@ namespace ElectionEmpire.Core
             // Resource decay
             if (character.Resources != null)
             {
-                character.Resources.ApplyChange(ResourceType.PoliticalCapital, -2); // -2 per turn
-                character.Resources.ApplyChange(ResourceType.MediaInfluence, -5); // -5 per turn
+                if (character.Resources.ContainsKey("PoliticalCapital"))
+                {
+                    character.Resources["PoliticalCapital"] = Mathf.Max(0, character.Resources["PoliticalCapital"] - 2);
+                }
+                if (character.Resources.ContainsKey("MediaInfluence"))
+                {
+                    character.Resources["MediaInfluence"] = Mathf.Max(0, character.Resources["MediaInfluence"] - 5);
+                }
             }
-            
+
             // Campaign burn rate (if in campaign)
-            if (_currentState.CurrentPhase == GamePhase.Campaign)
+            if (_currentState.CurrentPhase == GamePhase.Campaign && character.Resources != null)
             {
                 float burnRate = 0.1f; // 10% base
-                long burnAmount = (long)(character.Resources.CampaignFunds * burnRate);
-                character.Resources.CampaignFunds -= burnAmount;
+                float currentFunds = character.Resources.GetValueOrDefault("CampaignFunds", 0f);
+                long burnAmount = (long)(currentFunds * burnRate);
+                character.Resources["CampaignFunds"] = Mathf.Max(0, currentFunds - burnAmount);
                 
                 if (_currentState.Campaign != null)
                 {

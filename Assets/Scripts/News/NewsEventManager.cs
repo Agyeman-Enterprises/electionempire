@@ -55,9 +55,8 @@ namespace ElectionEmpire.News
             {
                 EnableDetailedLogging = false
             };
-            // Wrap gameStateProvider with adapter
-            var adaptedProvider = new GameStateProviderAdapter(gameStateProvider);
-            translationPipeline = new NewsTranslationPipeline(adaptedProvider, config);
+            // Pass gameStateProvider directly - IGameStateProvider extends INewsTranslationCoreGameStateProvider
+            translationPipeline = new NewsTranslationPipeline(gameStateProvider, config);
             
             cycleManager = new NewsCycleManager();
             

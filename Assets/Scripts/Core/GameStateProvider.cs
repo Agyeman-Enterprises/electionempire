@@ -154,11 +154,22 @@ namespace ElectionEmpire.Core
             };
         }
         
+        public AlignmentState GetPlayerAlignmentState()
+        {
+            // Return core AlignmentState type
+            var alignment = GetPlayerAlignment();
+            return new AlignmentState
+            {
+                LawChaosScore = alignment.LawChaos,
+                GoodEvilScore = alignment.GoodEvil
+            };
+        }
+
         public bool IsChaosModeEnabled()
         {
             return chaosModeEnabled;
         }
-        
+
         public void SetChaosMode(bool enabled)
         {
             chaosModeEnabled = enabled;

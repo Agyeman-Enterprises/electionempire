@@ -414,6 +414,22 @@ namespace ElectionEmpire.News
         {
             VoterBlocDeltas = new Dictionary<string, float>();
         }
+
+        /// <summary>
+        /// Create NewsEventEffects from ScaledEffects
+        /// </summary>
+        public static NewsEventEffects FromScaledEffects(Translation.ScaledEffects scaled)
+        {
+            return new NewsEventEffects
+            {
+                TrustDelta = scaled.TrustDelta,
+                CapitalDelta = scaled.CapitalDelta,
+                FundsDelta = scaled.FundsDelta,
+                MediaDelta = scaled.MediaDelta,
+                PartyLoyaltyDelta = scaled.PartyLoyaltyDelta,
+                VoterBlocDeltas = new Dictionary<string, float>(scaled.VoterBlocDeltas)
+            };
+        }
     }
 
     [Serializable]

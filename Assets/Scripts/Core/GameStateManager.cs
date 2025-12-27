@@ -12,11 +12,10 @@ using ElectionEmpire.Gameplay;
 namespace ElectionEmpire.Core
 {
     /// <summary>
-    /// Main game state container for Core namespace.
-    /// Note: Different from ElectionEmpire.Gameplay.GameState which is used for runtime game state.
+    /// Main game state container
     /// </summary>
     [Serializable]
-    public class CoreGameState
+    public class GameState
     {
         public string SaveName;
         public string ActiveCharacterId;
@@ -33,7 +32,7 @@ namespace ElectionEmpire.Core
         public List<PendingEvent> PendingEvents;
         public CampaignState Campaign;
 
-        public CoreGameState()
+        public GameState()
         {
             Settings = new GameSettings();
             World = new WorldState();
@@ -214,8 +213,8 @@ namespace ElectionEmpire.Core
         
         #region State
         
-        private CoreGameState _currentState;
-        private List<CoreGameState> _saveSlots;
+        private GameState _currentState;
+        private List<GameState> _saveSlots;
         private bool _isInitialized;
         private float _lastAutoSave;
         
@@ -223,9 +222,9 @@ namespace ElectionEmpire.Core
         
         #region Events
         
-        public event Action<CoreGameState> OnGameStarted;
-        public event Action<CoreGameState> OnGameLoaded;
-        public event Action<CoreGameState> OnGameSaved;
+        public event Action<GameState> OnGameStarted;
+        public event Action<GameState> OnGameLoaded;
+        public event Action<GameState> OnGameSaved;
         public event Action<GamePhase, GamePhase> OnPhaseChanged;
         public event Action<int> OnTurnAdvanced;
         public event Action<int, int> OnDateChanged; // year, month
@@ -235,7 +234,7 @@ namespace ElectionEmpire.Core
         
         #region Properties
         
-        public CoreGameState CurrentState => _currentState;
+        public GameState CurrentState => _currentState;
         public bool IsInitialized => _isInitialized;
         public GamePhase CurrentPhase => _currentState?.CurrentPhase ?? GamePhase.CharacterCreation;
         public int CurrentTurn => _currentState?.CurrentTurn ?? 0;
@@ -246,15 +245,15 @@ namespace ElectionEmpire.Core
         
         public GameStateManager()
         {
-            _saveSlots = new List<CoreGameState>();
+            _saveSlots = new List<GameState>();
         }
         
         /// <summary>
         /// Start a new game
         /// </summary>
-        public CoreGameState StartNewGame(string saveName, GameSettings settings = null)
+        public GameState StartNewGame(string saveName, GameSettings settings = null)
         {
-            _currentState = new CoreGameState
+            _currentState = new GameState
             {
                 SaveName = saveName,
                 Settings = settings ?? new GameSettings()
@@ -633,7 +632,7 @@ namespace ElectionEmpire.Core
         /// <summary>
         /// Load game from slot
         /// </summary>
-        public CoreGameState LoadGame(int slotIndex)
+        public GameState LoadGame(int slotIndex)
         {
             string key = $"SaveSlot_{slotIndex}";
             if (!PlayerPrefs.HasKey(key))
@@ -641,9 +640,9 @@ namespace ElectionEmpire.Core
                 Debug.LogWarning($"[GameState] No save found in slot {slotIndex}");
                 return null;
             }
-
+            
             string json = PlayerPrefs.GetString(key);
-            _currentState = JsonUtility.FromJson<CoreGameState>(json);
+            _currentState = JsonUtility.FromJson<GameState>(json);
             
             if (_currentState != null)
             {
@@ -685,10 +684,10 @@ namespace ElectionEmpire.Core
             }
         }
         
-        private CoreGameState CloneState(CoreGameState state)
+        private GameState CloneState(GameState state)
         {
             string json = JsonUtility.ToJson(state);
-            return JsonUtility.FromJson<CoreGameState>(json);
+            return JsonUtility.FromJson<GameState>(json);
         }
         
         #endregion

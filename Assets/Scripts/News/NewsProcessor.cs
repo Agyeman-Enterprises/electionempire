@@ -438,7 +438,8 @@ namespace ElectionEmpire.News
         ForeignPolicy,
         Defense,
         SocialIssues,
-        Justice
+        Justice,
+        General
     }
 }
 

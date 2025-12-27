@@ -841,70 +841,75 @@ namespace ElectionEmpire.News.Translation
         private NewsGameEvent CreateCrisisEvent(MatchedTemplate matched)
         {
             var evt = CreateBaseEvent(matched, TemplateEventType.Crisis);
-            
+
             // Set deadline based on urgency
             evt.DeadlineTurn = evt.CreatedTurn + GetDeadlineOffset(evt.Urgency);
-            
-            // Generate escalation stages
-            evt.EscalationStages = GenerateEscalationStages(matched);
+
+            // Generate escalation stages (convert to List<string>)
+            var stages = GenerateEscalationStages(matched);
+            evt.EscalationStages = stages.Select(s => s.StageName).ToList();
             evt.CurrentStage = 0;
-            
+
             // Generate response options
             evt.ResponseOptions = _responseBuilder.BuildCrisisResponses(matched);
-            
-            // Calculate scaled effects
-            evt.Effects = CalculateScaledEffects(matched);
-            
+
+            // Calculate scaled effects and convert to NewsEventEffects
+            var scaledEffects = CalculateScaledEffects(matched);
+            evt.Effects = NewsEventEffects.FromScaledEffects(scaledEffects);
+
             return evt;
         }
         
         private NewsGameEvent CreatePolicyPressureEvent(MatchedTemplate matched)
         {
             var evt = CreateBaseEvent(matched, TemplateEventType.PolicyPressure);
-            
+
             // Policy pressure has optional deadline
             if (matched.SourceNews.TemporalClassification == TemporalClass.Breaking)
             {
                 evt.DeadlineTurn = evt.CreatedTurn + 3;
             }
-            
+
             // Generate response options
             evt.ResponseOptions = _responseBuilder.BuildPolicyPressureResponses(matched);
-            
-            // Calculate scaled effects
-            evt.Effects = CalculateScaledEffects(matched);
-            
+
+            // Calculate scaled effects and convert
+            var scaledEffects = CalculateScaledEffects(matched);
+            evt.Effects = NewsEventEffects.FromScaledEffects(scaledEffects);
+
             return evt;
         }
-        
+
         private NewsGameEvent CreateOpportunityEvent(MatchedTemplate matched)
         {
             var evt = CreateBaseEvent(matched, TemplateEventType.Opportunity);
-            
+
             // Opportunities have expiration windows
             evt.DeadlineTurn = evt.CreatedTurn + 5;
-            
+
             // Generate response options
             evt.ResponseOptions = _responseBuilder.BuildOpportunityResponses(matched);
-            
-            // Calculate scaled effects (opportunities have positive base effects)
-            evt.Effects = CalculateScaledEffects(matched, positiveOnly: true);
-            
+
+            // Calculate scaled effects (opportunities have positive base effects) and convert
+            var scaledEffects = CalculateScaledEffects(matched, positiveOnly: true);
+            evt.Effects = NewsEventEffects.FromScaledEffects(scaledEffects);
+
             return evt;
         }
-        
+
         private NewsGameEvent CreateScandalTriggerEvent(MatchedTemplate matched)
         {
             var evt = CreateBaseEvent(matched, TemplateEventType.ScandalTrigger);
             evt.Urgency = UrgencyLevel.Breaking;
             evt.DeadlineTurn = evt.CreatedTurn + 2;
-            
+
             // Generate response options
             evt.ResponseOptions = _responseBuilder.BuildScandalResponses(matched);
-            
-            // Calculate scaled effects (scandals have higher negative potential)
-            evt.Effects = CalculateScaledEffects(matched, highStakes: true);
-            
+
+            // Calculate scaled effects (scandals have higher negative potential) and convert
+            var scaledEffects = CalculateScaledEffects(matched, highStakes: true);
+            evt.Effects = NewsEventEffects.FromScaledEffects(scaledEffects);
+
             return evt;
         }
         

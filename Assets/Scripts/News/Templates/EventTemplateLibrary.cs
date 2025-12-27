@@ -30,7 +30,8 @@ namespace ElectionEmpire.News.Templates
         TechnologyPolicy,
         SocialIssues,
         PartyPolitics,
-        LocalGovernment
+        LocalGovernment,
+        General
     }
     
     public enum TemplateEventType

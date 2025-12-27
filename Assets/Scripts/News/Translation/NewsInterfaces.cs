@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 using ElectionEmpire.News.Templates;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.News.Translation
 {
@@ -22,6 +23,7 @@ namespace ElectionEmpire.News.Translation
         int GetTurnsUntilElection();
         float GetPlayerApproval();
         PlayerAlignment GetPlayerAlignment();
+        AlignmentState GetPlayerAlignmentState();
         string GetPlayerPartyPosition(PoliticalCategory category);
         bool IsChaosModeEnabled();
     }

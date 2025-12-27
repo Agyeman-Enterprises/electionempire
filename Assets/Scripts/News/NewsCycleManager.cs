@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ElectionEmpire.News.Translation;
 
 namespace ElectionEmpire.News
 {
@@ -13,7 +14,7 @@ namespace ElectionEmpire.News
         private Dictionary<string, NewsCycle> activeCycles;
         private float timeScale; // Real-world days to game turns
         private Dictionary<string, NewsGameEvent> registeredEvents;
-        private Core.IGameStateProvider gameStateProvider;
+        private IGameStateProvider gameStateProvider;
 
         // Events
         public event System.Action<NewsCycleStage, NewsCycleStage> OnStageTransition;
@@ -27,7 +28,7 @@ namespace ElectionEmpire.News
             timeScale = 1f; // 1 real day = 1 game day (adjustable)
         }
 
-        public NewsCycleManager(Core.IGameStateProvider gameStateProvider)
+        public NewsCycleManager(IGameStateProvider gameStateProvider)
         {
             this.gameStateProvider = gameStateProvider;
             activeCycles = new Dictionary<string, NewsCycle>();

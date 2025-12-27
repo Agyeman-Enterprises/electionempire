@@ -5,6 +5,7 @@ using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
 using ElectionEmpire.AI;
 using ElectionEmpire.Core;
+using GameState = ElectionEmpire.Gameplay.GameState;
 
 namespace ElectionEmpire.Scandal
 {

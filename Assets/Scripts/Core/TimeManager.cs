@@ -1,161 +1,263 @@
 using UnityEngine;
 using System;
-using System.Collections;
 
-namespace ElectionEmpire.Core
+namespace ElectionEmpire.Managers
 {
     /// <summary>
-    /// Manages game time, pause states, and auto-pause scheduling
+    /// Manages game time, turns, and election cycles.
+    /// Central coordinator for the turn-based flow.
     /// </summary>
     public class TimeManager : MonoBehaviour
     {
-        [Header("Time Settings")]
-        [Tooltip("Game time multiplier: 1 real hour = X game hours")]
-        public float TimeScale = 2.0f;
+        public static TimeManager Instance { get; private set; }
         
-        [Header("Pause Settings")]
-        public bool IsPaused = false;
-        public bool AutoPauseSleep = true;
-        public bool AutoPauseWork = false;
+        // ===== TIME STATE =====
+        [Header("Current Time")]
+        [SerializeField] private int currentYear = 2025;
+        [SerializeField] private int currentMonth = 1;
+        [SerializeField] private int currentTurn = 1;
         
-        [Header("Offline Settings")]
-        [Tooltip("Speed multiplier when player is offline")]
-        public float OfflineSpeedMultiplier = 0.2f;
+        [Header("Election Cycle")]
+        [SerializeField] private int electionYear = 2026;
+        [SerializeField] private int electionMonth = 11;
+        [SerializeField] private int turnsUntilElection = 22;
         
-        [Header("Schedule")]
-        public int SleepStartHour = 23; // 11 PM
-        public int SleepEndHour = 7;    // 7 AM
-        public int WorkStartHour = 9;   // 9 AM
-        public int WorkEndHour = 17;    // 5 PM
+        [Header("Turn Settings")]
+        [SerializeField] private int actionsPerTurn = 3;
+        [SerializeField] private int actionsRemaining = 3;
         
-        // Game time state
-        public DateTime GameTime { get; private set; }
-        public DateTime LastOnlineTime { get; private set; }
+        // ===== GAME PHASE =====
+        public enum GamePhase
+        {
+            Morning,      // Briefing, news, events
+            Action,       // Player takes actions
+            Reaction,     // NPCs react, media covers
+            EndOfTurn,    // Decay, random events
+            Election,     // Special election phase
+            Transition    // Post-election, pre-term
+        }
         
-        // Events
-        public event Action<DateTime> OnTimeUpdated;
-        public event Action OnPaused;
-        public event Action OnResumed;
+        [Header("Current Phase")]
+        [SerializeField] private GamePhase currentPhase = GamePhase.Morning;
+        
+        // ===== EVENTS =====
+        public event Action OnTurnStart;
+        public event Action OnTurnEnd;
+        public event Action<GamePhase> OnPhaseChanged;
+        public event Action OnElectionTriggered;
+        public event Action OnMonthChanged;
+        public event Action OnYearChanged;
+        
+        // ===== PROPERTIES =====
+        public int CurrentYear => currentYear;
+        public int CurrentMonth => currentMonth;
+        public int CurrentTurn => currentTurn;
+        public int TurnsUntilElection => turnsUntilElection;
+        public int ActionsRemaining => actionsRemaining;
+        public GamePhase CurrentPhase => currentPhase;
+        
+        public string CurrentDateString => $"{GetMonthName(currentMonth)} {currentYear}";
+        
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            
+            Debug.Log("[TimeManager] Initialized");
+            Debug.Log($"  - Current Date: {CurrentDateString}");
+            Debug.Log($"  - Turn: {currentTurn}");
+            Debug.Log($"  - Election in: {turnsUntilElection} turns ({GetMonthName(electionMonth)} {electionYear})");
+        }
         
         private void Start()
         {
-            if (GameTime == default(DateTime))
-            {
-                GameTime = new DateTime(2024, 1, 1, 8, 0, 0); // Start at 8 AM
-            }
-            LastOnlineTime = DateTime.Now;
+            // Begin first turn
+            StartTurn();
         }
         
-        private void Update()
+        // ===== TURN FLOW =====
+        
+        public void StartTurn()
         {
-            if (!IsPaused)
+            Debug.Log($"\n========== TURN {currentTurn} START ==========");
+            Debug.Log($"Date: {CurrentDateString}");
+            Debug.Log($"Election in: {turnsUntilElection} months");
+            
+            actionsRemaining = actionsPerTurn;
+            SetPhase(GamePhase.Morning);
+            
+            OnTurnStart?.Invoke();
+        }
+        
+        public void AdvanceToActionPhase()
+        {
+            if (currentPhase == GamePhase.Morning)
             {
-                float deltaTime = Time.deltaTime * TimeScale;
-                GameTime = GameTime.AddSeconds(deltaTime);
-                OnTimeUpdated?.Invoke(GameTime);
+                SetPhase(GamePhase.Action);
+                Debug.Log($"[TimeManager] Action phase - {actionsRemaining} actions available");
+            }
+        }
+        
+        /// <summary>
+        /// Use an action - returns false if no actions remain
+        /// </summary>
+        public bool UseAction(string actionName = "Action")
+        {
+            if (actionsRemaining <= 0)
+            {
+                Debug.LogWarning("[TimeManager] No actions remaining this turn!");
+                return false;
             }
             
-            CheckAutoPause();
+            actionsRemaining--;
+            Debug.Log($"[TimeManager] Action used: {actionName} | {actionsRemaining} remaining");
+            
+            if (actionsRemaining <= 0)
+            {
+                Debug.Log("[TimeManager] All actions used - proceed to Reaction phase");
+            }
+            
+            return true;
         }
         
-        public void StartGame()
+        public void AdvanceToReactionPhase()
         {
-            IsPaused = false;
-            LastOnlineTime = DateTime.Now;
+            if (currentPhase == GamePhase.Action)
+            {
+                SetPhase(GamePhase.Reaction);
+                Debug.Log("[TimeManager] Reaction phase - NPCs and media responding...");
+                
+                // In a full implementation, this would trigger AI responses
+                // For now, auto-advance after a delay or button press
+            }
         }
         
-        public void Pause()
+        public void EndTurn()
         {
-            IsPaused = true;
-            OnPaused?.Invoke();
-        }
-        
-        public void Resume()
-        {
-            IsPaused = false;
-            OnResumed?.Invoke();
-        }
-
-        public void PauseTime()
-        {
-            Pause();
-        }
-
-        public void ResumeTime()
-        {
-            Resume();
-        }
-
-        public void TogglePause()
-        {
-            if (IsPaused)
-                Resume();
+            SetPhase(GamePhase.EndOfTurn);
+            Debug.Log("[TimeManager] End of turn - processing...");
+            
+            // Apply decay to resources
+            if (ResourceManager.Instance != null)
+            {
+                ResourceManager.Instance.ApplyTurnDecay();
+            }
+            
+            OnTurnEnd?.Invoke();
+            
+            // Advance calendar
+            AdvanceMonth();
+            
+            // Check for election
+            turnsUntilElection--;
+            if (turnsUntilElection <= 0)
+            {
+                TriggerElection();
+            }
             else
-                Pause();
-        }
-        
-        public void SetTimeScale(float scale)
-        {
-            TimeScale = Mathf.Max(0f, scale);
-        }
-        
-        private void CheckAutoPause()
-        {
-            if (IsPaused) return;
-            
-            int currentHour = GameTime.Hour;
-            
-            // Auto-pause for sleep
-            if (AutoPauseSleep)
             {
-                if (currentHour >= SleepStartHour || currentHour < SleepEndHour)
-                {
-                    Pause();
-                    return;
-                }
-            }
-            
-            // Auto-pause for work
-            if (AutoPauseWork)
-            {
-                if (currentHour >= WorkStartHour && currentHour < WorkEndHour)
-                {
-                    Pause();
-                    return;
-                }
+                // Start next turn
+                currentTurn++;
+                StartTurn();
             }
         }
         
-        public void ProcessOfflineTime()
+        // ===== CALENDAR =====
+        
+        private void AdvanceMonth()
         {
-            DateTime now = DateTime.Now;
-            TimeSpan offlineDuration = now - LastOnlineTime;
-            
-            if (offlineDuration.TotalHours > 0.1f) // Only process if offline for more than 6 minutes
+            currentMonth++;
+            if (currentMonth > 12)
             {
-                float offlineGameHours = (float)offlineDuration.TotalHours * TimeScale * OfflineSpeedMultiplier;
-                GameTime = GameTime.AddHours(offlineGameHours);
-                Debug.Log($"Processed {offlineGameHours:F2} game hours of offline time");
+                currentMonth = 1;
+                currentYear++;
+                Debug.Log($"[TimeManager] New Year: {currentYear}");
+                OnYearChanged?.Invoke();
             }
             
-            LastOnlineTime = now;
+            OnMonthChanged?.Invoke();
+            Debug.Log($"[TimeManager] Date advanced to {CurrentDateString}");
         }
         
-        public void LoadGameTime(DateTime gameTime)
+        private string GetMonthName(int month)
         {
-            GameTime = gameTime;
-            ProcessOfflineTime();
+            string[] months = { "", "January", "February", "March", "April", "May", "June",
+                               "July", "August", "September", "October", "November", "December" };
+            return months[Mathf.Clamp(month, 1, 12)];
         }
         
-        public string GetTimeString()
+        // ===== ELECTION =====
+        
+        private void TriggerElection()
         {
-            return GameTime.ToString("yyyy-MM-dd HH:mm");
+            SetPhase(GamePhase.Election);
+            Debug.Log("\n!!! ELECTION DAY !!!");
+            Debug.Log($"[TimeManager] {GetMonthName(currentMonth)} {currentYear} - The people decide!");
+            
+            OnElectionTriggered?.Invoke();
+            
+            // Election resolution would happen here
+            // For now, just log it
         }
         
-        public string GetFormattedDate()
+        /// <summary>
+        /// Set up next election cycle after winning
+        /// </summary>
+        public void SetupNextElectionCycle(int yearsUntilNext)
         {
-            return GameTime.ToString("MMMM dd, yyyy");
+            turnsUntilElection = yearsUntilNext * 12;
+            electionYear = currentYear + yearsUntilNext;
+            electionMonth = 11; // November
+            
+            Debug.Log($"[TimeManager] Next election: {GetMonthName(electionMonth)} {electionYear} ({turnsUntilElection} turns)");
+            
+            SetPhase(GamePhase.Transition);
+        }
+        
+        // ===== PHASE MANAGEMENT =====
+        
+        private void SetPhase(GamePhase newPhase)
+        {
+            if (currentPhase != newPhase)
+            {
+                Debug.Log($"[TimeManager] Phase: {currentPhase} → {newPhase}");
+                currentPhase = newPhase;
+                OnPhaseChanged?.Invoke(newPhase);
+            }
+        }
+        
+        // ===== UI HELPERS =====
+        
+        public string GetPhaseDescription()
+        {
+            switch (currentPhase)
+            {
+                case GamePhase.Morning:
+                    return "Morning Briefing - Review news and events";
+                case GamePhase.Action:
+                    return $"Action Phase - {actionsRemaining} actions remaining";
+                case GamePhase.Reaction:
+                    return "Reaction Phase - Awaiting responses...";
+                case GamePhase.EndOfTurn:
+                    return "End of Turn - Processing...";
+                case GamePhase.Election:
+                    return "ELECTION DAY";
+                case GamePhase.Transition:
+                    return "Transition Period";
+                default:
+                    return "Unknown Phase";
+            }
+        }
+        
+        public string GetStatusSummary()
+        {
+            return $"Turn {currentTurn} | {CurrentDateString}\n" +
+                   $"{GetPhaseDescription()}\n" +
+                   $"Election in {turnsUntilElection} months";
         }
     }
 }
-

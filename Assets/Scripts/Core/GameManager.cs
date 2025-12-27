@@ -3,6 +3,7 @@ using System;
 using ElectionEmpire.World;
 using ElectionEmpire.AI;
 using ElectionEmpire.Gameplay;
+using ElectionEmpire.Managers;
 using GameplayGameState = ElectionEmpire.Gameplay.GameState;
 
 namespace ElectionEmpire.Core
@@ -15,7 +16,7 @@ namespace ElectionEmpire.Core
         public static GameManager Instance { get; private set; }
         
         [Header("Managers")]
-        public ElectionEmpire.Core.TimeManager TimeManager;
+        public TimeManager TimeManager;
         public SaveManager SaveManager;
         public ElectionEmpire.AI.AIManager AIManager;
         

@@ -5,6 +5,7 @@ using System.Linq;
 using ElectionEmpire.World;
 using ElectionEmpire.AI;
 using ElectionEmpire.Core;
+using ElectionEmpire.Managers;
 using ElectionEmpire.Scandal;
 using ElectionEmpire.News;
 
@@ -16,7 +17,7 @@ namespace ElectionEmpire.Gameplay
     public class GameLoop : MonoBehaviour
     {
         // Managers
-        private ElectionEmpire.Core.TimeManager timeManager;
+        private TimeManager timeManager;
         private ResourceManager resourceManager;
         private ElectionManager electionManager;
         private AIManager aiManager;

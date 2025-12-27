@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using ElectionEmpire.Core;
+using ElectionEmpire.Managers;
 using ElectionEmpire.AI;
 using ElectionEmpire.Scandal;
 
@@ -18,7 +19,7 @@ namespace ElectionEmpire.Gameplay
     {
         [Header("Manager References")]
         [Tooltip("Assign these if managers are in scene. Leave null to find automatically.")]
-        [SerializeField] private ElectionEmpire.Core.TimeManager timeManager;
+        [SerializeField] private TimeManager timeManager;
         [SerializeField] private ElectionEmpire.AI.AIManager aiManager;
         [SerializeField] private ElectionEmpire.Scandal.ScandalManager scandalManager;
         [SerializeField] private MonoBehaviour crisisManager; // CrisisManager type if it exists

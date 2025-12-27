@@ -1,291 +1,215 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using ElectionEmpire.World;
-using ElectionEmpire.Core;
-using ElectionEmpire.Scandal;
+using System;
 
-namespace ElectionEmpire.Gameplay
+namespace ElectionEmpire.Managers
 {
     /// <summary>
-    /// Manages all player resources
+    /// Manages all player resources: Public Trust, Political Capital, Campaign Funds, etc.
+    /// This is a core manager that other systems depend on.
     /// </summary>
-    public class ResourceManager
+    public class ResourceManager : MonoBehaviour
     {
-        private PlayerState player;
+        public static ResourceManager Instance { get; private set; }
         
-        // Core resources (stored in player.Resources)
-        public float PublicTrust => player.Resources.GetValueOrDefault("PublicTrust", 50f);
-        public int PoliticalCapital => (int)player.Resources.GetValueOrDefault("PoliticalCapital", 0f);
-        public float CampaignFunds => player.Resources.GetValueOrDefault("CampaignFunds", 0f);
-        public int MediaInfluence => (int)player.Resources.GetValueOrDefault("MediaInfluence", 0f);
-        public float PartyLoyalty => player.Resources.GetValueOrDefault("PartyLoyalty", 50f);
+        // ===== CORE RESOURCES =====
+        [Header("Core Resources")]
+        [SerializeField, Range(0, 100)] private float publicTrust = 50f;
+        [SerializeField, Range(0, 150)] private float politicalCapital = 30f;
+        [SerializeField] private float campaignFunds = 10000f;
+        [SerializeField, Range(0, 100)] private float mediaInfluence = 25f;
+        [SerializeField, Range(0, 100)] private float partyLoyalty = 50f;
         
-        // Dirt/blackmail tracking
-        public Dictionary<string, List<BlackmailItem>> Blackmail;
+        // ===== SECONDARY RESOURCES =====
+        [Header("Secondary Resources")]
+        [SerializeField, Range(1, 10)] private int staffQuality = 5;
+        [SerializeField] private int legacyPoints = 0;
+        [SerializeField] private int dirtCount = 0;
         
-        public ResourceManager(PlayerState player)
+        // ===== IN-GAME CURRENCIES =====
+        [Header("Currencies")]
+        [SerializeField] private int cloutBux = 0;
+        [SerializeField] private int purrkoin = 0;
+        
+        // ===== EVENTS =====
+        public event Action<string, float, float> OnResourceChanged; // resourceName, oldValue, newValue
+        public event Action OnFundsExhausted;
+        public event Action OnTrustCritical;
+        
+        // ===== PROPERTIES =====
+        public float PublicTrust => publicTrust;
+        public float PoliticalCapital => politicalCapital;
+        public float CampaignFunds => campaignFunds;
+        public float MediaInfluence => mediaInfluence;
+        public float PartyLoyalty => partyLoyalty;
+        public int StaffQuality => staffQuality;
+        public int LegacyPoints => legacyPoints;
+        public int CloutBux => cloutBux;
+        public int Purrkoin => purrkoin;
+        
+        private void Awake()
         {
-            this.player = player;
-            Blackmail = new Dictionary<string, List<BlackmailItem>>();
+            // Singleton pattern
+            if (Instance != null && Instance != this)
+            {
+                Debug.LogWarning("[ResourceManager] Duplicate instance destroyed");
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            
+            Debug.Log("[ResourceManager] Initialized");
+            Debug.Log($"  - Public Trust: {publicTrust}%");
+            Debug.Log($"  - Political Capital: {politicalCapital}");
+            Debug.Log($"  - Campaign Funds: ${campaignFunds:N0}");
+            Debug.Log($"  - Media Influence: {mediaInfluence}");
+            Debug.Log($"  - Party Loyalty: {partyLoyalty}%");
+        }
+        
+        private void Start()
+        {
+            Debug.Log("[ResourceManager] Ready for game events");
+        }
+        
+        // ===== PUBLIC METHODS =====
+        
+        /// <summary>
+        /// Modify public trust (clamped 0-100)
+        /// </summary>
+        public void ModifyPublicTrust(float amount, string reason = "")
+        {
+            float oldValue = publicTrust;
+            publicTrust = Mathf.Clamp(publicTrust + amount, 0f, 100f);
+            
+            string sign = amount >= 0 ? "+" : "";
+            Debug.Log($"[ResourceManager] Public Trust {sign}{amount}% ({reason}) | {oldValue:F1}% → {publicTrust:F1}%");
+            
+            OnResourceChanged?.Invoke("PublicTrust", oldValue, publicTrust);
+            
+            if (publicTrust <= 20f)
+            {
+                Debug.LogWarning("[ResourceManager] PUBLIC TRUST CRITICAL!");
+                OnTrustCritical?.Invoke();
+            }
         }
         
         /// <summary>
-        /// Update resources every turn
+        /// Modify political capital (clamped 0-cap based on office tier)
         /// </summary>
-        public void UpdateResources(float deltaTime)
+        public void ModifyPoliticalCapital(float amount, string reason = "")
         {
-            // 1. Natural decay
-            ApplyDecay(deltaTime);
+            float oldValue = politicalCapital;
+            politicalCapital = Mathf.Clamp(politicalCapital + amount, 0f, 150f);
             
-            // 2. Office bonuses
-            ApplyOfficeBonuses(deltaTime);
+            string sign = amount >= 0 ? "+" : "";
+            Debug.Log($"[ResourceManager] Political Capital {sign}{amount} ({reason}) | {oldValue:F1} → {politicalCapital:F1}");
             
-            // 3. Campaign burn rate
-            ApplyCampaignCosts(deltaTime);
-            
-            // 4. Cap resources
-            EnforceResourceCaps();
+            OnResourceChanged?.Invoke("PoliticalCapital", oldValue, politicalCapital);
         }
         
-        private void ApplyDecay(float deltaTime)
+        /// <summary>
+        /// Modify campaign funds (no upper cap, can go negative = debt)
+        /// </summary>
+        public void ModifyCampaignFunds(float amount, string reason = "")
         {
-            float days = deltaTime / 86400f; // Convert to days
+            float oldValue = campaignFunds;
+            campaignFunds += amount;
             
-            // Public trust decays slowly
-            float trustDecay = 0.25f * days; // 0.25% per day
-            player.Resources["PublicTrust"] = Mathf.Clamp(
-                player.Resources["PublicTrust"] - trustDecay, 0f, 100f);
+            string sign = amount >= 0 ? "+" : "";
+            Debug.Log($"[ResourceManager] Campaign Funds {sign}${amount:N0} ({reason}) | ${oldValue:N0} → ${campaignFunds:N0}");
             
-            // Political capital decays
-            float capitalDecay = PoliticalCapital * 0.05f * days;
-            player.Resources["PoliticalCapital"] = Mathf.Max(0, 
-                (int)(PoliticalCapital - capitalDecay));
+            OnResourceChanged?.Invoke("CampaignFunds", oldValue, campaignFunds);
             
-            // Media influence decays without refreshing
-            float mediaDecay = 10f * days;
-            player.Resources["MediaInfluence"] = Mathf.Max(0, 
-                MediaInfluence - (int)mediaDecay);
-            
-            // Party loyalty decays if not active
-            if (!IsActiveInParty())
+            if (campaignFunds <= 0)
             {
-                float loyaltyDecay = 1f * days;
-                player.Resources["PartyLoyalty"] = Mathf.Clamp(
-                    player.Resources["PartyLoyalty"] - loyaltyDecay, 0f, 100f);
+                Debug.LogWarning("[ResourceManager] CAMPAIGN FUNDS EXHAUSTED!");
+                OnFundsExhausted?.Invoke();
             }
         }
         
-        private void ApplyOfficeBonuses(float deltaTime)
+        /// <summary>
+        /// Modify media influence (clamped 0-100)
+        /// </summary>
+        public void ModifyMediaInfluence(float amount, string reason = "")
         {
-            if (player.CurrentOffice != null)
-            {
-                float days = deltaTime / 86400f;
-                
-                // Monthly salary (convert to daily)
-                float monthlyBonus = player.CurrentOffice.Salary;
-                float dailyBonus = monthlyBonus / 30f;
-                player.Resources["CampaignFunds"] += dailyBonus * days;
-                
-                // Resource bonuses from office
-                if (player.CurrentOffice.ResourceBonuses != null)
-                {
-                    foreach (var bonus in player.CurrentOffice.ResourceBonuses)
-                    {
-                        switch (bonus.Key)
-                        {
-                            case "MediaInfluence":
-                                player.Resources["MediaInfluence"] += (bonus.Value / 30f) * days;
-                                break;
-                            case "PoliticalCapital":
-                                player.Resources["PoliticalCapital"] += (bonus.Value / 30f) * days;
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-        
-        private void ApplyCampaignCosts(float deltaTime)
-        {
-            // Campaign has ongoing costs
-            if (player.IsInCampaign)
-            {
-                float days = deltaTime / 86400f;
-                float dailyBurnRate = CalculateBurnRate();
-                player.Resources["CampaignFunds"] -= dailyBurnRate * days;
-                
-                // Can't go negative (triggers debt crisis)
-                if (player.Resources["CampaignFunds"] < 0)
-                {
-                    TriggerDebtCrisis();
-                    player.Resources["CampaignFunds"] = 0;
-                }
-            }
-        }
-        
-        private float CalculateBurnRate()
-        {
-            float baseRate = 1000f; // $1000/day baseline
+            float oldValue = mediaInfluence;
+            mediaInfluence = Mathf.Clamp(mediaInfluence + amount, 0f, 100f);
             
-            // Increases with tier
-            if (player.CurrentOffice != null)
-                baseRate *= player.CurrentOffice.Tier;
-            else
-                baseRate *= 1f; // No office = base rate
+            string sign = amount >= 0 ? "+" : "";
+            Debug.Log($"[ResourceManager] Media Influence {sign}{amount} ({reason}) | {oldValue:F1} → {mediaInfluence:F1}");
             
-            // Increases with campaign intensity
-            baseRate *= player.CampaignIntensity; // 0.5-2.0
-            
-            return baseRate;
+            OnResourceChanged?.Invoke("MediaInfluence", oldValue, mediaInfluence);
         }
         
-        private bool IsActiveInParty()
+        /// <summary>
+        /// Modify party loyalty (clamped 0-100)
+        /// </summary>
+        public void ModifyPartyLoyalty(float amount, string reason = "")
         {
-            // Check if player is actively participating in party activities
-            // Simplified: if party loyalty > 50, consider active
-            return PartyLoyalty > 50f;
+            float oldValue = partyLoyalty;
+            partyLoyalty = Mathf.Clamp(partyLoyalty + amount, 0f, 100f);
+            
+            string sign = amount >= 0 ? "+" : "";
+            Debug.Log($"[ResourceManager] Party Loyalty {sign}{amount}% ({reason}) | {oldValue:F1}% → {partyLoyalty:F1}%");
+            
+            OnResourceChanged?.Invoke("PartyLoyalty", oldValue, partyLoyalty);
         }
         
-        // Resource transactions
-        public bool SpendFunds(float amount, string reason)
+        /// <summary>
+        /// Add CloutBux (in-game currency)
+        /// </summary>
+        public void AddCloutBux(int amount, string reason = "")
         {
-            if (CampaignFunds >= amount)
+            cloutBux += amount;
+            Debug.Log($"[ResourceManager] CloutBux +{amount} ({reason}) | Total: {cloutBux}");
+        }
+        
+        /// <summary>
+        /// Spend CloutBux - returns false if insufficient
+        /// </summary>
+        public bool SpendCloutBux(int amount, string reason = "")
+        {
+            if (cloutBux >= amount)
             {
-                player.Resources["CampaignFunds"] -= amount;
-                Debug.Log($"Spent ${amount:F2}: {reason}");
+                cloutBux -= amount;
+                Debug.Log($"[ResourceManager] CloutBux -{amount} ({reason}) | Remaining: {cloutBux}");
                 return true;
             }
+            Debug.LogWarning($"[ResourceManager] Cannot spend {amount} CloutBux - only have {cloutBux}");
             return false;
         }
         
-        public bool SpendPoliticalCapital(int amount, string reason)
+        /// <summary>
+        /// Check if player can afford an action
+        /// </summary>
+        public bool CanAfford(float fundsCost = 0, float capitalCost = 0)
         {
-            if (PoliticalCapital >= amount)
-            {
-                player.Resources["PoliticalCapital"] -= amount;
-                Debug.Log($"Used {amount} Political Capital: {reason}");
-                return true;
-            }
-            return false;
+            return campaignFunds >= fundsCost && politicalCapital >= capitalCost;
         }
         
-        public void GainTrust(float amount, string reason)
+        /// <summary>
+        /// Apply end-of-turn decay to resources
+        /// </summary>
+        public void ApplyTurnDecay()
         {
-            player.Resources["PublicTrust"] += amount;
-            player.Resources["PublicTrust"] = Mathf.Clamp(player.Resources["PublicTrust"], 0f, 100f);
-            Debug.Log($"Gained {amount:F1}% Public Trust: {reason}");
-        }
-        
-        public void LoseTrust(float amount, string reason)
-        {
-            player.Resources["PublicTrust"] -= amount;
-            player.Resources["PublicTrust"] = Mathf.Clamp(player.Resources["PublicTrust"], 0f, 100f);
-            Debug.Log($"Lost {amount:F1}% Public Trust: {reason}");
-        }
-        
-        // Blackmail management
-        public void AcquireBlackmail(string targetID, BlackmailItem item)
-        {
-            if (!Blackmail.ContainsKey(targetID))
-                Blackmail[targetID] = new List<BlackmailItem>();
+            Debug.Log("[ResourceManager] Applying end-of-turn decay...");
             
-            Blackmail[targetID].Add(item);
+            // Political capital decays 5% per turn
+            ModifyPoliticalCapital(-politicalCapital * 0.05f, "Natural decay");
             
-            // Max 5 per target
-            if (Blackmail[targetID].Count > 5)
-                Blackmail[targetID].RemoveAt(0);
-        }
-        
-        public bool UseBlackmail(string targetID, string itemID)
-        {
-            if (Blackmail.ContainsKey(targetID))
-            {
-                var item = Blackmail[targetID].Find(b => b.ID == itemID);
-                if (item != null)
-                {
-                    // 30% chance of backfire
-                    if (UnityEngine.Random.value < 0.3f)
-                    {
-                        TriggerBlackmailBackfire(item);
-                        return false;
-                    }
-                    
-                    // Apply blackmail effects
-                    ApplyBlackmailEffects(targetID, item);
-                    
-                    // Remove from inventory
-                    Blackmail[targetID].Remove(item);
-                    
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        private void TriggerDebtCrisis()
-        {
-            player.DaysInDebt++;
+            // Media influence decays 10% per turn
+            ModifyMediaInfluence(-mediaInfluence * 0.10f, "News cycle");
             
-            // Debt crisis effects
-            LoseTrust(5f, "Debt Crisis");
-            
-            // May trigger event
-            if (player.DaysInDebt > 30)
-            {
-                // Trigger bankruptcy event
-                Debug.LogWarning("Bankruptcy crisis!");
-            }
+            // Campaign burn rate (varies by tier, placeholder 5%)
+            ModifyCampaignFunds(-campaignFunds * 0.05f, "Campaign operations");
         }
         
-        private void TriggerBlackmailBackfire(BlackmailItem item)
+        /// <summary>
+        /// Get a summary of all resources for UI display
+        /// </summary>
+        public string GetResourceSummary()
         {
-            Debug.LogWarning($"Blackmail backfired! {item.Description}");
-            LoseTrust(item.Severity * 2f, "Blackmail Backfire");
-        }
-        
-        private void ApplyBlackmailEffects(string targetID, BlackmailItem item)
-        {
-            // Apply effects based on blackmail severity
-            // This would affect the target's approval, etc.
-            Debug.Log($"Used blackmail on {targetID}: {item.Description}");
-        }
-        
-        private void EnforceResourceCaps()
-        {
-            player.Resources["PublicTrust"] = Mathf.Clamp(
-                player.Resources["PublicTrust"], 0f, 100f);
-            player.Resources["MediaInfluence"] = Mathf.Clamp(
-                (int)player.Resources["MediaInfluence"], 0, 100);
-            player.Resources["PartyLoyalty"] = Mathf.Clamp(
-                player.Resources["PartyLoyalty"], 0f, 100f);
-            
-            // Political capital varies by tier
-            int maxCapital = player.CurrentOffice != null ? 
-                player.CurrentOffice.Tier * 30 : 30;
-            player.Resources["PoliticalCapital"] = Mathf.Clamp(
-                (int)player.Resources["PoliticalCapital"], 0, maxCapital);
-        }
-    }
-    
-    /// <summary>
-    /// Blackmail item
-    /// </summary>
-    [Serializable]
-    public class BlackmailItem
-    {
-        public string ID;
-        public string TargetID;
-        public string Description;     // "Tax evasion evidence"
-        public int Severity;           // 1-10
-        public ElectionEmpire.Scandal.ScandalCategory Category;
-        public DateTime AcquiredDate;
-        public float ExpirationChance; // 10% per turn
-        
-        public bool HasExpired()
-        {
-            return UnityEngine.Random.value < ExpirationChance;
+            return $"Trust: {publicTrust:F0}% | Capital: {politicalCapital:F0} | Funds: ${campaignFunds:N0}\n" +
+                   $"Media: {mediaInfluence:F0} | Party: {partyLoyalty:F0}% | CloutBux: {cloutBux}";
         }
     }
 }
-

@@ -14,6 +14,20 @@ namespace ElectionEmpire.World
         public string Seed;              // For reproducible generation
         public Nation Nation;
         public DateTime CreatedDate;
+
+        // Global state metrics
+        public float EconomyHealth;      // 0-100 scale
+        public float PoliticalPolarization; // 0-100 scale
+        public float NationalMorale;     // 0-100 scale
+        public float DisasterRiskLevel;  // 0-100 scale
+
+        public World()
+        {
+            EconomyHealth = 70f;
+            PoliticalPolarization = 50f;
+            NationalMorale = 60f;
+            DisasterRiskLevel = 20f;
+        }
     }
     
     [Serializable]

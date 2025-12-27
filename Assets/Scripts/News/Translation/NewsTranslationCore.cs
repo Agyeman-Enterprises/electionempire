@@ -223,7 +223,43 @@ namespace ElectionEmpire.News.Translation
         public bool Success;
         public string GeneratedStatement;
     }
-    
+
+    [Serializable]
+    public class ResponseOption
+    {
+        public string OptionId;
+        public string Label;
+        public string Description;
+        public string StatementTemplate;
+
+        // Alignment effects
+        public AlignmentShift AlignmentEffect;
+        public AlignmentRange RequiredAlignment;
+        public bool IsAlignmentLocked;
+
+        // Resource effects
+        public Dictionary<string, float> ResourceEffects;
+        public Dictionary<string, float> VoterBlocEffects;
+        public List<ResourceRequirement> RequiredResources;
+
+        // Success/failure mechanics
+        public float SuccessProbability;
+        public bool IsRisky;
+        public ResponseOutcome SuccessOutcome;
+        public ResponseOutcome FailureOutcome;
+
+        // Chaos mode
+        public bool ChaosModeOnly;
+
+        public ResponseOption()
+        {
+            ResourceEffects = new Dictionary<string, float>();
+            VoterBlocEffects = new Dictionary<string, float>();
+            RequiredResources = new List<ResourceRequirement>();
+            SuccessProbability = 1.0f;
+        }
+    }
+
     #endregion
     
     #region Template Matcher

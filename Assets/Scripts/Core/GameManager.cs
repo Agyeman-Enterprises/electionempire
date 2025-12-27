@@ -24,6 +24,7 @@ namespace ElectionEmpire.Core
         public PlayerState CurrentPlayer;
         public VoterSimulation VoterSimulation;
         public bool IsGameActive = false;
+        public bool HasActiveGame => IsGameActive;
         
         [Header("AI Settings")]
         public int NumberOfAIOpponents = 3;

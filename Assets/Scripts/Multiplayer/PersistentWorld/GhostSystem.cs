@@ -23,12 +23,13 @@ namespace ElectionEmpire.Multiplayer.PersistentWorld
         public string PlayerId;              // Original player
         public string PlayerName;
         public PlayerBehaviorProfile BehaviorProfile;
-        
+
         // Ghost State
         public string CurrentRole;           // "Former President", "Elder Statesman", etc.
         public int YearsActive;
         public float Influence;              // How much they affect the world
         public bool IsActive;                // Can appear as opponent
+        public string HighestOffice;         // Highest office they held
         
         // Ghost Personality (derived from behavior profile)
         public PersonalityMatrix Personality;

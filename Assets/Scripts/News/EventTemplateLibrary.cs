@@ -474,25 +474,54 @@ namespace ElectionEmpire.News
     public class EventTemplate
     {
         public string ID;
+        public string TemplateId; // Alias for ID
         public string Name;
         public EventType Category;
         public List<IssueCategory> RequiredIssues;
         public float MinRelevance = 0f;
         public float MinControversy = 0f;
-        
+        public float MinImpactScore = 0f;
+
         public string TitleTemplate;
+        public string HeadlineTemplate; // Alias for TitleTemplate
         public string DescriptionTemplate;
-        
+        public string ContextTemplate;
+
         public Dictionary<string, VariableType> VariableSlots;
+        public List<Translation.VariableMapping> Variables;
         public ImpactFormula ImpactFormula;
         public List<ResponseOption> ResponseOptions;
-        
+
+        // Template classification
+        public Templates.TemplateEventType DefaultEventType;
+        public Templates.UrgencyLevel DefaultUrgency;
+
+        // Office tier scaling
+        public Templates.OfficeScaling Scaling;
+
+        // Base effects
+        public Templates.BaseEffects Effects;
+
+        // Additional metadata
+        public List<Templates.TemplateEntityType> RequiredEntities;
+        public List<string> TriggerKeywords;
+        public List<string> Tags;
+        public bool ChaosModeOnly;
+
         public EventTemplate()
         {
             RequiredIssues = new List<IssueCategory>();
             VariableSlots = new Dictionary<string, VariableType>();
+            Variables = new List<Translation.VariableMapping>();
             ResponseOptions = new List<ResponseOption>();
             ImpactFormula = new ImpactFormula();
+            RequiredEntities = new List<Templates.TemplateEntityType>();
+            TriggerKeywords = new List<string>();
+            Tags = new List<string>();
+            Scaling = new Templates.OfficeScaling();
+            Effects = new Templates.BaseEffects();
+            DefaultUrgency = Templates.UrgencyLevel.Developing;
+            DefaultEventType = Templates.TemplateEventType.PolicyPressure;
         }
     }
     

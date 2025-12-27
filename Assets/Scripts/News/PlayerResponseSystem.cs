@@ -547,8 +547,20 @@ namespace ElectionEmpire.News
     {
         public string ID;
         public IssueCategory Issue;
+        public IssueCategory IssueCategory; // Alias for compatibility
         public string Stance;
+        public string StanceTaken; // Alias for compatibility
         public DateTime Date;
+        public float StanceStrength;
+        public int TurnTaken;
+        public string SourceEventId;
+        public bool WasPublic;
+
+        public StanceRecord()
+        {
+            StanceStrength = 1.0f;
+            WasPublic = true;
+        }
     }
     
     public class ResponseResult

@@ -28,6 +28,9 @@ namespace ElectionEmpire.Multiplayer.PersistentWorld
         private PersistentWorldState _worldState;
         private GhostManager _ghostManager;
         private BehaviorTracker _behaviorTracker;
+
+        // Public accessors
+        public PersistentWorldState WorldState => _worldState;
         
         // Events
         public event Action<PersistentWorldState> OnWorldStateUpdated;

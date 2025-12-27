@@ -13,7 +13,8 @@ namespace ElectionEmpire.Character
         [Header("Identity")]
         public string Name;
         public string GeneratedNickname;
-        
+        public string FullName;
+
         [Header("Core Components")]
         public BackgroundData Background;
         public List<string> PersonalHistory;
@@ -23,14 +24,28 @@ namespace ElectionEmpire.Character
         public List<QuirkData> NegativeQuirks;
         public List<HandicapData> Handicaps;
         public WeaponData Weapon;
-        
+
         [Header("Calculated Properties")]
         public int ChaosRating;
         public float DifficultyMultiplier;
         public float LegacyPointBonus;
-        
+
         [Header("Stats")]
         public CharacterStats Stats;
+
+        [Header("Political Info")]
+        public string CurrentOffice;
+        public string Party;
+
+        [Header("Resources")]
+        public Dictionary<string, float> Resources;
+
+        [Header("Active Events")]
+        public List<string> ActiveScandals;
+        public List<string> ActiveCrises;
+
+        [Header("Play History")]
+        public int TotalTurnsPlayed;
         
         public Character()
         {
@@ -40,6 +55,13 @@ namespace ElectionEmpire.Character
             NegativeQuirks = new List<QuirkData>();
             Handicaps = new List<HandicapData>();
             Stats = new CharacterStats();
+            Resources = new Dictionary<string, float>();
+            ActiveScandals = new List<string>();
+            ActiveCrises = new List<string>();
+            FullName = "";
+            CurrentOffice = "";
+            Party = "";
+            TotalTurnsPlayed = 0;
         }
         
         public Character Clone()

@@ -257,9 +257,16 @@ namespace ElectionEmpire.Multiplayer.PersistentWorld
         public List<string> PoliciesImplemented;
         public float PolicyImpact;
         public float Legacy;
+        public string Reputation;
         public List<string> ReputationTags;
         public PlayerBehaviorProfile BehaviorProfile;
         public TermEndReason TermEndReason;
+
+        public PlayerTermRecord()
+        {
+            PoliciesImplemented = new List<string>();
+            ReputationTags = new List<string>();
+        }
     }
     
     public enum TermEndReason

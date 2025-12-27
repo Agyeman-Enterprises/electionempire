@@ -209,7 +209,11 @@ namespace ElectionEmpire.Core
         HealthEmergency,
         InternationalIncident,
         ConstitutionalCrisis,
-        MediaFrenzy
+        MediaFrenzy,
+        MediaInvestigation,
+        Impeachment,
+        AssassinationAttempt,
+        General
     }
     
     /// <summary>
@@ -223,7 +227,10 @@ namespace ElectionEmpire.Core
         Consequence,
         Election,
         Legacy,
-        GameOver
+        GameOver,
+        TheClimb,
+        TheThrone,
+        TheLegacy
     }
     
     #endregion

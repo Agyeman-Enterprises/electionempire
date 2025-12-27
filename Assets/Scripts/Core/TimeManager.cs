@@ -75,7 +75,17 @@ namespace ElectionEmpire.Core
             IsPaused = false;
             OnResumed?.Invoke();
         }
-        
+
+        public void PauseTime()
+        {
+            Pause();
+        }
+
+        public void ResumeTime()
+        {
+            Resume();
+        }
+
         public void TogglePause()
         {
             if (IsPaused)

@@ -864,7 +864,7 @@ namespace ElectionEmpire.News
     /// <summary>
     /// Adapter for fallback system's game state provider.
     /// </summary>
-    internal class FallbackGameStateAdapter : Fallback.IGameStateProvider
+    internal class FallbackGameStateAdapter : Fallback.IFallbackGameStateProvider
     {
         private readonly IGameStateProvider _gameState;
         

@@ -15,7 +15,31 @@ using ElectionEmpire.Core;
 namespace ElectionEmpire.UI.Screens
 {
     #region Menu Data Classes
-    
+
+    /// <summary>
+    /// UI-specific save game data for display purposes.
+    /// Different from Balance.GameSaveData which is for actual file serialization.
+    /// </summary>
+    [Serializable]
+    public class SaveGameDisplayData
+    {
+        public string SaveId;
+        public string SaveName;
+        public DateTime SaveDate;
+        public string CharacterName;
+        public string CurrentOffice;
+        public int Year;
+        public int Turn;
+        public float ApprovalRating;
+        public string PlayTime;
+        public bool IsAutoSave;
+        public Sprite Screenshot;
+
+        // Reference to actual save data
+        public ElectionEmpire.Character.Character Character;
+        public ElectionEmpire.World.World World;
+    }
+
     /// <summary>
     /// Character background data for selection.
     /// </summary>
@@ -136,7 +160,7 @@ namespace ElectionEmpire.UI.Screens
         
         #region Private Fields
         
-        private GameSaveData _lastSaveGame;
+        private SaveGameDisplayData _lastSaveGame;
         
         #endregion
         
@@ -262,7 +286,7 @@ namespace ElectionEmpire.UI.Screens
             }
         }
         
-        private GameSaveData GetLastSave()
+        private SaveGameDisplayData GetLastSave()
         {
             var saveManager = FindFirstObjectByType<Core.SaveManager>();
             if (saveManager == null)
@@ -274,7 +298,7 @@ namespace ElectionEmpire.UI.Screens
             var autosave = saveManager.LoadGame("autosave");
             if (autosave != null)
             {
-                return new GameSaveData
+                return new SaveGameDisplayData
                 {
                     SaveName = autosave.SaveName,
                     SaveDate = autosave.SaveDate,
@@ -304,7 +328,7 @@ namespace ElectionEmpire.UI.Screens
                 var save = saveManager.LoadGame(mostRecent);
                 if (save != null)
                 {
-                    return new GameSaveData
+                    return new SaveGameDisplayData
                     {
                         SaveName = save.SaveName,
                         SaveDate = save.SaveDate,
@@ -319,7 +343,7 @@ namespace ElectionEmpire.UI.Screens
             return null;
         }
         
-        private float GetApprovalFromSave(Core.GameSaveData saveData)
+        private float GetApprovalFromSave(Core.LegacyGameSaveData saveData)
         {
             // Extract approval from game state if available
             if (saveData.GameState != null && saveData.GameState.TryGetValue("ApprovalRating", out var approval))
@@ -1171,8 +1195,8 @@ namespace ElectionEmpire.UI.Screens
         
         #region Private Fields
         
-        private List<GameSaveData> _saveGames = new List<GameSaveData>();
-        private GameSaveData _selectedSave;
+        private List<SaveGameDisplayData> _saveGames = new List<SaveGameDisplayData>();
+        private SaveGameDisplayData _selectedSave;
         
         #endregion
         
@@ -1224,9 +1248,9 @@ namespace ElectionEmpire.UI.Screens
         private void LoadSaveList()
         {
             // Would load from save system
-            _saveGames = new List<GameSaveData>
+            _saveGames = new List<SaveGameDisplayData>
             {
-                new GameSaveData
+                new SaveGameDisplayData
                 {
                     SaveId = "save1",
                     CharacterName = "John Smith",
@@ -1267,13 +1291,13 @@ namespace ElectionEmpire.UI.Screens
             }
         }
         
-        private void SelectSave(GameSaveData save)
+        private void SelectSave(SaveGameDisplayData save)
         {
             _selectedSave = save;
             ShowSaveDetails(save);
         }
         
-        private void ShowSaveDetails(GameSaveData save)
+        private void ShowSaveDetails(SaveGameDisplayData save)
         {
             if (_detailsPanel != null)
                 _detailsPanel.SetActive(true);
@@ -1365,7 +1389,7 @@ namespace ElectionEmpire.UI.Screens
         [SerializeField] private Text _dateText;
         [SerializeField] private Image _autoSaveIcon;
         
-        public void Setup(GameSaveData save, Action onClick)
+        public void Setup(SaveGameDisplayData save, Action onClick)
         {
             if (_characterNameText != null) _characterNameText.text = save.CharacterName;
             if (_officeText != null) _officeText.text = $"{save.CurrentOffice} - Year {save.Year}";

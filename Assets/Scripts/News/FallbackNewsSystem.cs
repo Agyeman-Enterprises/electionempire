@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.News.Fallback;
 using ElectionEmpire.News.Translation;
-using IGameStateProvider = ElectionEmpire.News.Fallback.IGameStateProvider;
 
 namespace ElectionEmpire.News
 {
@@ -21,7 +20,7 @@ namespace ElectionEmpire.News
         private NewsCacheManager cacheManager;
         private ProceduralNewsGenerator proceduralGenerator;
         private FallbackOrchestrator orchestrator;
-        private IGameStateProvider gameStateProvider;
+        private IFallbackGameStateProvider gameStateProvider;
         
         public void Initialize()
         {
@@ -49,12 +48,30 @@ namespace ElectionEmpire.News
         {
             processor = new NewsProcessor();
             processor.Initialize();
-            
-            gameStateProvider = gameState;
+
+            // Adapt IGameStateProvider to IFallbackGameStateProvider
+            gameStateProvider = new GameStateProviderAdapter(gameState);
             var config = new FallbackConfig();
             cacheManager = new NewsCacheManager(config);
             proceduralGenerator = new ProceduralNewsGenerator(gameStateProvider, config);
             orchestrator = new FallbackOrchestrator(cacheManager, proceduralGenerator, config);
+        }
+
+        /// <summary>
+        /// Adapter to convert IGameStateProvider to IFallbackGameStateProvider
+        /// </summary>
+        private class GameStateProviderAdapter : IFallbackGameStateProvider
+        {
+            private readonly IGameStateProvider _source;
+
+            public GameStateProviderAdapter(IGameStateProvider source)
+            {
+                _source = source;
+            }
+
+            public int GetPlayerOfficeTier() => _source.GetPlayerOfficeTier();
+            public float GetPlayerApproval() => _source.GetPlayerApproval();
+            public int GetTurnsUntilElection() => _source.GetTurnsUntilElection();
         }
         
         /// <summary>

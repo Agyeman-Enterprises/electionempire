@@ -145,7 +145,7 @@ namespace ElectionEmpire.Core
             AIManager.UpdateAIApprovalRatings();
         }
         
-        public void LoadCampaign(GameSaveData saveData)
+        public void LoadCampaign(LegacyGameSaveData saveData)
         {
             CurrentCharacter = saveData.Character;
             CurrentWorld = saveData.World;

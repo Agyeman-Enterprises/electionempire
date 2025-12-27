@@ -415,10 +415,39 @@ namespace ElectionEmpire.News
         public DateTime CreatedDate;
         public DateTime ExpiresDate;
         public bool IsResolved;
-        
+
+        // Additional properties for compatibility
+        public string EventId { get { return ID; } set { ID = value; } }
+        public EventType Type { get { return EventType; } set { EventType = value; } }
+        public UrgencyLevel Urgency;
+        public string SourceNewsId;
+        public string Headline { get { return Title; } set { Title = value; } }
+        public string ContextText;
+        public string RealWorldNote;
+
+        // Turn tracking
+        public int CreatedTurn;
+        public int ExpirationTurn;
+        public int DeadlineTurn;
+        public int CurrentStage;
+
+        // Response tracking
+        public List<string> ResponseHistory;
+        public string Category;
+        public List<string> Tags;
+        public bool IsChaosModeContent;
+
+        // Evolution
+        public List<string> EscalationStages;
+        public Dictionary<string, float> Effects;
+
         public NewsGameEvent()
         {
             ResponseOptions = new List<ResponseOption>();
+            ResponseHistory = new List<string>();
+            Tags = new List<string>();
+            EscalationStages = new List<string>();
+            Effects = new Dictionary<string, float>();
         }
     }
     

@@ -448,6 +448,7 @@ namespace ElectionEmpire.Monetization
     {
         public event Action<string> OnPurchaseSuccess;
         public event Action<string, string> OnPurchaseFailed;
+        public event Action<IAPPurchase> OnPurchaseCompleted;
 
         private bool isInitialized = false;
         private CurrencyManager currencyManager;

@@ -135,5 +135,23 @@ namespace ElectionEmpire.Scandal
         FullTransparency,
         SpinCampaign
     }
+
+    /// <summary>
+    /// Response option for handling a scandal
+    /// </summary>
+    [Serializable]
+    public class ScandalResponseOption
+    {
+        public string Name;
+        public float SuccessChance;
+        public float Cost;
+        public string Requirements;
+        public Dictionary<string, float> PotentialImpact;
+
+        public ScandalResponseOption()
+        {
+            PotentialImpact = new Dictionary<string, float>();
+        }
+    }
 }
 

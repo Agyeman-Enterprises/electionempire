@@ -7,10 +7,10 @@ using ElectionEmpire.Core;
 namespace ElectionEmpire.Gameplay
 {
     /// <summary>
-    /// Game settings for the current session
+    /// UI and display settings for the current session
     /// </summary>
     [Serializable]
-    public class GameSettings
+    public class UISettings
     {
         public float MasterVolume = 1f;
         public float MusicVolume = 0.8f;
@@ -77,7 +77,7 @@ namespace ElectionEmpire.Gameplay
         public string ActiveCharacterId;
 
         // Settings
-        public GameSettings Settings;
+        public UISettings Settings;
 
         // World entities
         public List<string> MediaOutlets;
@@ -97,7 +97,7 @@ namespace ElectionEmpire.Gameplay
             NPCPoliticians = new List<string>();
             CampaignStartDate = DateTime.Now;
             CurrentGameTime = DateTime.Now;
-            Settings = new GameSettings();
+            Settings = new UISettings();
             Campaign = new CampaignData();
             CurrentPhase = GamePhase.Campaign;
             PlayerApproval = 50f;
@@ -133,6 +133,12 @@ namespace ElectionEmpire.Gameplay
         public DateTime StartDate;
         public int TotalTurns;
         public Dictionary<string, float> CampaignMetrics;
+
+        // Additional properties for compatibility
+        public string OpponentId;
+        public string OpponentName;
+        public float CampaignSpent;
+        public int TurnsUntilElection;
 
         public CampaignData()
         {

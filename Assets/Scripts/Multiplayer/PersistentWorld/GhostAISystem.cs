@@ -422,6 +422,10 @@ namespace ElectionEmpire.InfiniteUniverse
         public string Reasoning;
         public WorldStateSnapshot WorldState;
         public float OutcomeScore;
+
+        // Additional properties for compatibility
+        public string Decision { get { return Action.ToString(); } set { } }
+        public string Context { get { return Reasoning; } set { Reasoning = value; } }
     }
     
     [Serializable]

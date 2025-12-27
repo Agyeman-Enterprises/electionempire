@@ -111,7 +111,7 @@ namespace ElectionEmpire.News
                     URL = "",
                     PublishedDate = date,
                     Source = item.Source.ToString(),
-                    SourceName = item.Source == NewsSource.ProceduralGenerated ? "Game Generated" : "Cached News"
+                    SourceName = item.Source == FallbackNewsSource.ProceduralGenerated ? "Game Generated" : "Cached News"
                 });
             }
             
@@ -256,7 +256,7 @@ namespace ElectionEmpire.News
             var cachedItem = new CachedNewsItem
             {
                 OriginalNewsId = processedNews.OriginalArticle?.Title?.GetHashCode().ToString() ?? Guid.NewGuid().ToString(),
-                Source = NewsSource.CachedNews,
+                Source = FallbackNewsSource.CachedNews,
                 Headline = processedNews.OriginalArticle?.Title ?? "Unknown",
                 Summary = processedNews.OriginalArticle?.Description ?? "",
                 Category = processedNews.EventType.ToString(),
@@ -291,7 +291,7 @@ namespace ElectionEmpire.News
             return orchestrator?.GetStatus() ?? new FallbackStatus
             {
                 IsAPIAvailable = true,
-                CurrentPrimarySource = NewsSource.RealTimeAPI,
+                CurrentPrimarySource = FallbackNewsSource.RealTimeAPI,
                 CachedItemCount = cachedNews?.Count ?? 0
             };
         }

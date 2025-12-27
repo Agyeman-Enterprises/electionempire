@@ -26,8 +26,8 @@ namespace ElectionEmpire.Finance
         public string Category { get; set; }
 
         // Additional properties for compliance checking
-        public string SourceAccount { get; set; }
-        public string DestinationAccount { get; set; }
+        public AccountType SourceAccount { get; set; }
+        public AccountType DestinationAccount { get; set; }
         public string RelatedEntityId { get; set; }
         public string RelatedEntityName { get; set; }
         public bool IsSuspicious { get; set; }
@@ -67,7 +67,7 @@ namespace ElectionEmpire.Finance
         public Transaction Transaction { get; set; }
         public float NewBalance { get; set; }
         public TransactionErrorCode ErrorCode { get; set; }
-        public string Violation { get; set; }
+        public FECViolation Violation { get; set; }
         
         public static TransactionResult Successful(Transaction transaction, float newBalance, string message = "Transaction completed successfully")
         {

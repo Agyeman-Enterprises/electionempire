@@ -123,6 +123,7 @@ namespace ElectionEmpire.Staff
         public string FirstName;
         public string LastName;
         public string FullName => $"{FirstName} {LastName}";
+        public string Name => FullName; // Alias for compatibility
         public string Nickname;
         public int Age;
         public string PortraitId;

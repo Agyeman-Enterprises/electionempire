@@ -192,7 +192,11 @@ namespace ElectionEmpire.Core
         CampaignFunds,
         MediaInfluence,
         PartyLoyalty,
-        StaffQuality
+        StaffQuality,
+        StaffMorale,
+        VoterBlocSupport,
+        AlignmentLawChaos,
+        AlignmentGoodEvil
     }
     
     /// <summary>

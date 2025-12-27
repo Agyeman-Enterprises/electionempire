@@ -431,7 +431,7 @@ namespace ElectionEmpire.Core
             currentSession = new GameSession
             {
                 IsChaosMode = chaosMode,
-                CurrentPhase = PoliticalTermPhase.Exploratory,
+                CurrentPhase = GamePhase.Campaign, // PoliticalTermPhase.Exploratory maps to Campaign
                 CurrentTier = 1,
                 ElectionYear = 2024
             };

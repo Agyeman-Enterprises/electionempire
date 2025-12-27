@@ -934,9 +934,9 @@ namespace ElectionEmpire.UI.Screens
         #endregion
         
         #region Private Fields
-        
-        private GameSettings _settings;
-        private GameSettings _originalSettings;
+
+        private Gameplay.UISettings _settings;
+        private Gameplay.UISettings _originalSettings;
         private Resolution[] _resolutions;
         private int _currentTab;
         
@@ -1045,8 +1045,8 @@ namespace ElectionEmpire.UI.Screens
         private void LoadSettings()
         {
             // Would load from PlayerPrefs or save file
-            _settings = new GameSettings();
-            _originalSettings = new GameSettings();
+            _settings = new Gameplay.UISettings();
+            _originalSettings = new Gameplay.UISettings();
             
             ApplyToUI();
         }
@@ -1154,7 +1154,7 @@ namespace ElectionEmpire.UI.Screens
                 "Are you sure you want to reset all settings to defaults?",
                 () =>
                 {
-                    _settings = new GameSettings();
+                    _settings = new Gameplay.UISettings();
                     ApplyToUI();
                     ApplySettings();
                 }

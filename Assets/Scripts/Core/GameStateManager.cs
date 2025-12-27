@@ -33,7 +33,7 @@ namespace ElectionEmpire.Core
         public List<PendingEvent> PendingEvents;
         public CampaignState Campaign;
 
-        public GameState()
+        public CoreGameState()
         {
             Settings = new GameSettings();
             World = new WorldState();

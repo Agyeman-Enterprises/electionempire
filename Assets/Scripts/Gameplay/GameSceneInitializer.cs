@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using ElectionEmpire.Core;
+using ElectionEmpire.AI;
+using ElectionEmpire.Scandal;
 
 namespace ElectionEmpire.Gameplay
 {
@@ -17,8 +19,8 @@ namespace ElectionEmpire.Gameplay
         [Header("Manager References")]
         [Tooltip("Assign these if managers are in scene. Leave null to find automatically.")]
         [SerializeField] private ElectionEmpire.Core.TimeManager timeManager;
-        [SerializeField] private AI.AIManager aiManager;
-        [SerializeField] private Scandal.ScandalManager scandalManager;
+        [SerializeField] private ElectionEmpire.AI.AIManager aiManager;
+        [SerializeField] private ElectionEmpire.Scandal.ScandalManager scandalManager;
         [SerializeField] private MonoBehaviour crisisManager; // CrisisManager type if it exists
         [SerializeField] private ElectionManager electionManager;
         [SerializeField] private ResourceManager resourceManager;
@@ -147,7 +149,7 @@ namespace ElectionEmpire.Gameplay
             // Find managers if not assigned
             if (timeManager == null) timeManager = FindFirstObjectByType<ElectionEmpire.Core.TimeManager>();
             if (aiManager == null) aiManager = FindFirstObjectByType<ElectionEmpire.AI.AIManager>();
-            if (scandalManager == null) scandalManager = FindFirstObjectByType<Scandal.ScandalManager>();
+            if (scandalManager == null) scandalManager = FindFirstObjectByType<ElectionEmpire.Scandal.ScandalManager>();
             // CrisisManager is a placeholder - will be implemented in future sprint
             // if (crisisManager == null) crisisManager = FindFirstObjectByType<CrisisManager>();
             // ElectionManager and ResourceManager are not MonoBehaviour, so instantiate directly if needed
@@ -176,14 +178,14 @@ namespace ElectionEmpire.Gameplay
             if (aiManager == null && aiManagerPrefab != null)
             {
                 var go = Instantiate(aiManagerPrefab);
-                aiManager = go.GetComponent<AIManager>();
+                aiManager = go.GetComponent<ElectionEmpire.AI.AIManager>();
                 Log("Created AIManager from prefab");
             }
-            
+
             if (scandalManager == null && scandalManagerPrefab != null)
             {
                 var go = Instantiate(scandalManagerPrefab);
-                scandalManager = go.GetComponent<ScandalManager>();
+                scandalManager = go.GetComponent<ElectionEmpire.Scandal.ScandalManager>();
                 Log("Created ScandalManager from prefab");
             }
             

@@ -902,12 +902,12 @@ namespace ElectionEmpire.Caricature
         private void SetActivePortrait(PortraitConfig portrait)
         {
             currentPortrait = portrait;
-            
-            if (GetComponent<Renderer>() != null)
+
+            if (portraitRenderer != null)
             {
                 portraitRenderer.LoadPortrait(portrait);
             }
-            
+
             OnPortraitLoaded?.Invoke(portrait);
         }
         
@@ -980,18 +980,18 @@ namespace ElectionEmpire.Caricature
         /// </summary>
         public void ApplyEffect(PortraitEffect effect)
         {
-            if (GetComponent<Renderer>() != null)
+            if (portraitRenderer != null)
             {
                 portraitRenderer.ApplyEffect(effect);
             }
         }
-        
+
         /// <summary>
         /// Clear all effects from the current portrait.
         /// </summary>
         public void ClearEffects()
         {
-            if (GetComponent<Renderer>() != null)
+            if (portraitRenderer != null)
             {
                 portraitRenderer.ClearEffects();
             }
@@ -1006,23 +1006,23 @@ namespace ElectionEmpire.Caricature
         /// </summary>
         public Texture2D ExportCurrentPortrait()
         {
-            return GetComponent<Renderer>()?.ExportPortrait();
+            return portraitRenderer?.ExportPortrait();
         }
-        
+
         /// <summary>
         /// Export the current portrait with a specific expression.
         /// </summary>
         public Texture2D ExportWithExpression(Expression expression)
         {
-            return GetComponent<Renderer>()?.ExportPortraitWithExpression(expression);
+            return portraitRenderer?.ExportPortraitWithExpression(expression);
         }
-        
+
         /// <summary>
         /// Cache all expression variants for the current portrait.
         /// </summary>
         public void CacheAllExpressions()
         {
-            GetComponent<Renderer>()?.CacheAllExpressions();
+            portraitRenderer?.CacheAllExpressions();
         }
         
         #endregion

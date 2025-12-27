@@ -12,6 +12,40 @@ using ElectionEmpire.Gameplay;
 namespace ElectionEmpire.Core
 {
     /// <summary>
+    /// Main game state container
+    /// </summary>
+    [Serializable]
+    public class GameState
+    {
+        public string SaveName;
+        public string ActiveCharacterId;
+        public GamePhase CurrentPhase;
+        public int CurrentTurn;
+        public int CurrentMonth;
+        public int CurrentYear;
+        public DateTime LastSavedAt;
+        public DateTime CurrentGameTime;
+        public GameSettings Settings;
+        public WorldState World;
+        public List<MediaOutlet> MediaOutlets;
+        public List<NPCPolitician> NPCPoliticians;
+        public List<PendingEvent> PendingEvents;
+        public CampaignState Campaign;
+
+        public GameState()
+        {
+            Settings = new GameSettings();
+            World = new WorldState();
+            MediaOutlets = new List<MediaOutlet>();
+            NPCPoliticians = new List<NPCPolitician>();
+            PendingEvents = new List<PendingEvent>();
+            CurrentYear = 2024;
+            CurrentMonth = 1;
+            CurrentGameTime = DateTime.Now;
+        }
+    }
+
+    /// <summary>
     /// Global world state
     /// </summary>
     [Serializable]

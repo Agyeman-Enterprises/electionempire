@@ -568,6 +568,14 @@ namespace ElectionEmpire.News
         public bool Success;
         public string Message;
         public Dictionary<string, float> Effects;
+        public string EventId;
+        public string ResponseOptionId;
+        public bool PlayerResponded;
+
+        public ResponseResult()
+        {
+            Effects = new Dictionary<string, float>();
+        }
     }
     
     public class StanceResult

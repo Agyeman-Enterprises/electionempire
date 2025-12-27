@@ -504,6 +504,26 @@ namespace ElectionEmpire.Scandal
             }
         }
     }
+    /// <summary>
+    /// Response option for handling a scandal
+    /// </summary>
+    public class ResponseOption
+    {
+        public ResponseType Type;
+        public string Name;
+        public string Description;
+        public float SuccessChance;
+        public Dictionary<string, float> Cost;
+        public List<string> Requirements;
+        public string PotentialImpact;
+
+        public ResponseOption()
+        {
+            Cost = new Dictionary<string, float>();
+            Requirements = new List<string>();
+        }
+    }
+
     public class ScandalResponseResult
     {
         public bool Success;

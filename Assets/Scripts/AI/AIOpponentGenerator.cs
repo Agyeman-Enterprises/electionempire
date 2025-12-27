@@ -340,7 +340,7 @@ namespace ElectionEmpire.AI
             
             // Obsession - single-minded focus (can be good or bad)
             personality.Obsession = UnityEngine.Random.Range(30f, 80f);
-            if (opponent.Archetype == Archetype.Zealot || opponent.Archetype == Archetype.Revolutionary)
+            if (archetype == Archetype.Zealot || archetype == Archetype.Revolutionary)
                 personality.Obsession = UnityEngine.Random.Range(70f, 100f);
             
             // Pride - won't back down even when wrong (King George VI, Prince Andrew)

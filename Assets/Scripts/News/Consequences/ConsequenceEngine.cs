@@ -172,7 +172,12 @@ namespace ElectionEmpire.News.Consequences
             var result = new ResponseResult
             {
                 EventId = gameEvent.EventId,
-                ResponseOptionId = chosenResponse.OptionId
+                ResponseOptionId = chosenResponse.OptionId,
+                ImmediateEffects = new List<ConsequenceEffect>(),
+                DelayedEffects = new List<ConsequenceEffect>(),
+                ReputationChanges = new List<ReputationTag>(),
+                UnlockedEvents = new List<string>(),
+                BlockedEvents = new List<string>()
             };
             
             // Step 1: Base effects from response option
@@ -1136,6 +1141,38 @@ namespace ElectionEmpire.News.Consequences
         List<string> GetAllVoterBlocs();
     }
     
+    #endregion
+
+    #region Response Result
+
+    /// <summary>
+    /// Result from a player response to a news event with full consequence tracking.
+    /// </summary>
+    public class ResponseResult
+    {
+        public string EventId;
+        public string ResponseOptionId;
+        public bool IsSuccess;
+        public float SuccessRoll;
+        public float SuccessThreshold;
+        public List<ConsequenceEffect> ImmediateEffects;
+        public List<ConsequenceEffect> DelayedEffects;
+        public List<ReputationTag> ReputationChanges;
+        public string NarrativeOutcome;
+        public string MediaHeadline;
+        public List<string> UnlockedEvents;
+        public List<string> BlockedEvents;
+
+        public ResponseResult()
+        {
+            ImmediateEffects = new List<ConsequenceEffect>();
+            DelayedEffects = new List<ConsequenceEffect>();
+            ReputationChanges = new List<ReputationTag>();
+            UnlockedEvents = new List<string>();
+            BlockedEvents = new List<string>();
+        }
+    }
+
     #endregion
 }
 

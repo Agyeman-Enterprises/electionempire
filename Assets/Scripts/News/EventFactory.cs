@@ -401,6 +401,22 @@ namespace ElectionEmpire.News
     }
     
     [Serializable]
+    public class NewsEventEffects
+    {
+        public float TrustDelta;
+        public float CapitalDelta;
+        public float FundsDelta;
+        public float MediaDelta;
+        public float PartyLoyaltyDelta;
+        public Dictionary<string, float> VoterBlocDeltas;
+
+        public NewsEventEffects()
+        {
+            VoterBlocDeltas = new Dictionary<string, float>();
+        }
+    }
+
+    [Serializable]
     public class NewsGameEvent
     {
         public string ID;
@@ -439,7 +455,10 @@ namespace ElectionEmpire.News
 
         // Evolution
         public List<string> EscalationStages;
-        public Dictionary<string, float> Effects;
+        public NewsEventEffects Effects;
+
+        // Player interaction tracking
+        public bool PlayerResponded;
 
         public NewsGameEvent()
         {
@@ -447,7 +466,7 @@ namespace ElectionEmpire.News
             ResponseHistory = new List<string>();
             Tags = new List<string>();
             EscalationStages = new List<string>();
-            Effects = new Dictionary<string, float>();
+            Effects = new NewsEventEffects();
         }
     }
     

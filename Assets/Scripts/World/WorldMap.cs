@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace ElectionEmpire.World
 {
@@ -229,41 +230,57 @@ namespace ElectionEmpire.World
             districtObjects.Clear();
         }
         
-        // Zoom and pan controls
+        // Zoom and pan controls (using new Input System)
         private void Update()
         {
             if (MapCamera == null) return;
-            
+
+            var mouse = Mouse.current;
+            var keyboard = Keyboard.current;
+
             // Mouse scroll to zoom
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
-            if (scroll != 0)
+            if (mouse != null)
             {
-                if (MapCamera.orthographic)
+                float scroll = mouse.scroll.y.ReadValue() * 0.01f; // Normalize scroll value
+                if (scroll != 0)
                 {
-                    MapCamera.orthographicSize -= scroll * 5f;
-                    MapCamera.orthographicSize = Mathf.Clamp(MapCamera.orthographicSize, 5f, 50f);
+                    if (MapCamera.orthographic)
+                    {
+                        MapCamera.orthographicSize -= scroll * 5f;
+                        MapCamera.orthographicSize = Mathf.Clamp(MapCamera.orthographicSize, 5f, 50f);
+                    }
+                    else
+                    {
+                        MapCamera.fieldOfView -= scroll * 10f;
+                        MapCamera.fieldOfView = Mathf.Clamp(MapCamera.fieldOfView, 20f, 90f);
+                    }
                 }
-                else
+
+                // Middle mouse drag to pan
+                if (mouse.middleButton.isPressed)
                 {
-                    MapCamera.fieldOfView -= scroll * 10f;
-                    MapCamera.fieldOfView = Mathf.Clamp(MapCamera.fieldOfView, 20f, 90f);
+                    Vector2 delta = mouse.delta.ReadValue();
+                    float moveX = -delta.x * 0.01f;
+                    float moveY = -delta.y * 0.01f;
+                    MapCamera.transform.Translate(moveX, moveY, 0);
                 }
             }
-            
-            // Middle mouse drag to pan
-            if (Input.GetMouseButton(2))
-            {
-                float moveX = -Input.GetAxis("Mouse X") * 0.5f;
-                float moveY = -Input.GetAxis("Mouse Y") * 0.5f;
-                MapCamera.transform.Translate(moveX, moveY, 0);
-            }
-            
+
             // WASD or Arrow keys to pan
-            float panX = Input.GetAxis("Horizontal");
-            float panY = Input.GetAxis("Vertical");
-            if (panX != 0 || panY != 0)
+            if (keyboard != null)
             {
-                MapCamera.transform.Translate(new Vector3(panX, panY, 0) * Time.deltaTime * 10f);
+                float panX = 0f;
+                float panY = 0f;
+
+                if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) panX -= 1f;
+                if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) panX += 1f;
+                if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) panY -= 1f;
+                if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) panY += 1f;
+
+                if (panX != 0 || panY != 0)
+                {
+                    MapCamera.transform.Translate(new Vector3(panX, panY, 0) * Time.deltaTime * 10f);
+                }
             }
         }
     }

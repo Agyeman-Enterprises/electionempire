@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -81,8 +82,8 @@ namespace ElectionEmpire.UI
         
         private void Update()
         {
-            // Handle back button / Escape key
-            if (enablePanelStack && Input.GetKeyDown(KeyCode.Escape))
+            // Handle back button / Escape key (using new Input System)
+            if (enablePanelStack && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 GoBack();
             }

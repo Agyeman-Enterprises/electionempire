@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 
 namespace ElectionEmpire
@@ -223,8 +224,10 @@ namespace ElectionEmpire
         
         private void Update()
         {
+            if (Keyboard.current == null) return;
+
             // Toggle debug overlay with F1
-            if (Input.GetKeyDown(KeyCode.F1))
+            if (Keyboard.current.f1Key.wasPressedThisFrame)
             {
                 GameObject overlay = GameObject.Find("DebugOverlay");
                 if (overlay != null)
@@ -232,9 +235,9 @@ namespace ElectionEmpire
                     overlay.SetActive(!overlay.activeSelf);
                 }
             }
-            
+
             // Placeholder ESC menu
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 Debug.Log("[GameBootstrap] ESC pressed - Menu system not yet implemented");
             }

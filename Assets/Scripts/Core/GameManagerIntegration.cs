@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using ElectionEmpire.Balance;
 using ElectionEmpire.Monetization;
 using ElectionEmpire.Core;
@@ -707,8 +708,8 @@ namespace ElectionEmpire.Core
         
         private void Update()
         {
-            // Handle escape key for pause
-            if (Input.GetKeyDown(KeyCode.Escape))
+            // Handle escape key for pause (using new Input System)
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 if (currentState == GameStateType.Playing || currentState == GameStateType.Paused)
                 {

@@ -457,9 +457,9 @@ namespace ElectionEmpire.News.Consequences
             
             // Get historical position on this category
             var relevantStances = context.StanceHistory
-                .Where(s => s.IssueCategory == category && s.WasPublic)
+                .Where(s => s.GetCategoryString() == category && s.WasPublic)
                 .ToList();
-            
+
             if (relevantStances.Count == 0)
             {
                 return 1.0f; // No history on this category
@@ -636,7 +636,7 @@ namespace ElectionEmpire.News.Consequences
             var changes = new List<ReputationTag>();
             
             // Crisis handling reputation
-            if (gameEvent.Type == EventType.Crisis)
+            if (gameEvent.Type == ElectionEmpire.News.EventType.Crisis)
             {
                 if (isSuccess)
                 {
@@ -726,25 +726,25 @@ namespace ElectionEmpire.News.Consequences
             }
             
             // Failed responses may trigger follow-up crisis
-            if (!result.IsSuccess && gameEvent.Type == Templates.TemplateEventType.Crisis)
+            if (!result.IsSuccess && gameEvent.Type == ElectionEmpire.News.EventType.Crisis)
             {
                 if (UnityEngine.Random.value < 0.4f) // 40% chance
                 {
                     result.UnlockedEvents.Add($"escalation_{gameEvent.EventId}");
                 }
             }
-            
+
             // Successful crisis handling may unlock opportunities
-            if (result.IsSuccess && gameEvent.Type == Templates.TemplateEventType.Crisis)
+            if (result.IsSuccess && gameEvent.Type == ElectionEmpire.News.EventType.Crisis)
             {
                 if (UnityEngine.Random.value < 0.25f) // 25% chance
                 {
                     result.UnlockedEvents.Add($"opportunity_{gameEvent.Category}");
                 }
             }
-            
+
             // Scandal responses may block or trigger related events
-            if (gameEvent.Type == Templates.TemplateEventType.ScandalTrigger)
+            if (gameEvent.Type == ElectionEmpire.News.EventType.Scandal)
             {
                 if (response.Label.Contains("Deny") && !result.IsSuccess)
                 {
@@ -1028,7 +1028,7 @@ namespace ElectionEmpire.News.Consequences
             
             _stancesByCategory[category].Add(new StanceRecord
             {
-                IssueCategory = category,
+                CategoryString = category,
                 StanceTaken = stance,
                 StanceStrength = strength,
                 TurnTaken = turn,

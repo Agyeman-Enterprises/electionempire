@@ -92,18 +92,21 @@ namespace ElectionEmpire.News
             
             // Record response
             newsEvent.PlayerResponded = true;
-            newsEvent.ResponseHistory.Add(new PlayerResponse
+            newsEvent.ResponseHistory.Add(new Translation.PlayerResponse
             {
                 OptionId = optionId,
                 Turn = GetCurrentTurn(),
                 Success = success,
                 GeneratedStatement = response.StatementTemplate ?? response.Description
             });
-            
+
             // Record stance if applicable
-            if (newsEvent.Category != null)
+            if (!string.IsNullOrEmpty(newsEvent.Category))
             {
-                RecordStanceFromCategory(newsEvent.Category, response.Label);
+                if (System.Enum.TryParse<IssueCategory>(newsEvent.Category, out IssueCategory category))
+                {
+                    RecordStance(category, response.Label);
+                }
             }
             
             return new ResponseResult
@@ -548,6 +551,7 @@ namespace ElectionEmpire.News
         public string ID;
         public IssueCategory Issue;
         public IssueCategory IssueCategory; // Alias for compatibility
+        public string CategoryString; // String-based category for flexible matching
         public string Stance;
         public string StanceTaken; // Alias for compatibility
         public DateTime Date;
@@ -560,6 +564,17 @@ namespace ElectionEmpire.News
         {
             StanceStrength = 1.0f;
             WasPublic = true;
+        }
+
+        /// <summary>
+        /// Gets the category as a string for comparison purposes.
+        /// Returns CategoryString if set, otherwise falls back to IssueCategory.ToString()
+        /// </summary>
+        public string GetCategoryString()
+        {
+            if (!string.IsNullOrEmpty(CategoryString))
+                return CategoryString;
+            return IssueCategory.ToString();
         }
     }
     

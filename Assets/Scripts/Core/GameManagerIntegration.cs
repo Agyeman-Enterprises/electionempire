@@ -161,7 +161,7 @@ namespace ElectionEmpire.Core
         public DifficultyManager DifficultyManager { get; private set; }
         public BalanceDataManager BalanceManager { get; private set; }
         public AnalyticsManager Analytics { get; private set; }
-        public SaveManager EnhancedSaveManager { get; private set; }
+        public Balance.EnhancedSaveManager EnhancedSaveManager { get; private set; }
         public TutorialManager TutorialManager { get; private set; }
         public CurrencyManager CurrencyManager { get; private set; }
         public IAPManager IAPManager { get; private set; }
@@ -216,7 +216,7 @@ namespace ElectionEmpire.Core
             DifficultyManager = new DifficultyManager();
             BalanceManager = new BalanceDataManager();
             Analytics = new AnalyticsManager();
-            EnhancedSaveManager = new SaveManager();
+            EnhancedSaveManager = new Balance.EnhancedSaveManager();
             TutorialManager = new TutorialManager();
             
             // Initialize monetization
@@ -832,7 +832,7 @@ namespace ElectionEmpire.Core
         public static GameManagerIntegration Game => GameManagerIntegration.Instance;
         public static DifficultyManager Difficulty => Game?.DifficultyManager;
         public static AnalyticsManager Analytics => Game?.Analytics;
-        public static SaveManager Save => Game?.EnhancedSaveManager;
+        public static Balance.EnhancedSaveManager Save => Game?.EnhancedSaveManager;
         public static TutorialManager Tutorial => Game?.TutorialManager;
         public static CurrencyManager Currency => Game?.CurrencyManager;
         public static IAPManager IAP => Game?.IAPManager;

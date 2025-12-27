@@ -697,7 +697,7 @@ namespace ElectionEmpire.Core
         {
             if (purchase != null && !purchase.IsRefunded)
             {
-                Analytics.LogPurchase(purchase.PackageId, purchase.Currency, (float)purchase.AmountPaid, purchase.IsVerified);
+                Analytics.LogPurchase(purchase.PackageId, purchase.Currency, (long)purchase.AmountPaid, purchase.IsVerified);
             }
         }
         

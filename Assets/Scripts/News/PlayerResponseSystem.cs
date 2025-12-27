@@ -92,13 +92,7 @@ namespace ElectionEmpire.News
             
             // Record response
             newsEvent.PlayerResponded = true;
-            newsEvent.ResponseHistory.Add(new Translation.PlayerResponse
-            {
-                OptionId = optionId,
-                Turn = GetCurrentTurn(),
-                Success = success,
-                GeneratedStatement = response.StatementTemplate ?? response.Description
-            });
+            newsEvent.ResponseHistory.Add(optionId);
 
             // Record stance if applicable
             if (!string.IsNullOrEmpty(newsEvent.Category))

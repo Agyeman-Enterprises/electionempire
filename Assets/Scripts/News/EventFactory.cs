@@ -167,9 +167,13 @@ namespace ElectionEmpire.News
                     }
                 }
             }
-            
+
             // Policy opportunity from category
-            impact.PolicyOpportunity = MapCategoryToIssue(template.Category);
+            var policyOpp = MapCategoryToIssue(template.Category);
+            if (policyOpp.HasValue)
+            {
+                impact.PolicyOpportunity = policyOpp.Value;
+            }
             
             return impact;
         }
@@ -184,6 +188,18 @@ namespace ElectionEmpire.News
                 PoliticalCategory.Immigration => IssueCategory.Immigration,
                 PoliticalCategory.ClimateEnvironment => IssueCategory.Environment,
                 PoliticalCategory.CrimeJustice => IssueCategory.Crime,
+                _ => null
+            };
+        }
+
+        private IssueCategory? MapCategoryToIssue(EventType eventType)
+        {
+            // Map EventType to IssueCategory where applicable
+            return eventType switch
+            {
+                EventType.PolicyAnnouncement => IssueCategory.General,
+                EventType.Crisis => IssueCategory.General,
+                EventType.Scandal => IssueCategory.General,
                 _ => null
             };
         }

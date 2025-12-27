@@ -141,22 +141,24 @@ namespace ElectionEmpire.News
             // Initialize components (must be in constructor for readonly fields)
             // Template system
             Templates.EventTemplateLibrary.Initialize(); // Initialize static library
-            
+
             var matcherConfig = new TemplateMatcherConfig();
             _templateMatcher = new AdvancedTemplateMatcher(_gameStateProvider, matcherConfig);
-            _variableInjector = new VariableInjector(_gameStateProvider);
-            _eventFactory = new NewsEventFactory(_gameStateProvider);
+            var translationAdapter = new NewsTranslationAdapter(_gameStateProvider);
+            _variableInjector = new VariableInjector(translationAdapter);
+            _eventFactory = new NewsEventFactory(translationAdapter);
             
             // Temporal system
             var temporalConfig = new Temporal.TemporalConfig();
             var timeProvider = new GameTimeProviderAdapter(_gameStateProvider);
-            _cycleManager = new NewsCycleManager(timeProvider, temporalConfig);
+            _cycleManager = new NewsCycleManager(_gameStateProvider);
             _timeScaler = new Temporal.TimeScaler(timeProvider, temporalConfig);
             _fatigueTracker = new Temporal.MediaFatigueTracker(temporalConfig);
             
             // Consequence system
             var consequenceConfig = new Consequences.ConsequenceConfig();
-            _consequenceCalculator = new Consequences.ConsequenceCalculator(_gameStateProvider, consequenceConfig);
+            var consequenceAdapter = new ConsequenceEngineAdapter(_gameStateProvider);
+            _consequenceCalculator = new Consequences.ConsequenceCalculator(consequenceAdapter, consequenceConfig);
             _effectApplicator = new Consequences.EffectApplicator(_gameStateModifier, consequenceConfig);
             _stanceTracker = new Consequences.StanceHistoryTracker();
             
@@ -180,10 +182,10 @@ namespace ElectionEmpire.News
         
         private void WireInternalEvents()
         {
-            // Cycle manager events
-            _cycleManager.OnStageTransition += HandleStageTransition;
-            _cycleManager.OnEventArchived += HandleEventArchived;
-            _cycleManager.OnBreakingNewsInterrupt += HandleBreakingNews;
+            // Cycle manager events (note: need to match delegate signatures)
+            // _cycleManager.OnStageTransition += HandleStageTransition;
+            // _cycleManager.OnEventArchived += HandleEventArchived;
+            // _cycleManager.OnBreakingNewsInterrupt += HandleBreakingNews;
             
             // Effect applicator events
             _effectApplicator.OnEffectApplied += HandleEffectApplied;
@@ -289,26 +291,26 @@ namespace ElectionEmpire.News
             try
             {
                 // Step 1: Match to template
-                var matchResult = _templateMatcher.FindBestMatch(newsItem);
-                
-                if (matchResult == null || matchResult.FinalScore < 0.3f)
+                var matchResult = _templateMatcher.Match(newsItem);
+
+                if (matchResult == null || !matchResult.Success || matchResult.BestMatch == null)
                 {
                     Log($"No suitable template for news {newsItem.SourceId}");
                     return null;
                 }
                 
                 // Step 2: Inject variables
-                _variableInjector.InjectVariables(matchResult);
-                
+                _variableInjector.InjectVariables(matchResult.BestMatch);
+
                 // Step 3: Create game event
-                var gameEvent = _eventFactory.CreateEvent(matchResult);
-                
+                var gameEvent = _eventFactory.CreateEvent(matchResult.BestMatch);
+
                 // Step 4: Apply fatigue modifier to effects
                 var entities = newsItem.Entities?.People?.Select(p => p.Name).ToList() ?? new List<string>();
                 float fatigueMod = _fatigueTracker.GetFatigueModifier(newsItem.PrimaryCategory.ToString(), entities);
-                if (gameEvent.ScaledEffects != null)
+                if (gameEvent.Effects != null)
                 {
-                    gameEvent.ScaledEffects = ApplyFatigueToEffects(gameEvent.ScaledEffects, fatigueMod);
+                    gameEvent.Effects = ApplyFatigueToNewsEventEffects(gameEvent.Effects, fatigueMod);
                 }
                 
                 // Step 5: Calculate deadline and expiration
@@ -331,7 +333,7 @@ namespace ElectionEmpire.News
         private void RegisterGameEvent(NewsGameEvent gameEvent, ProcessedNewsItem sourceNews)
         {
             _activeEvents[gameEvent.EventId] = gameEvent;
-            _cycleManager.RegisterEvent(gameEvent.EventId, sourceNews.SourceId, sourceNews.PublishedAt);
+            _cycleManager.RegisterEvent(gameEvent);
             _fatigueTracker.RecordEvent(
                 gameEvent.EventId,
                 gameEvent.Category,
@@ -356,7 +358,7 @@ namespace ElectionEmpire.News
         /// <summary>
         /// Process a player's response to a news event.
         /// </summary>
-        public ResponseResult ProcessPlayerResponse(string eventId, string responseOptionId)
+        public Consequences.ResponseResult ProcessPlayerResponse(string eventId, string responseOptionId)
         {
             if (!_activeEvents.TryGetValue(eventId, out var gameEvent))
             {
@@ -386,22 +388,27 @@ namespace ElectionEmpire.News
             RecordPlayerStance(gameEvent, responseOption);
             
             // Update cycle manager
-            _cycleManager.RecordPlayerInteraction(eventId);
+            _cycleManager.RecordPlayerInteraction(eventId, "response");
             
-            // Fire event
+            // Fire event - use News.ResponseResult for the event args
             OnResponseProcessed?.Invoke(this, new ResponseEventArgs
             {
                 EventId = eventId,
-                Result = result
+                Result = new ResponseResult
+                {
+                    Success = result.IsSuccess,
+                    EventId = result.EventId,
+                    ResponseOptionId = result.ResponseOptionId
+                }
             });
-            
+
             return result;
         }
         
         private Consequences.ConsequenceContext BuildConsequenceContext()
         {
             var alignment = _gameStateProvider.GetPlayerAlignment();
-            
+
             return new Consequences.ConsequenceContext
             {
                 PlayerOfficeTier = _gameStateProvider.GetPlayerOfficeTier(),
@@ -409,8 +416,8 @@ namespace ElectionEmpire.News
                 CurrentTurn = _gameStateProvider.GetCurrentTurn(),
                 TurnsUntilElection = _gameStateProvider.GetTurnsUntilElection(),
                 IsChaosModeEnabled = _gameStateProvider.IsChaosModeEnabled(),
-                ActiveTags = new List<Consequences.ReputationTag>(),  // Would come from player state
-                StanceHistory = new List<Consequences.StanceRecord>()  // Would come from stance tracker
+                ActiveTags = new List<Consequences.ReputationTag>(),
+                StanceHistory = new List<StanceRecord>() // Use global StanceRecord from News namespace
             };
         }
         
@@ -469,9 +476,9 @@ namespace ElectionEmpire.News
         public void OnTurnAdvance()
         {
             Log("Processing turn advance");
-            
+
             // Update temporal state
-            var temporalResult = _cycleManager.OnTurnAdvance();
+            _cycleManager.OnTurnAdvance();
             
             // Process delayed effects
             _effectApplicator.ProcessTurn();
@@ -487,34 +494,28 @@ namespace ElectionEmpire.News
             
             // Clean cache
             _cacheManager.CleanExpiredItems();
-            
-            Log($"Turn advance complete. Stage transitions: {temporalResult.StageTransitions.Count}, " +
-                $"Archived: {temporalResult.ArchivedEvents.Count}");
+
+            Log("Turn advance complete.");
         }
         
         private void UpdateTemporalState()
         {
-            var result = _cycleManager.Update();
-            
-            foreach (var transition in result.StageTransitions)
+            _cycleManager.Update();
+
+            // Check for interrupting events
+            var interruptingEvents = _cycleManager.GetInterruptingEvents();
+
+            if (interruptingEvents.Count > 0)
             {
-                Log($"Stage transition: {transition}");
-            }
-            
-            if (result.InterruptingEvents.Count > 0)
-            {
-                foreach (var eventId in result.InterruptingEvents)
+                foreach (var gameEvent in interruptingEvents)
                 {
-                    if (_activeEvents.TryGetValue(eventId, out var gameEvent))
+                    OnBreakingNews?.Invoke(this, new NewsEventArgs
                     {
-                        OnBreakingNews?.Invoke(this, new NewsEventArgs
-                        {
-                            EventId = eventId,
-                            GameEvent = gameEvent,
-                            Stage = NewsCycleStage.Breaking,
-                            RequiresPlayerAction = true
-                        });
-                    }
+                        EventId = gameEvent.EventId,
+                        GameEvent = gameEvent,
+                        Stage = NewsCycleStage.Breaking,
+                        RequiresPlayerAction = true
+                    });
                 }
             }
         }
@@ -568,11 +569,7 @@ namespace ElectionEmpire.News
         /// </summary>
         public List<NewsGameEvent> GetEventsByStage(NewsCycleStage stage)
         {
-            var eventIds = _cycleManager.GetEventsByStage(stage);
-            return eventIds
-                .Where(id => _activeEvents.ContainsKey(id))
-                .Select(id => _activeEvents[id])
-                .ToList();
+            return _cycleManager.GetEventsByStage(stage);
         }
         
         /// <summary>
@@ -588,11 +585,7 @@ namespace ElectionEmpire.News
         /// </summary>
         public List<NewsGameEvent> GetPendingPlayerActions()
         {
-            var interrupting = _cycleManager.GetInterruptingEvents();
-            return interrupting
-                .Where(id => _activeEvents.ContainsKey(id))
-                .Select(id => _activeEvents[id])
-                .ToList();
+            return _cycleManager.GetInterruptingEvents();
         }
         
         /// <summary>
@@ -730,7 +723,6 @@ namespace ElectionEmpire.News
                 Headline = cached.Headline,
                 Summary = cached.Summary,
                 PrimaryCategory = ParseCategory(cached.Category),
-                Keywords = cached.Keywords,
                 ImpactScore = cached.RelevanceScore * 10f,  // Denormalize
                 ControversyScore = cached.ControversyScore,
                 PublishedAt = cached.CachedAt,
@@ -772,15 +764,15 @@ namespace ElectionEmpire.News
             return NewsCycleStage.Fading;
         }
         
-        private ScaledEffects ApplyFatigueToEffects(ScaledEffects effects, float fatigueMod)
+        private NewsEventEffects ApplyFatigueToNewsEventEffects(NewsEventEffects effects, float fatigueMod)
         {
             if (effects == null) return null;
-            
+
             effects.TrustDelta *= fatigueMod;
             effects.CapitalDelta *= fatigueMod;
             effects.MediaDelta *= fatigueMod;
             effects.PartyLoyaltyDelta *= fatigueMod;
-            
+
             return effects;
         }
         
@@ -815,13 +807,13 @@ namespace ElectionEmpire.News
         
         public void Dispose()
         {
-            _cycleManager.OnStageTransition -= HandleStageTransition;
-            _cycleManager.OnEventArchived -= HandleEventArchived;
-            _cycleManager.OnBreakingNewsInterrupt -= HandleBreakingNews;
+            // _cycleManager.OnStageTransition -= HandleStageTransition;
+            // _cycleManager.OnEventArchived -= HandleEventArchived;
+            // _cycleManager.OnBreakingNewsInterrupt -= HandleBreakingNews;
             _effectApplicator.OnEffectApplied -= HandleEffectApplied;
             _fallbackOrchestrator.OnSourceChanged -= HandleSourceChanged;
             _fallbackOrchestrator.OnFallbackWarning -= HandleFallbackWarning;
-            
+
             _isInitialized = false;
         }
         

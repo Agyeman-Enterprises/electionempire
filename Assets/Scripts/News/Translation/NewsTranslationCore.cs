@@ -11,6 +11,7 @@ using ElectionEmpire.News.Templates;
 using ElectionEmpire.Core;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
+using ElectionEmpire.News;
 
 namespace ElectionEmpire.News.Translation
 {
@@ -135,96 +136,6 @@ namespace ElectionEmpire.News.Translation
             ResolvedVariables = new Dictionary<string, string>();
         }
     }
-    
-    /// <summary>
-    /// Final game event ready for player interaction
-    /// </summary>
-    [Serializable]
-    public class NewsGameEvent
-    {
-        public string EventId;
-        public TemplateEventType Type;
-        public UrgencyLevel Urgency;
-        public string SourceNewsId;
-        
-        // Display content
-        public string Headline;
-        public string Description;
-        public string ContextText;
-        public string RealWorldNote;     // "Based on real news from..."
-        
-        // Timing
-        public int CreatedTurn;
-        public int? DeadlineTurn;
-        public int ExpirationTurn;
-        
-        // Response options
-        public List<ResponseOption> ResponseOptions;
-        
-        // Escalation (for crises)
-        public List<EscalationStage> EscalationStages;
-        public int CurrentStage;
-        
-        // Tracking
-        public bool PlayerResponded;
-        public List<PlayerResponse> ResponseHistory;
-        
-        // Scaled effects
-        public ScaledEffects Effects;
-        
-        // Metadata
-        public PoliticalCategory Category;
-        public string[] Tags;
-        public bool IsChaosModeContent;
-        
-        public NewsGameEvent()
-        {
-            ResponseOptions = new List<ResponseOption>();
-            EscalationStages = new List<EscalationStage>();
-            ResponseHistory = new List<PlayerResponse>();
-            Effects = new ScaledEffects();
-        }
-    }
-    
-    [Serializable]
-    public class ResponseOption
-    {
-        public string OptionId;
-        public string Label;
-        public string Description;
-        public string StatementTemplate;
-        
-        // Requirements
-        public AlignmentRange RequiredAlignment;
-        public List<ResourceRequirement> RequiredResources;
-        public List<string> RequiredTraits;
-        
-        // Effects
-        public AlignmentShift AlignmentEffect;
-        public Dictionary<string, float> ResourceEffects;
-        public Dictionary<string, float> VoterBlocEffects;
-        public Dictionary<string, int> RelationshipEffects;
-        
-        // Outcomes
-        public float SuccessProbability;
-        public ResponseOutcome SuccessOutcome;
-        public ResponseOutcome FailureOutcome;
-        
-        // Flags
-        public bool IsRisky;
-        public bool IsAlignmentLocked;
-        public bool ChaosModeOnly;
-        
-        public ResponseOption()
-        {
-            RequiredResources = new List<ResourceRequirement>();
-            RequiredTraits = new List<string>();
-            ResourceEffects = new Dictionary<string, float>();
-            VoterBlocEffects = new Dictionary<string, float>();
-            RelationshipEffects = new Dictionary<string, int>();
-        }
-    }
-    
     [Serializable]
     public class AlignmentRange
     {
@@ -322,7 +233,7 @@ namespace ElectionEmpire.News.Translation
     /// </summary>
     public class TemplateMatcher
     {
-        private readonly IGameStateProvider _gameState;
+        private readonly INewsTranslationCoreGameStateProvider _gameState;
         
         // Scoring weights
         private const float ENTITY_MATCH_WEIGHT = 0.30f;
@@ -333,7 +244,7 @@ namespace ElectionEmpire.News.Translation
         
         private const float MIN_MATCH_THRESHOLD = 0.4f;
         
-        public TemplateMatcher(IGameStateProvider gameState)
+        public TemplateMatcher(INewsTranslationCoreGameStateProvider gameState)
         {
             _gameState = gameState;
             EventTemplateLibrary.Initialize();
@@ -734,9 +645,9 @@ namespace ElectionEmpire.News.Translation
     /// </summary>
     public class VariableInjector
     {
-        private readonly IGameStateProvider _gameState;
+        private readonly INewsTranslationCoreGameStateProvider _gameState;
         
-        public VariableInjector(IGameStateProvider gameState)
+        public VariableInjector(INewsTranslationCoreGameStateProvider gameState)
         {
             _gameState = gameState;
         }
@@ -812,11 +723,11 @@ namespace ElectionEmpire.News.Translation
     /// </summary>
     public class NewsEventFactory
     {
-        private readonly IGameStateProvider _gameState;
+        private readonly INewsTranslationCoreGameStateProvider _gameState;
         private readonly ResponseOptionBuilder _responseBuilder;
         private int _eventCounter = 0;
         
-        public NewsEventFactory(IGameStateProvider gameState)
+        public NewsEventFactory(INewsTranslationCoreGameStateProvider gameState)
         {
             _gameState = gameState;
             _responseBuilder = new ResponseOptionBuilder(gameState);
@@ -1093,10 +1004,10 @@ namespace ElectionEmpire.News.Translation
     /// </summary>
     public class ResponseOptionBuilder
     {
-        private readonly IGameStateProvider _gameState;
+        private readonly INewsTranslationCoreGameStateProvider _gameState;
         private int _optionCounter = 0;
         
-        public ResponseOptionBuilder(IGameStateProvider gameState)
+        public ResponseOptionBuilder(INewsTranslationCoreGameStateProvider gameState)
         {
             _gameState = gameState;
         }
@@ -1618,7 +1529,7 @@ namespace ElectionEmpire.News.Translation
     /// Interface for accessing game state information.
     /// Implement this based on your actual game state management.
     /// </summary>
-    public interface IGameStateProvider
+    public interface INewsTranslationCoreGameStateProvider
     {
         int GetPlayerOfficeTier();
         string GetPlayerOfficeTitle();

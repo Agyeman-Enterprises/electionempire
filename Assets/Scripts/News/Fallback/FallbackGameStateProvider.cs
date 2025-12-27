@@ -6,7 +6,7 @@ namespace ElectionEmpire.News
     /// <summary>
     /// Adapter to provide game state to fallback system
     /// </summary>
-    public class FallbackGameStateProvider : IGameStateProvider
+    public class FallbackGameStateProvider : IFallbackGameStateProvider
     {
         private Core.GameManager gameManager;
         

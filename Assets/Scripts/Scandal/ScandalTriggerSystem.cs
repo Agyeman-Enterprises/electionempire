@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
+using ElectionEmpire.AI;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.Scandal
 {
@@ -382,23 +384,6 @@ namespace ElectionEmpire.Scandal
         private string GetRandomStaffRole() => new[] { "campaign manager", "advisor", "staffer", "consultant" }[UnityEngine.Random.Range(0, 4)];
         private string GeneratePersonName() => $"{new[] { "Sarah", "John", "Maria", "David" }[UnityEngine.Random.Range(0, 4)]} " +
                                               $"{new[] { "Smith", "Johnson", "Garcia", "Lee" }[UnityEngine.Random.Range(0, 4)]}";
-    }
-    
-    /// <summary>
-    /// Represents a player action (for trigger system)
-    /// </summary>
-    public class PlayerAction
-    {
-        public string Type;
-        public string Description;
-        public System.DateTime Timestamp;
-        
-        public PlayerAction(string type, string description = "")
-        {
-            Type = type;
-            Description = description;
-            Timestamp = System.DateTime.Now;
-        }
     }
 }
 

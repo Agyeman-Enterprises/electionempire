@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ElectionEmpire.Monetization;
+using ElectionEmpire.Finance;
 
 // ============================================================================
 // ELECTION EMPIRE - CAMPAIGN FINANCE & PAYMENT SYSTEM
@@ -125,48 +127,6 @@ namespace ElectionEmpire.Finance
     #endregion
     
     #region Financial Data Structures
-    
-    /// <summary>
-    /// A single financial transaction
-    /// </summary>
-    [Serializable]
-    public class Transaction
-    {
-        public string Id;
-        public DateTime Timestamp;
-        public TransactionType Type;
-        public float Amount;
-        public AccountType SourceAccount;
-        public AccountType? DestinationAccount;
-        public string Description;
-        public string Category;
-        public string RelatedEntityId;          // Donor ID, Staff ID, Vendor ID
-        public string RelatedEntityName;
-        public bool IsReported;                 // Reported to FEC
-        public bool IsSuspicious;               // Might trigger investigation
-        public Dictionary<string, string> Metadata;
-        
-        public Transaction()
-        {
-            Id = Guid.NewGuid().ToString("N").Substring(0, 12);
-            Timestamp = DateTime.Now;
-            Metadata = new Dictionary<string, string>();
-            IsReported = true;
-        }
-    }
-    
-    public enum TransactionType
-    {
-        Donation,
-        Expense,
-        Transfer,
-        Refund,
-        Fine,
-        Interest,
-        Loan,
-        LoanRepayment
-    }
-    
     /// <summary>
     /// A financial account
     /// </summary>
@@ -1343,15 +1303,6 @@ namespace ElectionEmpire.Finance
     #endregion
     
     #region Supporting Data Types
-    
-    public class TransactionResult
-    {
-        public bool Success;
-        public string Message;
-        public Transaction Transaction;
-        public FECViolation Violation;
-    }
-    
     public class FundraisingEvent
     {
         public string Name;

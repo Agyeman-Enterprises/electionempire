@@ -6,6 +6,7 @@ using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
 using ElectionEmpire.News.Translation;
 using ElectionEmpire.Core;
+using ElectionEmpire.News;
 
 namespace ElectionEmpire.News
 {
@@ -29,7 +30,7 @@ namespace ElectionEmpire.News
         
         private List<ProcessedNews> currentNews;
         private List<NewsEvent> activeEvents;
-        private List<Translation.NewsGameEvent> gameEvents;
+        private List<NewsGameEvent> gameEvents;
         private DateTime lastFetchTime;
         private float fetchInterval = 3600f; // 1 hour in seconds
         
@@ -69,7 +70,7 @@ namespace ElectionEmpire.News
             
             currentNews = new List<ProcessedNews>();
             activeEvents = new List<NewsEvent>();
-            gameEvents = new List<Translation.NewsGameEvent>();
+            gameEvents = new List<NewsGameEvent>();
             
             // Load cached news on start
             LoadCachedNews();
@@ -280,7 +281,7 @@ namespace ElectionEmpire.News
             }
         }
         
-        private ElectionEmpire.World.VoterBloc GetVoterBlocForIssue(IssueCategory issue)
+        private VoterBloc GetVoterBlocForIssue(IssueCategory issue)
         {
             // Map issues to voter blocs
             return issue switch
@@ -376,7 +377,7 @@ namespace ElectionEmpire.News
         /// <summary>
         /// Get active game events (new format)
         /// </summary>
-        public List<Translation.NewsGameEvent> GetActiveGameEvents()
+        public List<NewsGameEvent> GetActiveGameEvents()
         {
             int currentTurn = gameStateProvider?.GetCurrentTurn() ?? 0;
             return gameEvents
@@ -387,7 +388,7 @@ namespace ElectionEmpire.News
         /// <summary>
         /// Player responds to a game event
         /// </summary>
-        public void HandlePlayerResponse(Translation.NewsGameEvent gameEvent, string optionId)
+        public void HandlePlayerResponse(NewsGameEvent gameEvent, string optionId)
         {
             var result = responseSystem.RespondToEvent(gameEvent, optionId);
             
@@ -412,7 +413,7 @@ namespace ElectionEmpire.News
         
         // Game impacts
         public float TrustImpact;
-        public Dictionary<ElectionEmpire.World.VoterBloc, float> VoterBlocImpacts;
+        public Dictionary<VoterBloc, float> VoterBlocImpacts;
         public IssueCategory? PolicyOpportunity;
         
         public NewsEvent()

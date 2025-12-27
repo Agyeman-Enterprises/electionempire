@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using UnityEngine;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.Balance
 {
@@ -742,38 +743,6 @@ namespace ElectionEmpire.Balance
         public bool IsCloudSynced;
         public DateTime? CloudSyncDate;
     }
-    
-    /// <summary>
-    /// Complete save game data.
-    /// </summary>
-    [Serializable]
-    public class SaveGameData
-    {
-        public SaveMetadata Metadata;
-        
-        // Character state
-        public CharacterSaveData Character;
-        
-        // World state
-        public WorldSaveData World;
-        
-        // Resources
-        public ResourceSaveData Resources;
-        
-        // Relationships
-        public RelationshipSaveData Relationships;
-        
-        // Active scandals and crises
-        public List<ScandalSaveData> ActiveScandals;
-        public List<CrisisSaveData> ActiveCrises;
-        
-        // History
-        public List<HistoryEntry> History;
-        
-        // Settings at time of save
-        public GameSettingsSaveData Settings;
-    }
-    
     [Serializable]
     public class CharacterSaveData
     {
@@ -915,35 +884,50 @@ namespace ElectionEmpire.Balance
     }
     
     /// <summary>
-    /// Manages save/load operations with cloud sync support.
+    /// Complete game save data structure
     /// </summary>
-    public class SaveManager
+    [Serializable]
+    public class GameSaveData
+    {
+        public SaveMetadata Metadata;
+        public CharacterSaveData Character;
+        public WorldSaveData World;
+        public ResourceSaveData Resources;
+        public RelationshipSaveData Relationships;
+        public List<ScandalSaveData> ActiveScandals;
+        public List<CrisisSaveData> ActiveCrises;
+        public List<HistoryEntry> History;
+        public GameSettingsSaveData Settings;
+
+        public GameSaveData()
+        {
+            ActiveScandals = new List<ScandalSaveData>();
+            ActiveCrises = new List<CrisisSaveData>();
+            History = new List<HistoryEntry>();
+        }
+    }
+
+    public class EnhancedSaveManager
     {
         private const int MaxSaveSlots = 10;
         private const int AutosaveSlot = 0;
-        private const string SaveFileExtension = ".eesave";
-        private const string MetadataExtension = ".eemeta";
-        
+        private const string SaveFileExtension = ".save";
+        private const string MetadataExtension = ".meta";
+
+        private Dictionary<int, SaveMetadata> saveSlots = new Dictionary<int, SaveMetadata>();
+        private GameSaveData currentGame;
         private string savePath;
-        private Dictionary<int, SaveMetadata> saveSlots;
-        private SaveGameData currentGame;
-        
+
+        // Events
         public event Action<int> OnSaveStarted;
         public event Action<int, bool> OnSaveCompleted;
         public event Action<int> OnLoadStarted;
         public event Action<int, bool> OnLoadCompleted;
         public event Action<float> OnCloudSyncProgress;
-        
-        public SaveManager()
+
+        public EnhancedSaveManager()
         {
-            savePath = Path.Combine(Application.persistentDataPath, "saves");
-            saveSlots = new Dictionary<int, SaveMetadata>();
-            
-            if (!Directory.Exists(savePath))
-            {
-                Directory.CreateDirectory(savePath);
-            }
-            
+            savePath = Application.persistentDataPath;
             LoadSaveMetadata();
         }
         
@@ -978,7 +962,7 @@ namespace ElectionEmpire.Balance
             return saveSlots.TryGetValue(slot, out var meta) ? meta : null;
         }
         
-        public bool SaveGame(int slot, SaveGameData data, string saveName = null)
+        public bool SaveGame(int slot, GameSaveData data, string saveName = null)
         {
             OnSaveStarted?.Invoke(slot);
             
@@ -1043,7 +1027,7 @@ namespace ElectionEmpire.Balance
             }
         }
         
-        public SaveGameData LoadGame(int slot)
+        public GameSaveData LoadGame(int slot)
         {
             OnLoadStarted?.Invoke(slot);
             
@@ -1070,7 +1054,7 @@ namespace ElectionEmpire.Balance
                     }
                 }
                 
-                var data = JsonUtility.FromJson<SaveGameData>(json);
+                var data = JsonUtility.FromJson<GameSaveData>(json);
                 currentGame = data;
                 
                 OnLoadCompleted?.Invoke(slot, true);
@@ -1104,7 +1088,7 @@ namespace ElectionEmpire.Balance
             }
         }
         
-        public void Autosave(SaveGameData data)
+        public void Autosave(GameSaveData data)
         {
             SaveGame(AutosaveSlot, data, "Autosave");
         }

@@ -56,7 +56,7 @@ namespace ElectionEmpire.Gameplay
                 if (aiManager != null && gameState != null)
                 {
                     // Convert Gameplay.GameState to AI.GameState
-                    var aiGameState = new ElectionEmpire.AI.GameState
+                    var aiGameState = new ElectionEmpire.Gameplay.GameState
                     {
                         Opponents = gameState.AIOpponents ?? new List<AIOpponent>(),
                         PlayerApproval = gameState.Player?.Resources?.GetValueOrDefault("PublicTrust", 50f) ?? 50f,

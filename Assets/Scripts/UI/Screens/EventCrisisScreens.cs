@@ -11,6 +11,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using ElectionEmpire.UI;
+using ElectionEmpire.Core;
+using ElectionEmpire.Scandal;
 
 namespace ElectionEmpire.UI.Screens
 {
@@ -83,17 +85,6 @@ namespace ElectionEmpire.UI.Screens
             ActiveEffects = new List<string>();
         }
     }
-    
-    public enum CrisisType
-    {
-        NaturalDisaster,
-        EconomicDownturn,
-        SecurityThreat,
-        SocialUnrest,
-        HealthEmergency,
-        PoliticalCrisis
-    }
-    
     public enum CrisisSeverity
     {
         Minor,
@@ -149,16 +140,6 @@ namespace ElectionEmpire.UI.Screens
             InvolvedParties = new List<string>();
         }
     }
-    
-    public enum ScandalCategory
-    {
-        Financial,
-        Personal,
-        Policy,
-        Administrative,
-        Electoral
-    }
-    
     [Serializable]
     public class ScandalResponseOption
     {

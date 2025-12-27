@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ElectionEmpire.Core;
 using ElectionEmpire.Character;
 using ElectionEmpire.World;
+using ElectionEmpire.Gameplay;
 
 namespace ElectionEmpire.AI
 {
@@ -176,16 +178,6 @@ namespace ElectionEmpire.AI
         Crisis,          // Respond to crisis
         Resource,        // Allocate resources
         Media           // Media action (press conference, interview)
-    }
-    
-    [Serializable]
-    public class Office
-    {
-        public string Name;
-        public int Tier;
-        public string RegionID;
-        public string StateID;
-        public string DistrictID;
     }
 }
 

@@ -16,7 +16,7 @@ namespace ElectionEmpire.News.Fallback
     /// <summary>
     /// Source type for news content.
     /// </summary>
-    public enum NewsSource
+    public enum FallbackNewsSource
     {
         RealTimeAPI,        // Live news from external APIs
         CachedNews,         // Recently fetched but stored
@@ -68,7 +68,7 @@ namespace ElectionEmpire.News.Fallback
     {
         public string CacheId;
         public string OriginalNewsId;
-        public NewsSource Source;
+        public FallbackNewsSource Source;
         
         public string Headline;
         public string Summary;
@@ -148,7 +148,7 @@ namespace ElectionEmpire.News.Fallback
     public class FallbackStatus
     {
         public bool IsAPIAvailable;
-        public NewsSource CurrentPrimarySource;
+        public FallbackNewsSource CurrentPrimarySource;
         public int CachedItemCount;
         public int ProceduralTemplateCount;
         public DateTime LastAPISuccess;
@@ -397,13 +397,13 @@ namespace ElectionEmpire.News.Fallback
     public class ProceduralNewsGenerator
     {
         private readonly FallbackConfig _config;
-        private readonly IGameStateProvider _gameState;
+        private readonly IFallbackGameStateProvider _gameState;
         private readonly Dictionary<string, List<ProceduralNewsTemplate>> _templatesByCategory;
         private readonly VariablePool _variablePool;
         private readonly System.Random _random;
         private readonly HashSet<string> _recentlyUsedTemplates;
-        
-        public ProceduralNewsGenerator(IGameStateProvider gameState, FallbackConfig config = null)
+
+        public ProceduralNewsGenerator(IFallbackGameStateProvider gameState, FallbackConfig config = null)
         {
             _gameState = gameState;
             _config = config ?? new FallbackConfig();
@@ -739,7 +739,7 @@ namespace ElectionEmpire.News.Fallback
                 {
                     CacheId = Guid.NewGuid().ToString(),
                     OriginalNewsId = $"PROC_{template.TemplateId}_{DateTime.UtcNow.Ticks}",
-                    Source = NewsSource.ProceduralGenerated,
+                    Source = FallbackNewsSource.ProceduralGenerated,
                     Headline = headline,
                     Summary = summary,
                     Category = template.Category,
@@ -875,9 +875,9 @@ namespace ElectionEmpire.News.Fallback
         private bool _isAPIAvailable;
         private int _consecutiveFailures;
         private DateTime _lastAPISuccess;
-        private NewsSource _currentPrimarySource;
+        private FallbackNewsSource _currentPrimarySource;
         
-        public event Action<NewsSource> OnSourceChanged;
+        public event Action<FallbackNewsSource> OnSourceChanged;
         public event Action<string> OnFallbackWarning;
         
         public FallbackOrchestrator(
@@ -892,7 +892,7 @@ namespace ElectionEmpire.News.Fallback
             _isAPIAvailable = true;
             _consecutiveFailures = 0;
             _lastAPISuccess = DateTime.UtcNow;
-            _currentPrimarySource = NewsSource.RealTimeAPI;
+            _currentPrimarySource = FallbackNewsSource.RealTimeAPI;
         }
         
         #region API Status Management
@@ -906,9 +906,9 @@ namespace ElectionEmpire.News.Fallback
             _consecutiveFailures = 0;
             _lastAPISuccess = DateTime.UtcNow;
             
-            if (_currentPrimarySource != NewsSource.RealTimeAPI)
+            if (_currentPrimarySource != FallbackNewsSource.RealTimeAPI)
             {
-                _currentPrimarySource = NewsSource.RealTimeAPI;
+                _currentPrimarySource = FallbackNewsSource.RealTimeAPI;
                 OnSourceChanged?.Invoke(_currentPrimarySource);
             }
         }
@@ -932,12 +932,12 @@ namespace ElectionEmpire.News.Fallback
             // Priority: Cached > Procedural
             if (_cacheManager.HasMinimumForOffline())
             {
-                _currentPrimarySource = NewsSource.CachedNews;
+                _currentPrimarySource = FallbackNewsSource.CachedNews;
                 OnFallbackWarning?.Invoke("Switched to cached news due to API unavailability");
             }
             else
             {
-                _currentPrimarySource = NewsSource.ProceduralGenerated;
+                _currentPrimarySource = FallbackNewsSource.ProceduralGenerated;
                 OnFallbackWarning?.Invoke("Switched to procedural news - limited real-world content available");
             }
             
@@ -955,9 +955,9 @@ namespace ElectionEmpire.News.Fallback
         {
             return _currentPrimarySource switch
             {
-                NewsSource.RealTimeAPI => GetFromCacheOrGenerate(category, count),
-                NewsSource.CachedNews => GetFromCache(category, count),
-                NewsSource.ProceduralGenerated => GenerateProcedural(category, count),
+                FallbackNewsSource.RealTimeAPI => GetFromCacheOrGenerate(category, count),
+                FallbackNewsSource.CachedNews => GetFromCache(category, count),
+                FallbackNewsSource.ProceduralGenerated => GenerateProcedural(category, count),
                 _ => GenerateProcedural(category, count)
             };
         }
@@ -1044,17 +1044,18 @@ namespace ElectionEmpire.News.Fallback
     }
     
     #region Interfaces
-    
+
     /// <summary>
-    /// Interface for reading game state.
+    /// Simplified interface for reading game state in fallback system.
+    /// For full interface, see ElectionEmpire.News.Translation.IGameStateProvider
     /// </summary>
-    public interface IGameStateProvider
+    public interface IFallbackGameStateProvider
     {
         int GetPlayerOfficeTier();
         float GetPlayerApproval();
         int GetTurnsUntilElection();
     }
-    
+
     #endregion
 }
 

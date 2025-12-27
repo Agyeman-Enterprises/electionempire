@@ -124,50 +124,6 @@ namespace ElectionEmpire.News.Templates
             VoterBlocEffects = new Dictionary<string, EffectRange>();
         }
     }
-    
-    [Serializable]
-    public class EventTemplate
-    {
-        public string TemplateId;
-        public PoliticalCategory Category;
-        public TemplateEventType DefaultEventType;
-        public UrgencyLevel DefaultUrgency;
-        
-        // Narrative
-        public string HeadlineTemplate;
-        public string DescriptionTemplate;
-        public string ContextTemplate;
-        
-        // Variable mappings
-        public List<VariableMapping> Variables;
-        
-        // Requirements
-        public float MinImpactScore;
-        public float MinControversy;
-        public List<TemplateEntityType> RequiredEntities;
-        public List<string> TriggerKeywords;
-        
-        // Scaling
-        public OfficeScaling Scaling;
-        
-        // Base effects (before scaling)
-        public BaseEffects Effects;
-        
-        // Metadata
-        public bool ChaosModeOnly;
-        public string[] Tags;
-        
-        public EventTemplate()
-        {
-            Variables = new List<VariableMapping>();
-            RequiredEntities = new List<TemplateEntityType>();
-            TriggerKeywords = new List<string>();
-            Scaling = new OfficeScaling();
-            Effects = new BaseEffects();
-            Tags = new string[0];
-        }
-    }
-    
     #endregion
     
     /// <summary>

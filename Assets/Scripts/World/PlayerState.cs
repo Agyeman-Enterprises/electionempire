@@ -1,8 +1,10 @@
+using ElectionEmpire.Core;
 using System.Collections.Generic;
 using ElectionEmpire.Character;
 using ElectionEmpire.Gameplay;
 using ElectionEmpire.AI;
 using ElectionEmpire.Scandal;
+using ElectionEmpire.Staff;
 
 namespace ElectionEmpire.World
 {

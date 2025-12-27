@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ElectionEmpire.World;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.Scandal
 {
@@ -64,17 +65,6 @@ namespace ElectionEmpire.Scandal
             PossibleEvolutions = new List<string>();
         }
     }
-    
-    [Serializable]
-    public enum ScandalCategory
-    {
-        Financial,      // Money, taxes, corruption
-        Personal,       // Affairs, behavior, past
-        Policy,         // Failed policies, harm
-        Administrative, // Staff, mismanagement
-        Electoral       // Campaign violations, fraud
-    }
-    
     [Serializable]
     public enum ScandalStage
     {

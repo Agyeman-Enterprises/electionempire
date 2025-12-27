@@ -7,75 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ElectionEmpire.Gameplay;
 
 namespace ElectionEmpire.Core
 {
-    /// <summary>
-    /// Complete game state snapshot
-    /// </summary>
-    [Serializable]
-    public class GameState
-    {
-        #region Meta
-        
-        public string SaveId;
-        public string SaveName;
-        public int SaveVersion;
-        public DateTime CreatedAt;
-        public DateTime LastSavedAt;
-        
-        #endregion
-        
-        #region Game Progress
-        
-        public string ActiveCharacterId;
-        public GamePhase CurrentPhase;
-        public int CurrentTurn;
-        public int CurrentYear;
-        public int CurrentMonth;
-        public int DayOfMonth;
-        
-        #endregion
-        
-        #region World State
-        
-        public WorldState World;
-        public List<NPCPolitician> NPCPoliticians;
-        public List<MediaOutlet> MediaOutlets;
-        public List<PendingEvent> PendingEvents;
-        
-        #endregion
-        
-        #region Campaign State (when in campaign phase)
-        
-        public CampaignState Campaign;
-        
-        #endregion
-        
-        #region Settings
-        
-        public GameSettings Settings;
-        
-        #endregion
-        
-        public GameState()
-        {
-            SaveId = Guid.NewGuid().ToString();
-            SaveVersion = 1;
-            CreatedAt = DateTime.UtcNow;
-            CurrentTurn = 1;
-            CurrentYear = 2025;
-            CurrentMonth = 1;
-            DayOfMonth = 1;
-            CurrentPhase = GamePhase.CharacterCreation;
-            World = new WorldState();
-            NPCPoliticians = new List<NPCPolitician>();
-            MediaOutlets = new List<MediaOutlet>();
-            PendingEvents = new List<PendingEvent>();
-            Settings = new GameSettings();
-        }
-    }
-    
     /// <summary>
     /// Global world state
     /// </summary>

@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
+using ElectionEmpire.News;
+using ElectionEmpire.AI;
 
 namespace ElectionEmpire.Scandal
 {

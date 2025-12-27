@@ -6,6 +6,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ElectionEmpire.Staff;
+
+using ElectionEmpire.Scandal;
 
 namespace ElectionEmpire.Core
 {
@@ -163,29 +166,6 @@ namespace ElectionEmpire.Core
     }
     
     /// <summary>
-    /// Voter demographic blocs
-    /// </summary>
-    public enum VoterBloc
-    {
-        WorkingClass,
-        Business,
-        Youth,
-        Seniors,
-        Suburban,
-        Urban,
-        Rural,
-        Religious,
-        Secular,
-        Minority,
-        Education,
-        Healthcare,
-        Security,
-        Environmental,
-        Progressive,
-        Conservative
-    }
-    
-    /// <summary>
     /// Game difficulty settings
     /// </summary>
     public enum GameDifficulty
@@ -230,18 +210,6 @@ namespace ElectionEmpire.Core
         InternationalIncident,
         ConstitutionalCrisis,
         MediaFrenzy
-    }
-    
-    /// <summary>
-    /// Scandal categories
-    /// </summary>
-    public enum ScandalCategory
-    {
-        Financial,
-        Personal,
-        Policy,
-        Administrative,
-        Electoral
     }
     
     /// <summary>
@@ -476,31 +444,6 @@ namespace ElectionEmpire.Core
             OfficePowers = new List<string>();
         }
     }
-    
-    /// <summary>
-    /// Staff member
-    /// </summary>
-    [Serializable]
-    public class StaffMember
-    {
-        public string Id;
-        public string Name;
-        public string Role;
-        public int Quality; // 1-10
-        public float Loyalty; // 0-100
-        public float Morale; // 0-100
-        public List<string> Specializations;
-        public bool HasSecrets;
-        public string SecretType;
-        public DateTime HiredAt;
-        
-        public StaffMember()
-        {
-            Id = Guid.NewGuid().ToString();
-            Specializations = new List<string>();
-        }
-    }
-    
     /// <summary>
     /// Political ally
     /// </summary>

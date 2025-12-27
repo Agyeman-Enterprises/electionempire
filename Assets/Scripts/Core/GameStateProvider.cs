@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
-using ElectionEmpire.News.Translation;
+using ElectionEmpire.News;
 using ElectionEmpire.News.Templates;
+using ElectionEmpire.News.Translation;
 
 namespace ElectionEmpire.Core
 {

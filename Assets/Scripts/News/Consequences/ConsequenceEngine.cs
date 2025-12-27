@@ -9,6 +9,8 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.News.Translation;
 using ElectionEmpire.News.Templates;
+using ElectionEmpire.News;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.News.Consequences
 {
@@ -29,21 +31,7 @@ namespace ElectionEmpire.News.Consequences
     /// <summary>
     /// Resources that can be affected.
     /// </summary>
-    public enum ResourceType
-    {
-        PublicTrust,
-        PoliticalCapital,
-        CampaignFunds,
-        MediaInfluence,
-        PartyLoyalty,
-        StaffMorale,
-        VoterBlocSupport,
-        ScandalVulnerability,
-        AlignmentLawChaos,
-        AlignmentGoodEvil
-    }
-    
-    /// <summary>
+/// <summary>
     /// Configuration for the consequence system.
     /// </summary>
     [Serializable]
@@ -110,38 +98,6 @@ namespace ElectionEmpire.News.Consequences
             CreatedAt = DateTime.UtcNow;
         }
     }
-    
-    /// <summary>
-    /// Result of a player response to a news event.
-    /// </summary>
-    [Serializable]
-    public class ResponseResult
-    {
-        public string EventId;
-        public string ResponseOptionId;
-        public bool IsSuccess;
-        public float SuccessRoll;
-        public float SuccessThreshold;
-        
-        public List<ConsequenceEffect> ImmediateEffects;
-        public List<ConsequenceEffect> DelayedEffects;
-        public List<ReputationTag> ReputationChanges;
-        public List<string> UnlockedEvents;
-        public List<string> BlockedEvents;
-        
-        public string NarrativeOutcome;
-        public string MediaHeadline;
-        
-        public ResponseResult()
-        {
-            ImmediateEffects = new List<ConsequenceEffect>();
-            DelayedEffects = new List<ConsequenceEffect>();
-            ReputationChanges = new List<ReputationTag>();
-            UnlockedEvents = new List<string>();
-            BlockedEvents = new List<string>();
-        }
-    }
-    
     /// <summary>
     /// A reputation tag that affects future interactions.
     /// </summary>
@@ -156,21 +112,6 @@ namespace ElectionEmpire.News.Consequences
         public string Category;         // e.g., "crisis_management", "scandal_handling"
         public DateTime AcquiredAt;
     }
-    
-    /// <summary>
-    /// Tracks player's stance history on issues.
-    /// </summary>
-    [Serializable]
-    public class StanceRecord
-    {
-        public string IssueCategory;
-        public string StanceTaken;
-        public float StanceStrength;    // -1 (oppose) to +1 (support)
-        public int TurnTaken;
-        public string SourceEventId;
-        public bool WasPublic;
-    }
-    
     /// <summary>
     /// Context for calculating consequences.
     /// </summary>
@@ -207,10 +148,10 @@ namespace ElectionEmpire.News.Consequences
     public class ConsequenceCalculator
     {
         private readonly ConsequenceConfig _config;
-        private readonly IGameStateProvider _gameState;
+        private readonly IConsequenceEngineGameStateProvider _gameState;
         private readonly System.Random _random;
         
-        public ConsequenceCalculator(IGameStateProvider gameState, ConsequenceConfig config = null)
+        public ConsequenceCalculator(IConsequenceEngineGameStateProvider gameState, ConsequenceConfig config = null)
         {
             _gameState = gameState;
             _config = config ?? new ConsequenceConfig();
@@ -224,8 +165,8 @@ namespace ElectionEmpire.News.Consequences
         /// Five-step calculation: Base → Context Scaling → Character Mods → Polling → Success Roll
         /// </summary>
         public ResponseResult CalculateConsequences(
-            Translation.NewsGameEvent gameEvent,
-            Translation.ResponseOption chosenResponse,
+            NewsGameEvent gameEvent,
+            ResponseOption chosenResponse,
             ConsequenceContext context)
         {
             var result = new ResponseResult
@@ -287,7 +228,7 @@ namespace ElectionEmpire.News.Consequences
         /// <summary>
         /// Extract base effects from the response option.
         /// </summary>
-        private List<ConsequenceEffect> ExtractBaseEffects(Translation.ResponseOption response)
+        private List<ConsequenceEffect> ExtractBaseEffects(ResponseOption response)
         {
             var effects = new List<ConsequenceEffect>();
             
@@ -369,7 +310,7 @@ namespace ElectionEmpire.News.Consequences
         /// </summary>
         private List<ConsequenceEffect> ApplyContextScaling(
             List<ConsequenceEffect> effects,
-            Translation.NewsGameEvent gameEvent,
+            NewsGameEvent gameEvent,
             ConsequenceContext context)
         {
             foreach (var effect in effects)
@@ -596,7 +537,7 @@ namespace ElectionEmpire.News.Consequences
         /// Calculate whether the response succeeds or fails.
         /// </summary>
         private bool CalculateSuccessRoll(
-            Translation.ResponseOption response,
+            ResponseOption response,
             ConsequenceContext context,
             out float roll,
             out float threshold)
@@ -627,7 +568,7 @@ namespace ElectionEmpire.News.Consequences
         /// </summary>
         private List<ConsequenceEffect> ApplySuccessFailure(
             List<ConsequenceEffect> effects,
-            Translation.ResponseOption response,
+            ResponseOption response,
             bool isSuccess)
         {
             float multiplier = isSuccess 
@@ -682,8 +623,8 @@ namespace ElectionEmpire.News.Consequences
         /// Calculate reputation tag changes from this response.
         /// </summary>
         private List<ReputationTag> CalculateReputationChanges(
-            Translation.NewsGameEvent gameEvent,
-            Translation.ResponseOption response,
+            NewsGameEvent gameEvent,
+            ResponseOption response,
             bool isSuccess,
             ConsequenceContext context)
         {
@@ -738,7 +679,7 @@ namespace ElectionEmpire.News.Consequences
             return changes;
         }
         
-        private string GenerateNarrativeOutcome(Translation.NewsGameEvent gameEvent, Translation.ResponseOption response, bool isSuccess)
+        private string GenerateNarrativeOutcome(NewsGameEvent gameEvent, ResponseOption response, bool isSuccess)
         {
             if (isSuccess)
             {
@@ -752,7 +693,7 @@ namespace ElectionEmpire.News.Consequences
             }
         }
         
-        private string GenerateMediaHeadline(Translation.NewsGameEvent gameEvent, Translation.ResponseOption response, bool isSuccess)
+        private string GenerateMediaHeadline(NewsGameEvent gameEvent, ResponseOption response, bool isSuccess)
         {
             if (isSuccess)
             {
@@ -764,7 +705,7 @@ namespace ElectionEmpire.News.Consequences
             }
         }
         
-        private void DetermineEventChains(Translation.NewsGameEvent gameEvent, Translation.ResponseOption response, ResponseResult result)
+        private void DetermineEventChains(NewsGameEvent gameEvent, ResponseOption response, ResponseResult result)
         {
             // Certain responses unlock follow-up events
             // E.g., aggressive counter-attack might trigger opponent retaliation event
@@ -1165,7 +1106,7 @@ namespace ElectionEmpire.News.Consequences
     /// <summary>
     /// Interface for reading game state (used by ConsequenceCalculator).
     /// </summary>
-    public interface IGameStateProvider
+    public interface IConsequenceEngineGameStateProvider
     {
         int GetPlayerOfficeTier();
         string GetPlayerOfficeTitle();

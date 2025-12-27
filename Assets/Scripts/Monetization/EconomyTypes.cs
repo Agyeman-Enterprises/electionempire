@@ -35,7 +35,7 @@ namespace ElectionEmpire.Economy
     /// <summary>
     /// Transaction types for ledger tracking
     /// </summary>
-    public enum TransactionType
+    public enum EconomyTransactionType
     {
         // Earning
         Earned,
@@ -103,26 +103,40 @@ namespace ElectionEmpire.Economy
         Portrait,
         Outfit,
         Accessory,
-        
+        Hat,
+
         // Campaign
         PodiumStyle,
         SignDesign,
         BusWrap,
-        
+
         // UI
         ProfileFrame,
         CardBack,
         VictoryAnimation,
-        
+
         // Effects
         SpeechBubble,
         ConfettiStyle,
         Fireworks,
-        
+
         // Audio
         VictoryTheme,
         CampaignMusic,
-        SoundPack
+        SoundPack,
+
+        // Portrait specific
+        Portrait_Background,
+        Portrait_Frame,
+
+        // Campaign Themes
+        Campaign_Theme,
+
+        // Victory animations
+        Victory_Animation,
+
+        // Badges
+        Title_Badge
     }
     
     /// <summary>
@@ -197,28 +211,6 @@ namespace ElectionEmpire.Economy
     /// <summary>
     /// Record of a currency transaction
     /// </summary>
-    [Serializable]
-    public class Transaction
-    {
-        public string Id;
-        public string PlayerId;
-        public CurrencyType Currency;
-        public TransactionType Type;
-        public long Amount;
-        public long BalanceBefore;
-        public long BalanceAfter;
-        public string Description;
-        public string ReferenceId; // Link to purchase, achievement, etc.
-        public DateTime Timestamp;
-        public bool Verified;
-        public string VerificationHash;
-        
-        public Transaction()
-        {
-            Id = Guid.NewGuid().ToString();
-            Timestamp = DateTime.UtcNow;
-        }
-    }
     
     /// <summary>
     /// A purchasable item in the store
@@ -322,7 +314,12 @@ namespace ElectionEmpire.Economy
         public List<string> UnlockedTraits;
         public List<string> OwnedContentPacks;
         public List<string> ActiveSeasonPasses;
-        
+
+        // Quick access lists for owned items and equipped cosmetics
+        public List<string> OwnedItemIds;
+        public List<string> EquippedCosmetics;
+        public DateTime LastUpdated;
+
         // Currently equipped
         public string EquippedPortrait;
         public string EquippedOutfit;
@@ -330,20 +327,26 @@ namespace ElectionEmpire.Economy
         public string EquippedProfileFrame;
         public string EquippedCardBack;
         public string EquippedVictoryAnimation;
-        
-        public PlayerInventory(string playerId)
+
+        public PlayerInventory()
         {
-            PlayerId = playerId;
             Items = new List<OwnedItem>();
             UnlockedBackgrounds = new List<string>();
             UnlockedTraits = new List<string>();
             OwnedContentPacks = new List<string>();
             ActiveSeasonPasses = new List<string>();
+            OwnedItemIds = new List<string>();
+            EquippedCosmetics = new List<string>();
         }
-        
+
+        public PlayerInventory(string playerId) : this()
+        {
+            PlayerId = playerId;
+        }
+
         public bool OwnsItem(string itemId)
         {
-            return Items.Exists(i => i.ItemId == itemId);
+            return Items.Exists(i => i.ItemId == itemId) || OwnedItemIds.Contains(itemId);
         }
     }
     
@@ -684,7 +687,7 @@ namespace ElectionEmpire.Economy
         public long PreviousBalance;
         public long NewBalance;
         public long ChangeAmount;
-        public TransactionType Type;
+        public EconomyTransactionType Type;
         public string Description;
         public DateTime Timestamp;
     }
@@ -762,4 +765,78 @@ namespace ElectionEmpire.Economy
     }
     
     #endregion
+
+    /// <summary>
+    /// Represents a cosmetic item that can be equipped.
+    /// </summary>
+    [Serializable]
+    public class CosmeticItem
+    {
+        public string ItemId;
+        public string DisplayName;
+        public string Description;
+        public CosmeticType CosmeticType;
+        public CosmeticType Type { get => CosmeticType; set => CosmeticType = value; }
+        public ItemRarity Rarity;
+        public Sprite Icon;
+        public string UnlockData;
+        public bool IsUnlocked;
+        public bool IsEquipped;
+
+        // Pricing
+        public CurrencyType CurrencyType;
+        public long Price;
+        public bool IsAvailable;
+
+        // Display
+        public string AssetPath;
+        public bool IsAnimated;
+
+        // Category
+        public PurchaseCategory Category;
+
+        public CosmeticItem() { }
+
+        public CosmeticItem(string id, string name, CosmeticType type, ItemRarity rarity = ItemRarity.Common)
+        {
+            ItemId = id;
+            DisplayName = name;
+            CosmeticType = type;
+            Rarity = rarity;
+            IsAvailable = true;
+        }
+    }
+    
+    /// <summary>
+    /// Represents an item available for purchase.
+    /// </summary>
+    [Serializable]
+    public class PurchasableItem
+    {
+        public string ItemId;
+        public string DisplayName;
+        public string Description;
+        public CurrencyType PriceType;
+        public CurrencyType CurrencyType { get => PriceType; set => PriceType = value; }
+        public long Price;
+        public PurchaseCategory Category;
+        public ItemRarity Rarity;
+        public bool IsAvailable;
+        public Sprite Icon;
+
+        // For real-money purchases
+        public string StoreProductId;
+        public string LocalizedPrice;
+
+        public PurchasableItem() { }
+
+        public PurchasableItem(string id, string name, long price, CurrencyType priceType = CurrencyType.CloutBux)
+        {
+            ItemId = id;
+            DisplayName = name;
+            Price = price;
+            PriceType = priceType;
+            IsAvailable = true;
+        }
+    }
 }

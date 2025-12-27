@@ -5,6 +5,7 @@ using UnityEngine;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
 using ElectionEmpire.Character;
+using ElectionEmpire.News;
 
 namespace ElectionEmpire.Scandal
 {
@@ -503,18 +504,6 @@ namespace ElectionEmpire.Scandal
             }
         }
     }
-    
-    public class ResponseOption
-    {
-        public ResponseType Type;
-        public string Name;
-        public string Description;
-        public float SuccessChance;
-        public Dictionary<string, float> Cost;
-        public List<string> Requirements;
-        public string PotentialImpact;
-    }
-    
     public class ScandalResponseResult
     {
         public bool Success;

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.CampaignTrail
 {

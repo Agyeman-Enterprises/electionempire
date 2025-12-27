@@ -5,6 +5,7 @@ using ElectionEmpire.World;
 using ElectionEmpire.Gameplay.Presidency;
 using ElectionEmpire.Multiplayer.PersistentWorld;
 using ElectionEmpire.AI;
+using ElectionEmpire.Core;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ELECTION EMPIRE - Infinite Universe Manager
@@ -20,13 +21,6 @@ namespace ElectionEmpire.Gameplay.Presidency
     public class InfiniteUniverseManager : MonoBehaviour
     {
         public static InfiniteUniverseManager Instance { get; private set; }
-        
-        public enum GamePhase
-        {
-            TheClimb,      // Phase 1: Offensive - climbing to power
-            TheThrone,     // Phase 2: Defensive - defending your position
-            TheLegacy      // Phase 3: Transcendence - your impact on the world
-        }
         
         public GamePhase CurrentPhase { get; private set; }
         

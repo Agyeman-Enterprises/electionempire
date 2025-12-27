@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.Scandal
 {

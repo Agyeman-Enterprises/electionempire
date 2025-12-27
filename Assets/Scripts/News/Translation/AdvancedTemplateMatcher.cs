@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ElectionEmpire.News.Templates;
+using ElectionEmpire.News;
 
 namespace ElectionEmpire.News.Translation
 {

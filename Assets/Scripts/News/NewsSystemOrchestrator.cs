@@ -12,6 +12,7 @@ using ElectionEmpire.News.Translation;
 using ElectionEmpire.News.Temporal;
 using ElectionEmpire.News.Consequences;
 using ElectionEmpire.News.Fallback;
+using ElectionEmpire.News;
 
 namespace ElectionEmpire.News
 {
@@ -61,7 +62,7 @@ namespace ElectionEmpire.News
     public class ResponseEventArgs : EventArgs
     {
         public string EventId { get; set; }
-        public Consequences.ResponseResult Result { get; set; }
+        public ResponseResult Result { get; set; }
     }
     
     #endregion
@@ -76,7 +77,7 @@ namespace ElectionEmpire.News
         #region Components
         
         private readonly NewsSystemConfig _config;
-        private readonly Translation.IGameStateProvider _gameStateProvider;
+        private readonly IGameStateProvider _gameStateProvider;
         private readonly Consequences.IGameStateModifier _gameStateModifier;
         
         // Core pipeline components
@@ -85,7 +86,7 @@ namespace ElectionEmpire.News
         private readonly NewsEventFactory _eventFactory;
         
         // Temporal management
-        private readonly Temporal.NewsCycleManager _cycleManager;
+        private readonly NewsCycleManager _cycleManager;
         private readonly Temporal.TimeScaler _timeScaler;
         private readonly Temporal.MediaFatigueTracker _fatigueTracker;
         
@@ -125,7 +126,7 @@ namespace ElectionEmpire.News
         #region Constructor & Initialization
         
         public NewsSystemOrchestrator(
-            Translation.IGameStateProvider gameStateProvider,
+            IGameStateProvider gameStateProvider,
             Consequences.IGameStateModifier gameStateModifier,
             NewsSystemConfig config = null)
         {
@@ -149,7 +150,7 @@ namespace ElectionEmpire.News
             // Temporal system
             var temporalConfig = new Temporal.TemporalConfig();
             var timeProvider = new GameTimeProviderAdapter(_gameStateProvider);
-            _cycleManager = new Temporal.NewsCycleManager(timeProvider, temporalConfig);
+            _cycleManager = new NewsCycleManager(timeProvider, temporalConfig);
             _timeScaler = new Temporal.TimeScaler(timeProvider, temporalConfig);
             _fatigueTracker = new Temporal.MediaFatigueTracker(temporalConfig);
             
@@ -355,7 +356,7 @@ namespace ElectionEmpire.News
         /// <summary>
         /// Process a player's response to a news event.
         /// </summary>
-        public Consequences.ResponseResult ProcessPlayerResponse(string eventId, string responseOptionId)
+        public ResponseResult ProcessPlayerResponse(string eventId, string responseOptionId)
         {
             if (!_activeEvents.TryGetValue(eventId, out var gameEvent))
             {
@@ -510,7 +511,7 @@ namespace ElectionEmpire.News
                         {
                             EventId = eventId,
                             GameEvent = gameEvent,
-                            Stage = Temporal.NewsCycleStage.Breaking,
+                            Stage = NewsCycleStage.Breaking,
                             RequiresPlayerAction = true
                         });
                     }
@@ -565,7 +566,7 @@ namespace ElectionEmpire.News
         /// <summary>
         /// Get events by stage.
         /// </summary>
-        public List<NewsGameEvent> GetEventsByStage(Temporal.NewsCycleStage stage)
+        public List<NewsGameEvent> GetEventsByStage(NewsCycleStage stage)
         {
             var eventIds = _cycleManager.GetEventsByStage(stage);
             return eventIds
@@ -639,7 +640,7 @@ namespace ElectionEmpire.News
         
         #region Internal Event Handlers
         
-        private void HandleStageTransition(string eventId, Temporal.NewsCycleStage oldStage, Temporal.NewsCycleStage newStage)
+        private void HandleStageTransition(string eventId, NewsCycleStage oldStage, NewsCycleStage newStage)
         {
             if (_activeEvents.TryGetValue(eventId, out var gameEvent))
             {
@@ -648,7 +649,7 @@ namespace ElectionEmpire.News
                     EventId = eventId,
                     GameEvent = gameEvent,
                     Stage = newStage,
-                    RequiresPlayerAction = newStage == Temporal.NewsCycleStage.Breaking
+                    RequiresPlayerAction = newStage == NewsCycleStage.Breaking
                 });
             }
         }
@@ -661,7 +662,7 @@ namespace ElectionEmpire.News
                 {
                     EventId = eventId,
                     GameEvent = gameEvent,
-                    Stage = Temporal.NewsCycleStage.Archived
+                    Stage = NewsCycleStage.Archived
                 });
                 
                 _activeEvents.Remove(eventId);
@@ -676,7 +677,7 @@ namespace ElectionEmpire.News
                 {
                     EventId = eventId,
                     GameEvent = gameEvent,
-                    Stage = Temporal.NewsCycleStage.Breaking,
+                    Stage = NewsCycleStage.Breaking,
                     RequiresPlayerAction = true
                 });
             }
@@ -687,7 +688,7 @@ namespace ElectionEmpire.News
             Log($"Effect applied: {effect.Resource} {effect.ActualApplied:+0.00;-0.00}");
         }
         
-        private void HandleSourceChanged(Fallback.NewsSource newSource)
+        private void HandleSourceChanged(Fallback.FallbackNewsSource newSource)
         {
             Log($"News source changed to: {newSource}");
             OnSystemWarning?.Invoke(this, $"News source: {newSource}");
@@ -707,7 +708,7 @@ namespace ElectionEmpire.News
             var cached = new Fallback.CachedNewsItem
             {
                 OriginalNewsId = news.SourceId,
-                Source = Fallback.NewsSource.RealTimeAPI,
+                Source = Fallback.FallbackNewsSource.RealTimeAPI,
                 Headline = news.Headline,
                 Summary = news.Summary,
                 Category = news.PrimaryCategory.ToString(),
@@ -761,14 +762,14 @@ namespace ElectionEmpire.News
             return PoliticalCategory.General;
         }
         
-        private Temporal.NewsCycleStage DetermineInitialStage(ProcessedNewsItem news)
+        private NewsCycleStage DetermineInitialStage(ProcessedNewsItem news)
         {
             var age = DateTime.UtcNow - news.PublishedAt;
             
-            if (age.TotalHours < 2) return Temporal.NewsCycleStage.Breaking;
-            if (age.TotalHours < 24) return Temporal.NewsCycleStage.Developing;
-            if (age.TotalDays < 7) return Temporal.NewsCycleStage.Ongoing;
-            return Temporal.NewsCycleStage.Fading;
+            if (age.TotalHours < 2) return NewsCycleStage.Breaking;
+            if (age.TotalHours < 24) return NewsCycleStage.Developing;
+            if (age.TotalDays < 7) return NewsCycleStage.Ongoing;
+            return NewsCycleStage.Fading;
         }
         
         private ScaledEffects ApplyFatigueToEffects(ScaledEffects effects, float fatigueMod)
@@ -848,9 +849,9 @@ namespace ElectionEmpire.News
     /// </summary>
     internal class GameTimeProviderAdapter : Temporal.IGameTimeProvider
     {
-        private readonly Translation.IGameStateProvider _gameState;
+        private readonly IGameStateProvider _gameState;
         
-        public GameTimeProviderAdapter(Translation.IGameStateProvider gameState)
+        public GameTimeProviderAdapter(IGameStateProvider gameState)
         {
             _gameState = gameState;
         }
@@ -865,9 +866,9 @@ namespace ElectionEmpire.News
     /// </summary>
     internal class FallbackGameStateAdapter : Fallback.IGameStateProvider
     {
-        private readonly Translation.IGameStateProvider _gameState;
+        private readonly IGameStateProvider _gameState;
         
-        public FallbackGameStateAdapter(Translation.IGameStateProvider gameState)
+        public FallbackGameStateAdapter(IGameStateProvider gameState)
         {
             _gameState = gameState;
         }

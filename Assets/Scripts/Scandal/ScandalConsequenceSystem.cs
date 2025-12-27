@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
+using ElectionEmpire.Staff;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.Scandal
 {
@@ -302,23 +304,6 @@ namespace ElectionEmpire.Scandal
             }
             
             return null;
-        }
-    }
-    
-    /// <summary>
-    /// Simplified staff member class
-    /// </summary>
-    public class StaffMember
-    {
-        public string ID;
-        public string Name;
-        public string Role;
-        public float? Loyalty;
-        
-        public StaffMember()
-        {
-            ID = System.Guid.NewGuid().ToString();
-            Loyalty = 50f;
         }
     }
 }

@@ -38,11 +38,29 @@ namespace ElectionEmpire.Gameplay
         private Dictionary<PlayerState, int> electionResults;
         private PlayerState electionWinner;
         
-        public ElectionManager(ElectionEmpire.World.World world, VoterSimulation voterSim)
+        /// <summary>
+        /// Default constructor for deferred initialization
+        /// </summary>
+        public ElectionManager()
+        {
+            phaseDurations = new Dictionary<ElectionPhase, int>();
+            candidates = new List<PlayerState>();
+            electionResults = new Dictionary<PlayerState, int>();
+        }
+
+        public ElectionManager(ElectionEmpire.World.World world, VoterSimulation voterSim) : this()
         {
             this.world = world;
             this.voterSim = voterSim;
-            phaseDurations = new Dictionary<ElectionPhase, int>();
+        }
+
+        /// <summary>
+        /// Initialize the manager with world and voter simulation (for deferred initialization)
+        /// </summary>
+        public void Initialize(ElectionEmpire.World.World world, VoterSimulation voterSim)
+        {
+            this.world = world;
+            this.voterSim = voterSim;
         }
         
         public void StartElection(Office office, List<PlayerState> allCandidates)

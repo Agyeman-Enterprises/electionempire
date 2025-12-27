@@ -329,7 +329,7 @@ namespace ElectionEmpire.Economy
         /// Grant currency to a player
         /// </summary>
         public TransactionResult GrantCurrency(string playerId, CurrencyType currency, long amount, 
-            TransactionType type, string description, string referenceId = null)
+            EconomyTransactionType type, string description, string referenceId = null)
         {
             if (amount <= 0)
             {
@@ -337,7 +337,7 @@ namespace ElectionEmpire.Economy
             }
             
             // Check daily/weekly caps for CloutBux
-            if (currency == CurrencyType.CloutBux && type != TransactionType.AdminGrant)
+            if (currency == CurrencyType.CloutBux && type != EconomyTransactionType.AdminGrant)
             {
                 if (!CanEarnMoreCloutBux(playerId, amount))
                 {
@@ -412,7 +412,7 @@ namespace ElectionEmpire.Economy
         /// Deduct currency from a player
         /// </summary>
         public TransactionResult DeductCurrency(string playerId, CurrencyType currency, long amount,
-            TransactionType type, string description, string referenceId = null)
+            EconomyTransactionType type, string description, string referenceId = null)
         {
             if (amount <= 0)
             {
@@ -622,7 +622,7 @@ namespace ElectionEmpire.Economy
             
             // Deduct currency
             var deductResult = DeductCurrency(playerId, currency, price, 
-                TransactionType.Purchase, $"Purchased: {item.Name}", itemId);
+                EconomyTransactionType.Purchase, $"Purchased: {item.Name}", itemId);
             
             if (!deductResult.Success)
             {
@@ -769,7 +769,7 @@ namespace ElectionEmpire.Economy
             
             // Grant Purrkoin
             var grantResult = GrantCurrency(playerId, CurrencyType.Purrkoin, 
-                package.TotalPurrkoin, TransactionType.RealMoneyPurchase,
+                package.TotalPurrkoin, EconomyTransactionType.RealMoneyPurchase,
                 $"IAP: {package.Name}", iapPurchase.Id);
             
             if (!grantResult.Success)
@@ -864,7 +864,7 @@ namespace ElectionEmpire.Economy
         public TransactionResult ProcessTournamentEntry(string playerId, TournamentEntryFee fee)
         {
             return DeductCurrency(playerId, fee.Currency, fee.Amount,
-                TransactionType.EntryFee, $"Tournament entry: {fee.TournamentId}", fee.TournamentId);
+                EconomyTransactionType.EntryFee, $"Tournament entry: {fee.TournamentId}", fee.TournamentId);
         }
         
         /// <summary>
@@ -879,7 +879,7 @@ namespace ElectionEmpire.Economy
             
             long refundAmount = (long)(fee.Amount * fee.RefundPercentage / 100f);
             return GrantCurrency(playerId, fee.Currency, refundAmount,
-                TransactionType.Refund, $"Tournament refund: {fee.TournamentId}", fee.TournamentId);
+                EconomyTransactionType.Refund, $"Tournament refund: {fee.TournamentId}", fee.TournamentId);
         }
         
         /// <summary>
@@ -898,7 +898,7 @@ namespace ElectionEmpire.Economy
                         
                         // Grant prize currency
                         GrantCurrency(playerId, prizePool.Currency, prizeAmount,
-                            TransactionType.TournamentReward,
+                            EconomyTransactionType.TournamentReward,
                             $"Tournament prize: {prizePlacement.Title} (#{placement})",
                             prizePool.TournamentId);
                         
@@ -937,7 +937,7 @@ namespace ElectionEmpire.Economy
             };
             
             return GrantCurrency(playerId, CurrencyType.CloutBux, reward,
-                TransactionType.Earned, $"Tier {officeTier} election victory");
+                EconomyTransactionType.Earned, $"Tier {officeTier} election victory");
         }
         
         /// <summary>
@@ -946,7 +946,7 @@ namespace ElectionEmpire.Economy
         public TransactionResult RewardScandalSurvival(string playerId)
         {
             return GrantCurrency(playerId, CurrencyType.CloutBux, EarningRates.ScandalSurvived,
-                TransactionType.Earned, "Survived scandal");
+                EconomyTransactionType.Earned, "Survived scandal");
         }
         
         /// <summary>
@@ -955,7 +955,7 @@ namespace ElectionEmpire.Economy
         public TransactionResult RewardCrisisManagement(string playerId)
         {
             return GrantCurrency(playerId, CurrencyType.CloutBux, EarningRates.CrisisManaged,
-                TransactionType.Earned, "Successfully managed crisis");
+                EconomyTransactionType.Earned, "Successfully managed crisis");
         }
         
         /// <summary>
@@ -976,7 +976,7 @@ namespace ElectionEmpire.Economy
             
             // Grant currency
             GrantCurrency(playerId, reward.Currency, reward.Amount,
-                TransactionType.DailyLogin, $"Daily login day {consecutiveDay}");
+                EconomyTransactionType.DailyLogin, $"Daily login day {consecutiveDay}");
             
             // Grant bonus item if any
             if (!string.IsNullOrEmpty(reward.BonusItemId) && _storeItems.TryGetValue(reward.BonusItemId, out var item))
@@ -1013,7 +1013,7 @@ namespace ElectionEmpire.Economy
             };
             
             return GrantCurrency(playerId, CurrencyType.CloutBux, reward,
-                TransactionType.Achievement, $"Achievement: {achievementId}", achievementId);
+                EconomyTransactionType.Achievement, $"Achievement: {achievementId}", achievementId);
         }
         
         #endregion
@@ -1077,8 +1077,37 @@ namespace ElectionEmpire.Economy
     {
         public bool Success;
         public string Error;
-        public string TransactionId;
         public long NewBalance;
+        public Transaction Transaction;
+        public string TransactionId;
+    }
+
+    /// <summary>
+    /// Represents a currency transaction record
+    /// </summary>
+    [Serializable]
+    public class Transaction
+    {
+        public string TransactionId;
+        public string Id { get => TransactionId; set => TransactionId = value; }
+        public string PlayerId;
+        public CurrencyType Currency;
+        public long Amount;
+        public long BalanceBefore;
+        public long BalanceAfter;
+        public EconomyTransactionType Type;
+        public string Description;
+        public string ReferenceId;
+        public DateTime Timestamp;
+        public bool IsDebit;
+        public bool Verified;
+        public string VerificationHash;
+
+        public Transaction()
+        {
+            TransactionId = Guid.NewGuid().ToString();
+            Timestamp = DateTime.UtcNow;
+        }
     }
     
     /// <summary>

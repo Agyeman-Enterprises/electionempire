@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using ElectionEmpire.World;
 using ElectionEmpire.Scandal;
+using ElectionEmpire.News;
 
 namespace ElectionEmpire.UI
 {

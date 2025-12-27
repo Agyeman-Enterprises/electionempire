@@ -9,6 +9,9 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.Balance;
 using ElectionEmpire.Monetization;
+using ElectionEmpire.Core;
+using ElectionEmpire.UI.Screens;
+using ElectionEmpire.Economy;
 
 namespace ElectionEmpire.Core
 {
@@ -158,7 +161,7 @@ namespace ElectionEmpire.Core
         public DifficultyManager DifficultyManager { get; private set; }
         public BalanceDataManager BalanceManager { get; private set; }
         public AnalyticsManager Analytics { get; private set; }
-        public Balance.SaveManager EnhancedSaveManager { get; private set; }
+        public SaveManager EnhancedSaveManager { get; private set; }
         public TutorialManager TutorialManager { get; private set; }
         public CurrencyManager CurrencyManager { get; private set; }
         public IAPManager IAPManager { get; private set; }
@@ -213,7 +216,7 @@ namespace ElectionEmpire.Core
             DifficultyManager = new DifficultyManager();
             BalanceManager = new BalanceDataManager();
             Analytics = new AnalyticsManager();
-            EnhancedSaveManager = new Balance.SaveManager();
+            EnhancedSaveManager = new SaveManager();
             TutorialManager = new TutorialManager();
             
             // Initialize monetization
@@ -578,9 +581,9 @@ namespace ElectionEmpire.Core
             EnhancedSaveManager.SaveGame(slot, saveData, saveName);
         }
         
-        private Balance.SaveGameData CreateSaveData()
+        private GameSaveData CreateSaveData()
         {
-            return new Balance.SaveGameData
+            return new GameSaveData
             {
                 Character = new Balance.CharacterSaveData
                 {
@@ -826,7 +829,7 @@ namespace ElectionEmpire.Core
         public static GameManagerIntegration Game => GameManagerIntegration.Instance;
         public static DifficultyManager Difficulty => Game?.DifficultyManager;
         public static AnalyticsManager Analytics => Game?.Analytics;
-        public static Balance.SaveManager Save => Game?.EnhancedSaveManager;
+        public static SaveManager Save => Game?.EnhancedSaveManager;
         public static TutorialManager Tutorial => Game?.TutorialManager;
         public static CurrencyManager Currency => Game?.CurrencyManager;
         public static IAPManager IAP => Game?.IAPManager;
@@ -884,38 +887,46 @@ namespace ElectionEmpire.Core
         NotificationPosted,
         TooltipRequested
     }
-    
+
     /// <summary>
-    /// Game event data.
-    /// Note: This conflicts with ElectionEmpire.Core.GameEvent - renamed to GameEventData.
+    /// Core game event data for the event bus system.
+    /// Note: This is separate from ElectionEmpire.UI.Screens.GameEventData which is for UI popups.
     /// </summary>
     [Serializable]
     public class GameEventData
     {
         public GameEventType Type;
-        public DateTime Timestamp;
         public Dictionary<string, object> Data;
         public int Priority;
+        public DateTime Timestamp;
         public bool Handled;
-        
-        public GameEventData(GameEventType type, Dictionary<string, object> data = null, int priority = 0)
+        public string EventId;
+
+        public GameEventData()
+        {
+            Data = new Dictionary<string, object>();
+            Timestamp = DateTime.UtcNow;
+            EventId = Guid.NewGuid().ToString();
+        }
+
+        public GameEventData(GameEventType type, Dictionary<string, object> data = null, int priority = 0) : this()
         {
             Type = type;
-            Timestamp = DateTime.UtcNow;
             Data = data ?? new Dictionary<string, object>();
             Priority = priority;
         }
-        
+
         public T GetData<T>(string key, T defaultValue = default)
         {
-            if (Data.TryGetValue(key, out var value) && value is T typedValue)
+            if (Data != null && Data.TryGetValue(key, out var value))
             {
-                return typedValue;
+                if (value is T typedValue)
+                    return typedValue;
             }
             return defaultValue;
         }
     }
-    
+
     /// <summary>
     /// Central event bus for game events.
     /// </summary>

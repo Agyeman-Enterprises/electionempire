@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.Character;
 using ElectionEmpire.Scandal;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.World
 {

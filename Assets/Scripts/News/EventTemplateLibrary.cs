@@ -9,7 +9,7 @@ namespace ElectionEmpire.News
     /// <summary>
     /// Library of event templates that translate news into game events
     /// </summary>
-    public class EventTemplateLibrary
+    public class EventTemplateLibraryCore
     {
         private Dictionary<string, EventTemplate> templates;
         

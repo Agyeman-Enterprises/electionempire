@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.World
 {
@@ -167,23 +168,6 @@ namespace ElectionEmpire.World
         {
             EmploymentSectors = new Dictionary<string, float>();
         }
-    }
-    
-    [Serializable]
-    public enum VoterBloc
-    {
-        WorkingClass,
-        BusinessOwners,
-        Educators,
-        HealthcareWorkers,
-        SecurityPersonnel,
-        MediaProfessionals,
-        Activists,
-        Religious,
-        Secular,
-        Youth,
-        Seniors,
-        Minorities
     }
     
     [Serializable]

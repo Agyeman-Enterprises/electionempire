@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ElectionEmpire.World;
+using ElectionEmpire.Gameplay;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.AI
 {
@@ -830,23 +832,6 @@ namespace ElectionEmpire.AI
             // Select new strategy based on situation
             var strategies = System.Enum.GetValues(typeof(AIStrategy)).Cast<AIStrategy>().ToList();
             return strategies[UnityEngine.Random.Range(0, strategies.Count)];
-        }
-    }
-    
-    /// <summary>
-    /// Game state for AI decision-making
-    /// </summary>
-    public class GameState
-    {
-        public List<AIOpponent> Opponents;
-        public float PlayerApproval;
-        public int DaysUntilElection;
-        public List<string> ActiveCrises;
-        
-        public GameState()
-        {
-            Opponents = new List<AIOpponent>();
-            ActiveCrises = new List<string>();
         }
     }
 }

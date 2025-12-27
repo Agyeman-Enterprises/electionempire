@@ -1,4 +1,5 @@
 using System;
+using ElectionEmpire.Core;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,7 @@ using ElectionEmpire.World;
 using ElectionEmpire.Gameplay;
 using ElectionEmpire.News.Translation;
 using ElectionEmpire.News.Templates;
+using ElectionEmpire.News;
 
 namespace ElectionEmpire.News
 {
@@ -28,7 +30,7 @@ namespace ElectionEmpire.News
         /// <summary>
         /// Player responds to a news event (new format)
         /// </summary>
-        public ResponseResult RespondToEvent(Translation.NewsGameEvent newsEvent, string optionId)
+        public ResponseResult RespondToEvent(NewsGameEvent newsEvent, string optionId)
         {
             var response = newsEvent.ResponseOptions?.Find(r => r.OptionId == optionId);
             
@@ -117,7 +119,7 @@ namespace ElectionEmpire.News
         /// <summary>
         /// Player responds to a news event (legacy format for compatibility)
         /// </summary>
-        public ResponseResult RespondToLegacyEvent(Translation.NewsGameEvent newsEvent, string responseType)
+        public ResponseResult RespondToLegacyEvent(NewsGameEvent newsEvent, string responseType)
         {
             // Legacy support - convert to new format if needed
             return new ResponseResult
@@ -187,7 +189,7 @@ namespace ElectionEmpire.News
             return false;
         }
         
-        private Dictionary<string, float> CalculateSuccessEffects(Translation.NewsGameEvent newsEvent, Translation.ResponseOption response)
+        private Dictionary<string, float> CalculateSuccessEffects(NewsGameEvent newsEvent, ResponseOption response)
         {
             var effects = new Dictionary<string, float>();
             
@@ -234,7 +236,7 @@ namespace ElectionEmpire.News
             return effects;
         }
         
-        private Dictionary<string, float> CalculateFailureEffects(Translation.NewsGameEvent newsEvent, Translation.ResponseOption response)
+        private Dictionary<string, float> CalculateFailureEffects(NewsGameEvent newsEvent, ResponseOption response)
         {
             var effects = new Dictionary<string, float>();
             
@@ -404,7 +406,7 @@ namespace ElectionEmpire.News
             };
         }
         
-        private string GenerateResponseMessage(Translation.NewsGameEvent newsEvent, Translation.ResponseOption response)
+        private string GenerateResponseMessage(NewsGameEvent newsEvent, ResponseOption response)
         {
             return response.StatementTemplate ?? 
                    $"You chose to {response.Label.ToLower()}. " +

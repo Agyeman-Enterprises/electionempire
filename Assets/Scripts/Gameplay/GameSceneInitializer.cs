@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.Gameplay
 {
@@ -147,7 +148,8 @@ namespace ElectionEmpire.Gameplay
             if (timeManager == null) timeManager = FindFirstObjectByType<ElectionEmpire.Core.TimeManager>();
             if (aiManager == null) aiManager = FindFirstObjectByType<ElectionEmpire.AI.AIManager>();
             if (scandalManager == null) scandalManager = FindFirstObjectByType<Scandal.ScandalManager>();
-            if (crisisManager == null) crisisManager = FindFirstObjectByType<MonoBehaviour>(); // CrisisManager placeholder
+            // CrisisManager is a placeholder - will be implemented in future sprint
+            // if (crisisManager == null) crisisManager = FindFirstObjectByType<CrisisManager>();
             // ElectionManager and ResourceManager are not MonoBehaviour, so instantiate directly if needed
             // They will be initialized later when game state is available
             if (electionManager == null)
@@ -160,7 +162,8 @@ namespace ElectionEmpire.Gameplay
                 // For now, leave it null - it will be created when needed
             }
             if (newsEventManager == null) newsEventManager = FindFirstObjectByType<News.NewsEventManager>();
-            if (mediaManager == null) mediaManager = FindFirstObjectByType<MonoBehaviour>(); // MediaManager placeholder
+            // MediaManager is a placeholder - will be implemented in future sprint
+            // if (mediaManager == null) mediaManager = FindFirstObjectByType<MediaManager>();
             
             // Create from prefabs if still null
             if (timeManager == null && timeManagerPrefab != null)
@@ -478,49 +481,7 @@ namespace ElectionEmpire.Gameplay
         #endregion
     }
     
-    // Stub classes for managers that might not exist yet
-    // Remove these when you have the actual implementations
-    
-    #region Manager Stubs (Remove when real implementations exist)
-    
-    // These are placeholder classes. Your actual implementations should replace these.
-    // They're here to prevent compile errors while setting up scenes.
-    
-    #if !ELECTION_EMPIRE_MANAGERS_DEFINED
-    
-    public class TimeManager : MonoBehaviour
-    {
-        public void PauseTime() { Time.timeScale = 0; }
-        public void ResumeTime() { Time.timeScale = 1; }
-    }
-    
-    // Placeholder classes removed - use actual manager classes from their respective namespaces
-    // public class AIManager : MonoBehaviour { }
-    // public class ScandalManager : MonoBehaviour { }
-    // public class CrisisManager : MonoBehaviour { }
-    // public class ElectionManager : MonoBehaviour { }
-    // public class ResourceManager : MonoBehaviour { }
-    // public class NewsEventManager : MonoBehaviour { }
-    // public class MediaManager : MonoBehaviour { }
-    // public class GameHUD : MonoBehaviour { }
-    
-    public class GameManager : MonoBehaviour
-    {
-        private static GameManager _instance;
-        public static GameManager Instance => _instance;
-        
-        public bool HasActiveGame => false;
-        public PlayerCharacter CurrentCharacter => null;
-        
-        private void Awake() { _instance = this; DontDestroyOnLoad(gameObject); }
-    }
-    
-    public class PlayerCharacter
-    {
-        public string FullName => "Test Politician";
-    }
-    
-    #endif
-    
-    #endregion
+    // Note: Manager classes are now defined in their respective namespaces
+    // TimeManager -> ElectionEmpire.Core.TimeManager
+    // GameManager -> ElectionEmpire.Core.GameManager
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 using ElectionEmpire.World;
 using ElectionEmpire.AI;
 using ElectionEmpire.Multiplayer.PersistentWorld;
+using ElectionEmpire.Core;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ELECTION EMPIRE - The Throne Phase (Defensive Gameplay)
@@ -579,17 +580,6 @@ namespace ElectionEmpire.Gameplay.Presidency
         public float Severity;
         public string Description;
     }
-    
-    public enum CrisisType
-    {
-        General,
-        MediaInvestigation,
-        Impeachment,
-        AssassinationAttempt,
-        Economic,
-        ForeignPolicy
-    }
-    
     [Serializable]
     public class IntelligenceBriefing
     {
@@ -610,17 +600,6 @@ namespace ElectionEmpire.Gameplay.Presidency
         CharacterAssassination,
         LegalInvestigation
     }
-    
-    public enum TermEndReason
-    {
-        TermLimit,
-        ElectoralDefeat,
-        Resignation,
-        Impeachment,
-        Assassination,
-        Dictatorship
-    }
-    
     #endregion
 }
 

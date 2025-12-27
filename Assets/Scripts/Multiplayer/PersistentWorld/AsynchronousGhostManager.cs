@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine;
 using ElectionEmpire.AI;
 using ElectionEmpire.Gameplay.Presidency;
+using ElectionEmpire.Multiplayer.PersistentWorld;
+using ElectionEmpire.InfiniteUniverse;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ELECTION EMPIRE - Asynchronous Ghost Manager
@@ -256,15 +258,6 @@ namespace ElectionEmpire.Multiplayer.PersistentWorld
         public List<GhostDecision> DecisionsMade;
         public List<GhostActionOutcome> Outcomes;
     }
-    
-    [Serializable]
-    public class GhostDecision
-    {
-        public DateTime Timestamp;
-        public string Decision;
-        public string Context;
-    }
-    
     [Serializable]
     public class GhostActionOutcome
     {

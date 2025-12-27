@@ -7,10 +7,11 @@ using ElectionEmpire.World;
 namespace ElectionEmpire.Core
 {
     /// <summary>
-    /// Manages game saves - local auto-save, cloud sync, and archives
+    /// Legacy game save data format - for simple saves.
+    /// See ElectionEmpire.Balance.GameSaveData for the full save data structure.
     /// </summary>
     [Serializable]
-    public class GameSaveData
+    public class LegacyGameSaveData
     {
         public string SaveName;
         public DateTime SaveDate;
@@ -19,8 +20,8 @@ namespace ElectionEmpire.Core
         public ElectionEmpire.World.World World; // Save world data
         public string WorldSeed; // Also save seed for regeneration
         public Dictionary<string, object> GameState;
-        
-        public GameSaveData()
+
+        public LegacyGameSaveData()
         {
             GameState = new Dictionary<string, object>();
         }
@@ -31,10 +32,14 @@ namespace ElectionEmpire.Core
         [Header("Save Settings")]
         public float AutoSaveInterval = 300f; // 5 minutes in seconds
         public int MaxAutoSaves = 10;
-        
+
         private string SaveDirectory => Path.Combine(Application.persistentDataPath, "Saves");
         private string AutoSavePath => Path.Combine(SaveDirectory, "autosave.json");
         private float lastAutoSaveTime;
+
+        // Events
+        public event Action<int, bool> OnSaveCompleted;
+        public event Action<int, bool> OnLoadCompleted;
         
         private void Start()
         {
@@ -69,8 +74,8 @@ namespace ElectionEmpire.Core
                 Debug.LogWarning("Cannot save: No active game");
                 return;
             }
-            
-            var saveData = new GameSaveData
+
+            var saveData = new LegacyGameSaveData
             {
                 SaveName = saveName,
                 SaveDate = DateTime.Now,
@@ -79,14 +84,15 @@ namespace ElectionEmpire.Core
                 World = GameManager.Instance.CurrentWorld,
                 WorldSeed = GameManager.Instance.CurrentWorld?.Seed
             };
-            
+
             string json = JsonUtility.ToJson(saveData, true);
-            string filePath = isAutoSave 
-                ? AutoSavePath 
+            string filePath = isAutoSave
+                ? AutoSavePath
                 : Path.Combine(SaveDirectory, $"{saveName}.json");
-            
+
             File.WriteAllText(filePath, json);
             Debug.Log($"Game saved: {filePath}");
+            OnSaveCompleted?.Invoke(0, true);
         }
         
         public void AutoSave()
@@ -100,23 +106,24 @@ namespace ElectionEmpire.Core
             SaveGame(quickSaveName);
         }
         
-        public GameSaveData LoadGame(string saveName)
+        public LegacyGameSaveData LoadGame(string saveName)
         {
-            string filePath = saveName == "autosave" 
-                ? AutoSavePath 
+            string filePath = saveName == "autosave"
+                ? AutoSavePath
                 : Path.Combine(SaveDirectory, $"{saveName}.json");
-            
+
             if (!File.Exists(filePath))
             {
                 Debug.LogError($"Save file not found: {filePath}");
+                OnLoadCompleted?.Invoke(0, false);
                 return null;
             }
-            
+
             try
             {
                 string json = File.ReadAllText(filePath);
-                GameSaveData saveData = JsonUtility.FromJson<GameSaveData>(json);
-                
+                LegacyGameSaveData saveData = JsonUtility.FromJson<LegacyGameSaveData>(json);
+
                 // If world is null but seed exists, regenerate world
                 if (saveData.World == null && !string.IsNullOrEmpty(saveData.WorldSeed))
                 {
@@ -124,13 +131,15 @@ namespace ElectionEmpire.Core
                     saveData.World = worldGenerator.GenerateWorld(saveData.WorldSeed);
                     Debug.Log($"World regenerated from seed: {saveData.WorldSeed}");
                 }
-                
+
                 Debug.Log($"Game loaded: {saveName}");
+                OnLoadCompleted?.Invoke(0, true);
                 return saveData;
             }
             catch (Exception e)
             {
                 Debug.LogError($"Error loading save: {e.Message}");
+                OnLoadCompleted?.Invoke(0, false);
                 return null;
             }
         }

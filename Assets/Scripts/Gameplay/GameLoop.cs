@@ -126,7 +126,7 @@ namespace ElectionEmpire.Gameplay
             }
             
             // Initialize managers
-            timeManager = GameManager.Instance != null ? GameManager.Instance.TimeManager : FindFirstObjectByType<ElectionEmpire.Core.TimeManager>();
+            timeManager = GameManager.Instance != null ? GameManager.Instance.TimeManager : FindFirstObjectByType<TimeManager>();
             
             if (gameState.Player != null)
             {

@@ -148,7 +148,7 @@ namespace ElectionEmpire.Gameplay
         private void FindOrCreateManagers()
         {
             // Find managers if not assigned
-            if (timeManager == null) timeManager = FindFirstObjectByType<ElectionEmpire.Core.TimeManager>();
+            if (timeManager == null) timeManager = FindFirstObjectByType<TimeManager>();
             if (aiManager == null) aiManager = FindFirstObjectByType<ElectionEmpire.AI.AIManager>();
             if (scandalManager == null) scandalManager = FindFirstObjectByType<ElectionEmpire.Scandal.ScandalManager>();
             // CrisisManager is a placeholder - will be implemented in future sprint
@@ -172,7 +172,7 @@ namespace ElectionEmpire.Gameplay
             if (timeManager == null && timeManagerPrefab != null)
             {
                 var go = Instantiate(timeManagerPrefab);
-                timeManager = go.GetComponent<ElectionEmpire.Core.TimeManager>();
+                timeManager = go.GetComponent<TimeManager>();
                 Log("Created TimeManager from prefab");
             }
             
@@ -485,6 +485,7 @@ namespace ElectionEmpire.Gameplay
     }
     
     // Note: Manager classes are now defined in their respective namespaces
-    // TimeManager -> ElectionEmpire.Core.TimeManager
+    // TimeManager -> ElectionEmpire.Managers.TimeManager
+    // ResourceManager -> ElectionEmpire.Managers.ResourceManager
     // GameManager -> ElectionEmpire.Core.GameManager
 }

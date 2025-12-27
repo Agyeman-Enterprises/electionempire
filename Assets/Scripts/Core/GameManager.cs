@@ -166,7 +166,9 @@ namespace ElectionEmpire.Core
             }
             
             IsGameActive = true;
-            TimeManager.LoadGameTime(saveData.GameTime);
+            // LoadGameTime expects a float (seconds), so we just start fresh
+            // The actual game time tracking will be managed by TimeManager
+            TimeManager.LoadGameTime(0f);
             Debug.Log($"Loaded campaign: {saveData.SaveName}");
         }
         

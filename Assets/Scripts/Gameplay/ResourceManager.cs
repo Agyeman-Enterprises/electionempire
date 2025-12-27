@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using ElectionEmpire.World;
 
 namespace ElectionEmpire.Managers
 {
@@ -210,6 +211,80 @@ namespace ElectionEmpire.Managers
         {
             return $"Trust: {publicTrust:F0}% | Capital: {politicalCapital:F0} | Funds: ${campaignFunds:N0}\n" +
                    $"Media: {mediaInfluence:F0} | Party: {partyLoyalty:F0}% | CloutBux: {cloutBux}";
+        }
+
+        // ===== COMPATIBILITY METHODS =====
+        // These methods support legacy code that expects different API
+
+        private PlayerState playerState;
+
+        /// <summary>
+        /// Constructor for creating ResourceManager with a player state
+        /// </summary>
+        public ResourceManager(PlayerState player)
+        {
+            playerState = player;
+            // Sync initial values from player state if available
+            if (player?.Resources != null)
+            {
+                if (player.Resources.TryGetValue("PublicTrust", out float trust))
+                    publicTrust = trust;
+                if (player.Resources.TryGetValue("PoliticalCapital", out float capital))
+                    politicalCapital = capital;
+                if (player.Resources.TryGetValue("CampaignFunds", out float funds))
+                    campaignFunds = funds;
+                if (player.Resources.TryGetValue("MediaInfluence", out float media))
+                    mediaInfluence = media;
+                if (player.Resources.TryGetValue("PartyLoyalty", out float party))
+                    partyLoyalty = party;
+            }
+        }
+
+        /// <summary>
+        /// Default constructor for MonoBehaviour usage
+        /// </summary>
+        public ResourceManager() { }
+
+        /// <summary>
+        /// Update resources based on time delta (for continuous updates)
+        /// </summary>
+        public void UpdateResources(float deltaTime)
+        {
+            // Passive resource generation/decay over time
+            // This is called from GameLoop.Update()
+
+            // For now, minimal passive changes
+            // Could add income generation, decay, etc.
+        }
+
+        /// <summary>
+        /// Spend campaign funds - returns false if insufficient
+        /// </summary>
+        public bool SpendFunds(float amount, string reason = "")
+        {
+            if (campaignFunds >= amount)
+            {
+                ModifyCampaignFunds(-amount, reason);
+                return true;
+            }
+            Debug.LogWarning($"[ResourceManager] Cannot spend ${amount:N0} - only have ${campaignFunds:N0}");
+            return false;
+        }
+
+        /// <summary>
+        /// Gain public trust
+        /// </summary>
+        public void GainTrust(float amount, string reason = "")
+        {
+            ModifyPublicTrust(amount, reason);
+        }
+
+        /// <summary>
+        /// Lose public trust
+        /// </summary>
+        public void LoseTrust(float amount, string reason = "")
+        {
+            ModifyPublicTrust(-amount, reason);
         }
     }
 }

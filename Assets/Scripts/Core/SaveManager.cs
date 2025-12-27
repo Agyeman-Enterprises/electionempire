@@ -83,7 +83,7 @@ namespace ElectionEmpire.Core
             {
                 SaveName = saveName,
                 SaveDate = DateTime.Now,
-                GameTime = GameManager.Instance.TimeManager.GameTime,
+                GameTime = DateTime.Now, // Save current DateTime; TimeManager.GameTime is float seconds
                 Character = GameManager.Instance.CurrentCharacter,
                 World = GameManager.Instance.CurrentWorld,
                 WorldSeed = GameManager.Instance.CurrentWorld?.Seed

@@ -259,5 +259,72 @@ namespace ElectionEmpire.Managers
                    $"{GetPhaseDescription()}\n" +
                    $"Election in {turnsUntilElection} months";
         }
+
+        // ===== COMPATIBILITY METHODS =====
+        // These methods support legacy code that expects different API
+
+        /// <summary>
+        /// Time scale multiplier for game speed (1.0 = normal)
+        /// </summary>
+        public float TimeScale { get; set; } = 1.0f;
+
+        /// <summary>
+        /// Current game time in seconds since game start
+        /// </summary>
+        public float GameTime { get; private set; } = 0f;
+
+        private float lastSaveTime = 0f;
+        private bool isPaused = false;
+
+        /// <summary>
+        /// Process any time that passed while game was closed (idle game feature)
+        /// </summary>
+        public void ProcessOfflineTime()
+        {
+            // For now, just update game time
+            if (!isPaused)
+            {
+                GameTime += Time.deltaTime * TimeScale;
+            }
+        }
+
+        /// <summary>
+        /// Start game time tracking
+        /// </summary>
+        public void StartGame()
+        {
+            GameTime = 0f;
+            lastSaveTime = 0f;
+            isPaused = false;
+            Debug.Log("[TimeManager] Game time started");
+        }
+
+        /// <summary>
+        /// Load game time from save data
+        /// </summary>
+        public void LoadGameTime(float savedTime)
+        {
+            GameTime = savedTime;
+            lastSaveTime = savedTime;
+            Debug.Log($"[TimeManager] Loaded game time: {savedTime}");
+        }
+
+        /// <summary>
+        /// Pause time progression
+        /// </summary>
+        public void PauseTime()
+        {
+            isPaused = true;
+            Debug.Log("[TimeManager] Time paused");
+        }
+
+        /// <summary>
+        /// Resume time progression
+        /// </summary>
+        public void ResumeTime()
+        {
+            isPaused = false;
+            Debug.Log("[TimeManager] Time resumed");
+        }
     }
 }

@@ -2,9 +2,36 @@ using System;
 using System.Collections.Generic;
 using ElectionEmpire.World;
 using ElectionEmpire.AI;
+using ElectionEmpire.Core;
 
 namespace ElectionEmpire.Gameplay
 {
+    /// <summary>
+    /// Game settings for the current session
+    /// </summary>
+    [Serializable]
+    public class GameSettings
+    {
+        public float MasterVolume = 1f;
+        public float MusicVolume = 0.8f;
+        public float SFXVolume = 1f;
+        public float VoiceVolume = 1f;
+        public bool MuteWhenUnfocused = false;
+        public bool Fullscreen = true;
+        public int QualityLevel = 2;
+        public bool VSync = true;
+        public int TargetFramerate = 60;
+        public float TextSpeed = 1f;
+        public bool ShowTutorials = true;
+        public bool AutoSave = true;
+        public int AutoSaveInterval = 10;
+        public bool ConfirmActions = true;
+        public bool ShowProbabilities = true;
+        public float UIScale = 1f;
+        public bool HighContrast = false;
+        public bool ReduceAnimations = false;
+    }
+
     /// <summary>
     /// Complete game state
     /// </summary>

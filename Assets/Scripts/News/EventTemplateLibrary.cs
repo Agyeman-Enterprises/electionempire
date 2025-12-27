@@ -488,7 +488,7 @@ namespace ElectionEmpire.News
         public string ContextTemplate;
 
         public Dictionary<string, VariableType> VariableSlots;
-        public List<Translation.VariableMapping> Variables;
+        public List<Templates.VariableMapping> Variables;
         public ImpactFormula ImpactFormula;
         public List<ResponseOption> ResponseOptions;
 

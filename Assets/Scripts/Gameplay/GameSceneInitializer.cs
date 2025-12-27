@@ -193,22 +193,60 @@ namespace ElectionEmpire.Gameplay
                 }
             }
             
-            if (aiManager == null && aiManagerPrefab != null)
+            // Create AIManager if not found
+            if (aiManager == null)
             {
-                var go = Instantiate(aiManagerPrefab);
-                aiManager = go.GetComponent<ElectionEmpire.AI.AIManager>();
-                Log("Created AIManager from prefab");
+                if (aiManagerPrefab != null)
+                {
+                    var go = Instantiate(aiManagerPrefab);
+                    aiManager = go.GetComponent<ElectionEmpire.AI.AIManager>();
+                    Log("Created AIManager from prefab");
+                }
+                else
+                {
+                    var go = new GameObject("AIManager");
+                    aiManager = go.AddComponent<ElectionEmpire.AI.AIManager>();
+                    Log("Created AIManager dynamically");
+                }
             }
 
-            if (scandalManager == null && scandalManagerPrefab != null)
+            // Create ScandalManager if not found
+            if (scandalManager == null)
             {
-                var go = Instantiate(scandalManagerPrefab);
-                scandalManager = go.GetComponent<ElectionEmpire.Scandal.ScandalManager>();
-                Log("Created ScandalManager from prefab");
+                if (scandalManagerPrefab != null)
+                {
+                    var go = Instantiate(scandalManagerPrefab);
+                    scandalManager = go.GetComponent<ElectionEmpire.Scandal.ScandalManager>();
+                    Log("Created ScandalManager from prefab");
+                }
+                else
+                {
+                    var go = new GameObject("ScandalManager");
+                    scandalManager = go.AddComponent<ElectionEmpire.Scandal.ScandalManager>();
+                    Log("Created ScandalManager dynamically");
+                }
             }
-            
-            // Find UI if not assigned
-            if (gameHUD == null) gameHUD = FindFirstObjectByType<UI.GameHUD>();
+
+            // Create NewsEventManager if not found
+            if (newsEventManager == null)
+            {
+                var go = new GameObject("NewsEventManager");
+                newsEventManager = go.AddComponent<News.NewsEventManager>();
+                Log("Created NewsEventManager dynamically");
+            }
+
+            // Find or create UI components
+            if (gameHUD == null)
+            {
+                gameHUD = FindFirstObjectByType<UI.GameHUD>();
+                if (gameHUD == null)
+                {
+                    // Create a minimal GameHUD - it can function without UI elements assigned
+                    var go = new GameObject("GameHUD");
+                    gameHUD = go.AddComponent<UI.GameHUD>();
+                    Log("Created GameHUD dynamically (no UI elements assigned)");
+                }
+            }
             if (panelManager == null) panelManager = FindFirstObjectByType<UI.PanelManager>();
         }
         

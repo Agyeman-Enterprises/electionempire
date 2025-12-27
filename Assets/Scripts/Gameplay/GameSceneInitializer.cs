@@ -161,19 +161,36 @@ namespace ElectionEmpire.Gameplay
             }
             if (resourceManager == null)
             {
-                // ResourceManager will be created in InitializeResourceManager() when PlayerState is available
-                // For now, leave it null - it will be created when needed
+                // Try to find existing ResourceManager in scene
+                resourceManager = FindFirstObjectByType<ResourceManager>();
+                if (resourceManager == null)
+                {
+                    // Create ResourceManager dynamically
+                    var go = new GameObject("ResourceManager");
+                    resourceManager = go.AddComponent<ResourceManager>();
+                    Log("Created ResourceManager dynamically");
+                }
             }
             if (newsEventManager == null) newsEventManager = FindFirstObjectByType<News.NewsEventManager>();
             // MediaManager is a placeholder - will be implemented in future sprint
             // if (mediaManager == null) mediaManager = FindFirstObjectByType<MediaManager>();
             
-            // Create from prefabs if still null
-            if (timeManager == null && timeManagerPrefab != null)
+            // Create from prefabs if still null, or create dynamically
+            if (timeManager == null)
             {
-                var go = Instantiate(timeManagerPrefab);
-                timeManager = go.GetComponent<TimeManager>();
-                Log("Created TimeManager from prefab");
+                if (timeManagerPrefab != null)
+                {
+                    var go = Instantiate(timeManagerPrefab);
+                    timeManager = go.GetComponent<TimeManager>();
+                    Log("Created TimeManager from prefab");
+                }
+                else
+                {
+                    // Create TimeManager dynamically if no prefab assigned
+                    var go = new GameObject("TimeManager");
+                    timeManager = go.AddComponent<TimeManager>();
+                    Log("Created TimeManager dynamically");
+                }
             }
             
             if (aiManager == null && aiManagerPrefab != null)

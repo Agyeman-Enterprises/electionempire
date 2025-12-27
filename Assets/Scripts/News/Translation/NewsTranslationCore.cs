@@ -851,7 +851,7 @@ namespace ElectionEmpire.News.Translation
             evt.CurrentStage = 0;
 
             // Generate response options
-            evt.ResponseOptions = _responseBuilder.BuildCrisisResponses(matched);
+            evt.ResponseOptions = NewsEnumConverter.ConvertResponseOptions(_responseBuilder.BuildCrisisResponses(matched));
 
             // Calculate scaled effects and convert to NewsEventEffects
             var scaledEffects = CalculateScaledEffects(matched);
@@ -871,7 +871,7 @@ namespace ElectionEmpire.News.Translation
             }
 
             // Generate response options
-            evt.ResponseOptions = _responseBuilder.BuildPolicyPressureResponses(matched);
+            evt.ResponseOptions = NewsEnumConverter.ConvertResponseOptions(_responseBuilder.BuildPolicyPressureResponses(matched));
 
             // Calculate scaled effects and convert
             var scaledEffects = CalculateScaledEffects(matched);
@@ -888,7 +888,7 @@ namespace ElectionEmpire.News.Translation
             evt.DeadlineTurn = evt.CreatedTurn + 5;
 
             // Generate response options
-            evt.ResponseOptions = _responseBuilder.BuildOpportunityResponses(matched);
+            evt.ResponseOptions = NewsEnumConverter.ConvertResponseOptions(_responseBuilder.BuildOpportunityResponses(matched));
 
             // Calculate scaled effects (opportunities have positive base effects) and convert
             var scaledEffects = CalculateScaledEffects(matched, positiveOnly: true);
@@ -904,7 +904,7 @@ namespace ElectionEmpire.News.Translation
             evt.DeadlineTurn = evt.CreatedTurn + 2;
 
             // Generate response options
-            evt.ResponseOptions = _responseBuilder.BuildScandalResponses(matched);
+            evt.ResponseOptions = NewsEnumConverter.ConvertResponseOptions(_responseBuilder.BuildScandalResponses(matched));
 
             // Calculate scaled effects (scandals have higher negative potential) and convert
             var scaledEffects = CalculateScaledEffects(matched, highStakes: true);
@@ -1168,7 +1168,7 @@ namespace ElectionEmpire.News.Translation
                     { "political_capital", -3f },
                     { "media_influence", 5f }
                 },
-                VoterBlocEffects = GetCategoryVoterEffects(matched.Template.Category, true),
+                VoterBlocEffects = GetCategoryVoterEffects(NewsEnumConverter.EventTypeToPoliticalCategory(matched.Template.Category), true),
                 SuccessProbability = 0.8f,
                 IsRisky = false
             };
@@ -1188,7 +1188,7 @@ namespace ElectionEmpire.News.Translation
                     { "political_capital", -3f },
                     { "media_influence", 5f }
                 },
-                VoterBlocEffects = GetCategoryVoterEffects(matched.Template.Category, false),
+                VoterBlocEffects = GetCategoryVoterEffects(NewsEnumConverter.EventTypeToPoliticalCategory(matched.Template.Category), false),
                 SuccessProbability = 0.8f,
                 IsRisky = false
             };
@@ -1596,14 +1596,82 @@ namespace ElectionEmpire.News.Translation
         string GetPlayerPartyPosition(PoliticalCategory category);
         bool IsChaosModeEnabled();
     }
-    
+
     [Serializable]
     public class PlayerAlignment
     {
         public int LawChaos;    // -100 (Lawful) to +100 (Chaotic)
         public int GoodEvil;   // -100 (Good) to +100 (Evil)
     }
-    
+
+    /// <summary>
+    /// Helper class for enum conversions
+    /// </summary>
+    public static class NewsEnumConverter
+    {
+        public static PoliticalCategory EventTypeToPoliticalCategory(EventType eventType)
+        {
+            switch (eventType)
+            {
+                case EventType.Election:
+                    return PoliticalCategory.ElectionCampaign;
+                case EventType.Legislation:
+                    return PoliticalCategory.DomesticLegislation;
+                case EventType.Scandal:
+                    return PoliticalCategory.PoliticalScandal;
+                case EventType.Crisis:
+                    return PoliticalCategory.General; // Crises can be any category
+                case EventType.SocialUnrest:
+                    return PoliticalCategory.SocialIssues;
+                case EventType.CampaignEvent:
+                    return PoliticalCategory.PartyPolitics;
+                case EventType.PolicyAnnouncement:
+                    return PoliticalCategory.DomesticLegislation;
+                case EventType.International:
+                    return PoliticalCategory.ForeignPolicy;
+                case EventType.Economic:
+                    return PoliticalCategory.EconomicPolicy;
+                default:
+                    return PoliticalCategory.General;
+            }
+        }
+
+        /// <summary>
+        /// Converts Translation.ResponseOption to News.ResponseOption
+        /// </summary>
+        public static List<News.ResponseOption> ConvertResponseOptions(List<Translation.ResponseOption> translationOptions)
+        {
+            if (translationOptions == null) return new List<News.ResponseOption>();
+
+            var newsOptions = new List<News.ResponseOption>();
+            foreach (var opt in translationOptions)
+            {
+                newsOptions.Add(new News.ResponseOption
+                {
+                    OptionId = opt.OptionId,
+                    Label = opt.Label,
+                    Type = opt.Label, // Use Label as Type for compatibility
+                    Description = opt.Description,
+                    StatementTemplate = opt.StatementTemplate,
+                    AlignmentEffect = opt.AlignmentEffect,
+                    RequiredAlignment = opt.RequiredAlignment,
+                    IsAlignmentLocked = opt.IsAlignmentLocked,
+                    ResourceEffects = opt.ResourceEffects != null ? new Dictionary<string, float>(opt.ResourceEffects) : new Dictionary<string, float>(),
+                    VoterBlocEffects = opt.VoterBlocEffects != null ? new Dictionary<string, float>(opt.VoterBlocEffects) : new Dictionary<string, float>(),
+                    RequiredResources = opt.RequiredResources != null ? new List<ResourceRequirement>(opt.RequiredResources) : new List<ResourceRequirement>(),
+                    Costs = opt.ResourceEffects != null ? new Dictionary<string, float>(opt.ResourceEffects) : new Dictionary<string, float>(),
+                    Effects = opt.VoterBlocEffects != null ? new Dictionary<string, float>(opt.VoterBlocEffects) : new Dictionary<string, float>(),
+                    SuccessProbability = opt.SuccessProbability,
+                    IsRisky = opt.IsRisky,
+                    SuccessOutcome = opt.SuccessOutcome,
+                    FailureOutcome = opt.FailureOutcome,
+                    ChaosModeOnly = opt.ChaosModeOnly
+                });
+            }
+            return newsOptions;
+        }
+    }
+
     #endregion
 }
 

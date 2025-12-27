@@ -333,7 +333,7 @@ namespace ElectionEmpire.News.Templates
             _templates[category].Add(new EventTemplate
             {
                 TemplateId = "LEG_001",
-                Category = category,
+                Category = ConvertToEventType(category),
                 DefaultEventType = TemplateEventType.PolicyPressure,
                 DefaultUrgency = UrgencyLevel.Developing,
                 HeadlineTemplate = "{legislative_body} Passes {bill_name}",
@@ -359,13 +359,13 @@ namespace ElectionEmpire.News.Templates
                     CapitalDelta = new EffectRange(-3f, 5f),
                     MediaDelta = new EffectRange(5f, 15f)
                 },
-                Tags = new[] { "legislation", "policy", "voting" }
+                Tags = new List<string> { "legislation", "policy", "voting" }
             });
             
             _templates[category].Add(new EventTemplate
             {
                 TemplateId = "LEG_002",
-                Category = category,
+                Category = ConvertToEventType(category),
                 DefaultEventType = TemplateEventType.PolicyPressure,
                 DefaultUrgency = UrgencyLevel.Urgent,
                 HeadlineTemplate = "Controversial {bill_type} Bill Heads to Vote",
@@ -389,13 +389,13 @@ namespace ElectionEmpire.News.Templates
                     CapitalDelta = new EffectRange(-5f, 8f),
                     MediaDelta = new EffectRange(10f, 25f)
                 },
-                Tags = new[] { "controversial", "partisan", "high-stakes" }
+                Tags = new List<string> { "controversial", "partisan", "high-stakes" }
             });
             
             _templates[category].Add(new EventTemplate
             {
                 TemplateId = "LEG_003",
-                Category = category,
+                Category = ConvertToEventType(category),
                 DefaultEventType = TemplateEventType.Crisis,
                 DefaultUrgency = UrgencyLevel.Breaking,
                 HeadlineTemplate = "Government Shutdown Looms as Budget Talks Collapse",
@@ -418,13 +418,13 @@ namespace ElectionEmpire.News.Templates
                     CapitalDelta = new EffectRange(-10f, 10f),
                     MediaDelta = new EffectRange(20f, 40f)
                 },
-                Tags = new[] { "crisis", "budget", "shutdown", "urgent" }
+                Tags = new List<string> { "crisis", "budget", "shutdown", "urgent" }
             });
             
             _templates[category].Add(new EventTemplate
             {
                 TemplateId = "LEG_004",
-                Category = category,
+                Category = ConvertToEventType(category),
                 DefaultEventType = TemplateEventType.Opportunity,
                 DefaultUrgency = UrgencyLevel.Developing,
                 HeadlineTemplate = "Bipartisan {policy_area} Reform Gains Momentum",
@@ -448,13 +448,13 @@ namespace ElectionEmpire.News.Templates
                     MediaDelta = new EffectRange(5f, 15f),
                     PartyLoyaltyDelta = new EffectRange(-5f, 5f)
                 },
-                Tags = new[] { "opportunity", "bipartisan", "coalition" }
+                Tags = new List<string> { "opportunity", "bipartisan", "coalition" }
             });
             
             _templates[category].Add(new EventTemplate
             {
                 TemplateId = "LEG_005",
-                Category = category,
+                Category = ConvertToEventType(category),
                 DefaultEventType = TemplateEventType.PolicyPressure,
                 DefaultUrgency = UrgencyLevel.Urgent,
                 HeadlineTemplate = "Supreme Court Strikes Down {law_name}",
@@ -480,7 +480,7 @@ namespace ElectionEmpire.News.Templates
                     CapitalDelta = new EffectRange(-5f, 5f),
                     MediaDelta = new EffectRange(15f, 30f)
                 },
-                Tags = new[] { "judicial", "constitutional", "landmark" }
+                Tags = new List<string> { "judicial", "constitutional", "landmark" }
             });
         }
         
@@ -651,7 +651,7 @@ namespace ElectionEmpire.News.Templates
             return new EventTemplate
             {
                 TemplateId = id,
-                Category = category,
+                Category = ConvertToEventType(category),
                 DefaultEventType = eventType,
                 DefaultUrgency = eventType == TemplateEventType.Crisis ? UrgencyLevel.Breaking : UrgencyLevel.Developing,
                 HeadlineTemplate = headline,
@@ -669,10 +669,54 @@ namespace ElectionEmpire.News.Templates
                     CapitalDelta = new EffectRange(-5f, 5f),
                     MediaDelta = new EffectRange(10f, 25f)
                 },
-                Tags = new[] { category.ToString().ToLower() }
+                Tags = new List<string> { category.ToString().ToLower() }
             };
         }
-        
+
+        #endregion
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Converts PoliticalCategory to EventType for compatibility
+        /// </summary>
+        private static EventType ConvertToEventType(PoliticalCategory category)
+        {
+            switch (category)
+            {
+                case PoliticalCategory.DomesticLegislation:
+                    return EventType.Legislation;
+                case PoliticalCategory.ElectionCampaign:
+                    return EventType.Election;
+                case PoliticalCategory.PoliticalScandal:
+                    return EventType.Scandal;
+                case PoliticalCategory.EconomicPolicy:
+                    return EventType.Economic;
+                case PoliticalCategory.ForeignPolicy:
+                    return EventType.International;
+                case PoliticalCategory.HealthcarePolicy:
+                case PoliticalCategory.Immigration:
+                case PoliticalCategory.ClimateEnvironment:
+                case PoliticalCategory.Education:
+                case PoliticalCategory.TechnologyPolicy:
+                    return EventType.PolicyAnnouncement;
+                case PoliticalCategory.CrimeJustice:
+                case PoliticalCategory.CivilRights:
+                    return EventType.SocialUnrest;
+                case PoliticalCategory.MilitaryDefense:
+                    return EventType.International;
+                case PoliticalCategory.SocialIssues:
+                    return EventType.SocialUnrest;
+                case PoliticalCategory.PartyPolitics:
+                    return EventType.CampaignEvent;
+                case PoliticalCategory.LocalGovernment:
+                    return EventType.PolicyAnnouncement;
+                case PoliticalCategory.General:
+                default:
+                    return EventType.PolicyAnnouncement;
+            }
+        }
+
         #endregion
     }
 }

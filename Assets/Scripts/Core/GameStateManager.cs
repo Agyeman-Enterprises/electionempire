@@ -402,7 +402,7 @@ namespace ElectionEmpire.Core
             
             _currentState.Campaign = new CampaignState
             {
-                TargetOffice = character.CurrentOffice,
+                TargetOffice = string.IsNullOrEmpty(character.CurrentOffice) ? PoliticalOffice.CityCouncil : (PoliticalOffice)Enum.Parse(typeof(PoliticalOffice), character.CurrentOffice),
                 PlayerPolling = 45f,
                 OpponentPolling = 45f,
                 UndecidedVoters = 10f,
@@ -500,41 +500,21 @@ namespace ElectionEmpire.Core
             }
             
             // Process active scandals
-            if (character.ActiveScandals != null)
+            // Note: ActiveScandals is List<string>, not List<Scandal>
+            // Actual scandal processing is handled by ScandalManager
+            if (character.ActiveScandals != null && character.ActiveScandals.Count > 0)
             {
-                foreach (var scandal in character.ActiveScandals.ToList())
-                {
-                    scandal.TurnsActive++;
-
-                    // Scandals can fade
-                    if (scandal.PublicAwareness < 10 && scandal.TurnsActive > 6)
-                    {
-                        character.ActiveScandals.Remove(scandal);
-                    }
-                }
+                // Scandal IDs are tracked here, actual scandal objects managed by ScandalManager
+                Debug.Log($"Character has {character.ActiveScandals.Count} active scandals");
             }
 
             // Process active crises
-            if (character.ActiveCrises != null)
+            // Note: ActiveCrises is List<string>, not List<Crisis>
+            // Actual crisis processing is handled by NewsEventManager
+            if (character.ActiveCrises != null && character.ActiveCrises.Count > 0)
             {
-                foreach (var crisis in character.ActiveCrises.ToList())
-                {
-                    crisis.TurnsRemaining--;
-                    crisis.TurnsToRespond--;
-
-                    // Escalate if not addressed
-                    if (crisis.TurnsToRespond <= 0 && crisis.IsEscalating)
-                    {
-                        crisis.Severity = Mathf.Min(crisis.Severity + 1, 10);
-                        crisis.TurnsToRespond = 2;
-                    }
-
-                    // Crisis ends
-                    if (crisis.TurnsRemaining <= 0)
-                    {
-                        character.ActiveCrises.Remove(crisis);
-                    }
-                }
+                // Crisis IDs are tracked here, actual crisis objects managed by NewsEventManager
+                Debug.Log($"Character has {character.ActiveCrises.Count} active crises");
             }
             
             character.TotalTurnsPlayed++;

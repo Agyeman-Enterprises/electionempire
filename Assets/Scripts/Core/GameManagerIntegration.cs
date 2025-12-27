@@ -312,7 +312,7 @@ namespace ElectionEmpire.Core
             EnhancedSaveManager.OnLoadCompleted += OnLoadCompleted;
             
             // IAP events
-            IAPManager.OnPurchaseCompleted += (item, success) => OnPurchaseCompleted(item, success);
+            IAPManager.OnPurchaseCompleted += (purchase) => OnPurchaseCompleted(purchase);
         }
         
         private string GetPlayerId()
@@ -572,13 +572,13 @@ namespace ElectionEmpire.Core
         public void QuickSave()
         {
             var saveData = CreateSaveData();
-            EnhancedSaveManager.AutoSave(saveData); // Use AutoSave instead of Autosave
+            EnhancedSaveManager.Autosave(saveData);
         }
 
         public void SaveGame(int slot, string saveName = null)
         {
             var saveData = CreateSaveData();
-            EnhancedSaveManager.SaveGame(saveData, slot); // Swap parameters: saveData, slot
+            EnhancedSaveManager.SaveGame(slot, saveData);
         }
         
         private GameSaveData CreateSaveData()
@@ -693,9 +693,12 @@ namespace ElectionEmpire.Core
             }
         }
         
-        private void OnPurchaseCompleted(PurchasableItem item, bool success)
+        private void OnPurchaseCompleted(IAPPurchase purchase)
         {
-            Analytics.LogPurchase(item.ItemId, item.CurrencyType.ToString(), item.Price, success);
+            if (purchase != null && !purchase.IsRefunded)
+            {
+                Analytics.LogPurchase(purchase.PackageId, purchase.Currency, (float)purchase.AmountPaid, purchase.IsVerified);
+            }
         }
         
         #endregion
